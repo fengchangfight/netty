@@ -18,6 +18,9 @@ package io.netty.util.concurrent;
 import java.util.EventListener;
 
 /**
+ * fc comment
+ * EventListener是JDK自带的marker interface
+ * 本接口只有一个方法,有说明,不赘述
  * Listens to the result of a {@link Future}.  The result of the asynchronous operation is notified once this listener
  * is added by calling {@link Future#addListener(GenericFutureListener)}.
  */

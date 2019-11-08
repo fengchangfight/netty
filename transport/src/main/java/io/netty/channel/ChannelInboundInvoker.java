@@ -14,7 +14,12 @@
  * under the License.
  */
 package io.netty.channel;
-
+/**
+ * fc comment
+ * 需要先搞清楚Channel, Channel pipeline, Channel Handler等抽象概念
+ * 跟ChannelInboundHandler相关(那个类有好几个方法,对应ChannelPipeline中的各种handler操作)
+ * 返回值仍是该接口实例本身
+ */
 public interface ChannelInboundInvoker {
 
     /**

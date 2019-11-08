@@ -16,6 +16,8 @@
 package io.netty.util;
 
 /**
+ * fc comment:
+ * 知道了Attribute和Attribute key这个接口不算什么
  * Holds {@link Attribute}s which can be accessed via {@link AttributeKey}.
  *
  * Implementations must be Thread-safe.
