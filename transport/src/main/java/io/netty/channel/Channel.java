@@ -77,16 +77,22 @@ import java.net.SocketAddress;
 public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparable<Channel> {
 
     /**
+     * fc comment
+     * 不赘述
      * Returns the globally unique identifier of this {@link Channel}.
      */
     ChannelId id();
 
     /**
+     * fc comment
+     * channel跟gitpod的关系:注册到
      * Return the {@link EventLoop} this {@link Channel} was registered to.
      */
     EventLoop eventLoop();
 
     /**
+     * fc comment
+     * channel 还有父亲？
      * Returns the parent of this channel.
      *
      * @return the parent channel.
@@ -120,6 +126,8 @@ public interface Channel extends AttributeMap, ChannelOutboundInvoker, Comparabl
     ChannelMetadata metadata();
 
     /**
+     * fc comment:
+     * socketAddress是个抽象类,需要具体化,例如InetSocketAddress
      * Returns the local address where this channel is bound to.  The returned
      * {@link SocketAddress} is supposed to be down-cast into more concrete
      * type such as {@link InetSocketAddress} to retrieve the detailed

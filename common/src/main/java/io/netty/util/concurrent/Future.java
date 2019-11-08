@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
+ * fc comment
+ * 还是个接口,netty定制版future,不赘述
  * The result of an asynchronous operation.
  */
 @SuppressWarnings("ClassNameSameAsAncestorName")

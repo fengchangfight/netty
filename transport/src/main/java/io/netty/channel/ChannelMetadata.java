@@ -20,6 +20,8 @@ import static io.netty.util.internal.ObjectUtil.checkPositive;
 import java.net.SocketAddress;
 
 /**
+ * fc comment
+ * 不深究,看字面即可,方法少,简单,唯独max message per read的意义要注意一下
  * Represents the properties of a {@link Channel} implementation.
  */
 public final class ChannelMetadata {
