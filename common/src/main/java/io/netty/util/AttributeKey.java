@@ -16,6 +16,9 @@
 package io.netty.util;
 
 /**
+ * fc comment
+ * 集成了常量池的一种抽象常量, 看懂了AbstractConstant这个就不解释,
+ * 高层抽象:看名字即可AttributeKey
  * Key which can be used to access {@link Attribute} out of the {@link AttributeMap}. Be aware that it is not be
  * possible to have multiple keys with the same name.
  *

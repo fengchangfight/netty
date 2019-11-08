@@ -43,6 +43,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * fc comment
+ * 套路:抽象类泛型连环套注意
+ * 高层抽象: 用来启动一个channel
  * {@link AbstractBootstrap} is a helper class that makes it easy to bootstrap a {@link Channel}. It support
  * method-chaining to provide an easy way to configure the {@link AbstractBootstrap}.
  *

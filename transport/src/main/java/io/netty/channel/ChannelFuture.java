@@ -162,6 +162,10 @@ import java.util.concurrent.TimeUnit;
  * }
  * </pre>
  */
+/**
+ * fc comment
+ * 仍然是个接口,chanel定制版的future,方法名都有说明,因为都没有实现,我就不多说了
+ */
 public interface ChannelFuture extends Future<Void> {
 
     /**
