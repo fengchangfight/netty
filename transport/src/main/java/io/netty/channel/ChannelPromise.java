@@ -19,7 +19,9 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.Promise;
 
-/**
+/**fc comment
+ * 仍是一种接口
+ * 集成了ChannelFuture和Promise两种很近似的接口,不赘述,具体看用处
  * Special {@link ChannelFuture} which is writable.
  */
 public interface ChannelPromise extends ChannelFuture, Promise<Void> {

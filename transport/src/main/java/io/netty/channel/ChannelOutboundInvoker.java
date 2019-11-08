@@ -20,7 +20,10 @@ import io.netty.util.concurrent.FutureListener;
 
 import java.net.ConnectException;
 import java.net.SocketAddress;
-
+/**
+ * fc comment
+ * 看起来还是很多相似的似是而非的方法,具体得看调用出
+ */
 public interface ChannelOutboundInvoker {
 
     /**

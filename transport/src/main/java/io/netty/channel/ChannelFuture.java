@@ -165,6 +165,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * fc comment
  * 仍然是个接口,chanel定制版的future,方法名都有说明,因为都没有实现,我就不多说了
+ * 注意跟Promise对比
  */
 public interface ChannelFuture extends Future<Void> {
 
