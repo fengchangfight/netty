@@ -24,7 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * fc comment
- * 
+ * 顾名思义常量池, 带自增id功能(nextId)
+ * 核心数据结构是一个concurrenthashmap
  * A pool of {@link Constant}s.
  *
  * @param <T> the type of the constant
@@ -63,6 +64,7 @@ public abstract class ConstantPool<T extends Constant<T>> {
     }
 
     /**
+     * fc comment: 看下面这句说明功能
      * Get existing constant by name or creates new one if not exists. Threadsafe
      *
      * @param name the name of the {@link Constant}

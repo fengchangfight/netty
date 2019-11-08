@@ -23,6 +23,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 /**
+ * fc comment
+ * 改类定义了一对常量,以及一个常量池,在初始化时全部加入常量池
  * A {@link ChannelOption} allows to configure a {@link ChannelConfig} in a type-safe
  * way. Which {@link ChannelOption} is supported depends on the actual implementation
  * of {@link ChannelConfig} and may depend on the nature of the transport it belongs
