@@ -16,6 +16,8 @@
 package io.netty.util.internal;
 
 /**
+ * fc comment
+ * 简单接口不赘述
  * Counter for long.
  */
 public interface LongCounter {

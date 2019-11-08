@@ -68,6 +68,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 /**
+ * fc comment: 看下面这句说明
  * Utility that detects various properties specific to the current runtime
  * environment, such as Java version and the availability of the
  * {@code sun.misc.Unsafe} object.
@@ -1467,6 +1468,10 @@ public final class PlatformDependent {
         }
     }
 
+    /**
+     * fc comment
+     * 内部接口
+     */
     private interface ThreadLocalRandomProvider {
         Random current();
     }

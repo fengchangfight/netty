@@ -22,6 +22,8 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
+ * fc comment
+ * get各种类型的套路
  * A collection of utility methods to retrieve and parse the values of the Java system properties.
  */
 public final class SystemPropertyUtil {

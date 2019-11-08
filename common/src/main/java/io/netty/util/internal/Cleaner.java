@@ -18,6 +18,8 @@ package io.netty.util.internal;
 import java.nio.ByteBuffer;
 
 /**
+ * fc comment:
+ * free direct bytebuffer
  * Allows to free direct {@link ByteBuffer}s.
  */
 interface Cleaner {

@@ -31,6 +31,7 @@ import java.security.PrivilegedAction;
 import static io.netty.util.internal.ObjectUtil.checkNotNull;
 
 /**
+ * fc comment: 各种平台相关内存操作,不深究
  * The {@link PlatformDependent} operations which requires access to {@code sun.misc.*}.
  */
 @SuppressJava6Requirement(reason = "Unsafe access is guarded")
