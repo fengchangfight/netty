@@ -18,6 +18,10 @@ package io.netty.util;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
+ *
+ * fc comment:
+ * 上层理解: 抽象常量
+ * 抽象类implements接口,加了成员变量id, name , uniquifier
  * Base implementation of {@link Constant}.
  */
 public abstract class AbstractConstant<T extends AbstractConstant<T>> implements Constant<T> {
@@ -28,6 +32,8 @@ public abstract class AbstractConstant<T extends AbstractConstant<T>> implements
     private final long uniquifier;
 
     /**
+     * fc comment:
+     * 仅包级别和子类可用
      * Creates a new instance.
      */
     protected AbstractConstant(int id, String name) {

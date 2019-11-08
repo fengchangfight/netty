@@ -40,6 +40,7 @@
 package io.netty.util.internal.logging;
 
 /**
+ * fc comment 标准log 接口,各个logging级别都有,如debug, trace ,warn...等 不赘述
  * <em>Internal-use-only</em> logger used by Netty.  <strong>DO NOT</strong>
  * access this class outside of Netty.
  */

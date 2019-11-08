@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * fc comment
+ * 
  * A pool of {@link Constant}s.
  *
  * @param <T> the type of the constant
