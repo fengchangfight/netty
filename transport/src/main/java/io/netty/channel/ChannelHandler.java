@@ -175,6 +175,12 @@ import java.lang.annotation.Target;
  * what fundamental differences they have, how they flow in a  pipeline,  and how to handle
  * the operation in your application.
  */
+/**
+ * fc comment
+ * 一堆回调函数，看注释，跟具体的ChannelHandlerConte有关
+ * 估计这个接口属于netty的核心逻辑接口，所以注释比较全，最好仔细看看
+ * 需要先搞清楚channel, channel handler, channel pipeline的关系
+ */
 public interface ChannelHandler {
 
     /**
