@@ -29,6 +29,8 @@ import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * fc comment
+ * 抽象基类，实现了EventExecutor接口，方法看起来很同质，暂放
  * Abstract base class for {@link EventExecutor} implementations.
  */
 public abstract class AbstractEventExecutor extends AbstractExecutorService implements EventExecutor {
@@ -38,6 +40,10 @@ public abstract class AbstractEventExecutor extends AbstractExecutorService impl
     static final long DEFAULT_SHUTDOWN_TIMEOUT = 15;
 
     private final EventExecutorGroup parent;
+    /**
+     * fc comment
+     * 套路:类的泛型方法
+     */
     private final Collection<EventExecutor> selfCollection = Collections.<EventExecutor>singleton(this);
 
     protected AbstractEventExecutor() {
