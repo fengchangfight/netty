@@ -22,7 +22,9 @@ import io.netty.util.internal.InternalThreadLocalMap;
 import java.util.Map;
 
 /**
- * Skeleton implementation of a {@link ChannelHandler}.
+ * fc comment 抽象类， 实现了ChannelHandler接口，除了isSharable有点实质内容，其他都有点抽象 Skeleton
+ * implementation of a {@link ChannelHandler}. 关于adaptor设计模式参考：
+ * https://www.tutorialspoint.com/design_pattern/adapter_pattern.htm
  */
 public abstract class ChannelHandlerAdapter implements ChannelHandler {
 
@@ -30,7 +32,8 @@ public abstract class ChannelHandlerAdapter implements ChannelHandler {
     boolean added;
 
     /**
-     * Throws {@link IllegalStateException} if {@link ChannelHandlerAdapter#isSharable()} returns {@code true}
+     * Throws {@link IllegalStateException} if
+     * {@link ChannelHandlerAdapter#isSharable()} returns {@code true}
      */
     protected void ensureNotSharable() {
         if (isSharable()) {
@@ -39,15 +42,16 @@ public abstract class ChannelHandlerAdapter implements ChannelHandler {
     }
 
     /**
-     * Return {@code true} if the implementation is {@link Sharable} and so can be added
-     * to different {@link ChannelPipeline}s.
+     * Return {@code true} if the implementation is {@link Sharable} and so can be
+     * added to different {@link ChannelPipeline}s.
      */
     public boolean isSharable() {
         /**
-         * Cache the result of {@link Sharable} annotation detection to workaround a condition. We use a
-         * {@link ThreadLocal} and {@link WeakHashMap} to eliminate the volatile write/reads. Using different
-         * {@link WeakHashMap} instances per {@link Thread} is good enough for us and the number of
-         * {@link Thread}s are quite limited anyway.
+         * Cache the result of {@link Sharable} annotation detection to workaround a
+         * condition. We use a {@link ThreadLocal} and {@link WeakHashMap} to eliminate
+         * the volatile write/reads. Using different {@link WeakHashMap} instances per
+         * {@link Thread} is good enough for us and the number of {@link Thread}s are
+         * quite limited anyway.
          *
          * See <a href="https://github.com/netty/netty/issues/2289">#2289</a>.
          */
