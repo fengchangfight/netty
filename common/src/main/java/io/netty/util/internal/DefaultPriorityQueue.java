@@ -212,6 +212,9 @@ public final class DefaultPriorityQueue<T extends PriorityQueueNode> extends Abs
         return new PriorityQueueIterator();
     }
 
+    /**fc comment
+     * 套路:静态内部类获取包裹类的成员
+     */
     private final class PriorityQueueIterator implements Iterator<T> {
         private int index;
 

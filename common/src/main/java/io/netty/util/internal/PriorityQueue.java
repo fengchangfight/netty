@@ -16,7 +16,10 @@
 package io.netty.util.internal;
 
 import java.util.Queue;
-
+/**
+ * fc comment
+ * netty自带简易版PriorityQueue接口，不赘述
+ */
 public interface PriorityQueue<T> extends Queue<T> {
     /**
      * Same as {@link #remove(Object)} but typed using generics.

@@ -15,7 +15,8 @@
  */
 package io.netty.util.internal;
 
-/**
+/**fc comment
+ * 这玩意为什么是接口？可理解为所有具体的优先级队列节点的实现都要实现这些方法
  * Provides methods for {@link DefaultPriorityQueue} to maintain internal state. These methods should generally not be
  * used outside the scope of {@link DefaultPriorityQueue}.
  */

@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * fc comment:
+ * 套路:抽象类实现接口，以进一步具体化，但本类不能实例化
  * Abstract {@link Future} implementation which does not allow for cancellation.
  *
  * @param <V>
