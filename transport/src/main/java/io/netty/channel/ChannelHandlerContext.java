@@ -122,6 +122,11 @@ import java.nio.channels.Channels;
  * what fundamental differences they have, how they flow in a  pipeline,  and how to handle
  * the operation in your application.
  */
+/**
+ * fc comment
+ * channel handler的上下文功能，由于只是接口暂不赘述
+ *
+ */
 public interface ChannelHandlerContext extends AttributeMap, ChannelInboundInvoker, ChannelOutboundInvoker {
 
     /**

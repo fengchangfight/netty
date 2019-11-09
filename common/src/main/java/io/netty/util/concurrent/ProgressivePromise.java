@@ -16,6 +16,8 @@
 package io.netty.util.concurrent;
 
 /**
+ * fc comment
+ * 看起来仍是几个同质化的接口，略抽象，不深究，看具体的使用地方
  * Special {@link ProgressiveFuture} which is writable.
  */
 public interface ProgressivePromise<V> extends Promise<V>, ProgressiveFuture<V> {
