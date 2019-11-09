@@ -16,6 +16,8 @@
 package io.netty.channel;
 
 /**
+ * fc comment
+ * 父类是一回调函数，本类加了更多，用于处理inbound的情况，至于什么叫inbound，这个后面再说
  * {@link ChannelHandler} which adds callbacks for state changes. This allows the user
  * to hook in to state changes easily.
  */
