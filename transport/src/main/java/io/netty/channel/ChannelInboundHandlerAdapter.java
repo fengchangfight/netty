@@ -18,24 +18,31 @@ package io.netty.channel;
 import io.netty.channel.ChannelHandlerMask.Skip;
 
 /**
- * Abstract base class for {@link ChannelInboundHandler} implementations which provide
- * implementations of all of their methods.
+ * fc comment, 处理inbound类型的channel pipeline When writing data out to a
+ * SocketChannel the written data is also passed through the ChannelPipeline
+ * before finally being written to the SocketChannel
+ * 关于pipeline的流程和逻辑，参考：http://tutorials.jenkov.com/netty/netty-channelpipeline.html
+ * Abstract base class for {@link ChannelInboundHandler} implementations which
+ * provide implementations of all of their methods.
  *
  * <p>
- * This implementation just forward the operation to the next {@link ChannelHandler} in the
- * {@link ChannelPipeline}. Sub-classes may override a method implementation to change this.
+ * This implementation just forward the operation to the next
+ * {@link ChannelHandler} in the {@link ChannelPipeline}. Sub-classes may
+ * override a method implementation to change this.
  * </p>
  * <p>
- * Be aware that messages are not released after the {@link #channelRead(ChannelHandlerContext, Object)}
- * method returns automatically. If you are looking for a {@link ChannelInboundHandler} implementation that
- * releases the received messages automatically, please see {@link SimpleChannelInboundHandler}.
+ * Be aware that messages are not released after the
+ * {@link #channelRead(ChannelHandlerContext, Object)} method returns
+ * automatically. If you are looking for a {@link ChannelInboundHandler}
+ * implementation that releases the received messages automatically, please see
+ * {@link SimpleChannelInboundHandler}.
  * </p>
  */
 public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implements ChannelInboundHandler {
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelRegistered()} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelRegistered()} to forward to the
+     * next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -46,8 +53,8 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     }
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelUnregistered()} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelUnregistered()} to forward to
+     * the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -58,8 +65,8 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     }
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelActive()} to forward to the
+     * next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -70,8 +77,8 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     }
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelInactive()} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelInactive()} to forward to the
+     * next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -82,8 +89,8 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     }
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelRead(Object)} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelRead(Object)} to forward to the
+     * next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -94,8 +101,8 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     }
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelReadComplete()} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelReadComplete()} to forward to
+     * the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -118,8 +125,9 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     }
 
     /**
-     * Calls {@link ChannelHandlerContext#fireChannelWritabilityChanged()} to forward
-     * to the next {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Calls {@link ChannelHandlerContext#fireChannelWritabilityChanged()} to
+     * forward to the next {@link ChannelInboundHandler} in the
+     * {@link ChannelPipeline}.
      *
      * Sub-classes may override this method to change behavior.
      */
@@ -138,8 +146,7 @@ public class ChannelInboundHandlerAdapter extends ChannelHandlerAdapter implemen
     @Skip
     @Override
     @SuppressWarnings("deprecation")
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-            throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.fireExceptionCaught(cause);
     }
 }
