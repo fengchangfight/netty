@@ -22,7 +22,10 @@ import io.netty.util.internal.PriorityQueueNode;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * fc comment
+ * 是个具体的类了，看名字不赘述
+ */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 final class ScheduledFutureTask<V> extends PromiseTask<V> implements ScheduledFuture<V>, PriorityQueueNode {
     private static final long START_TIME = System.nanoTime();
@@ -225,6 +228,9 @@ final class ScheduledFutureTask<V> extends PromiseTask<V> implements ScheduledFu
                   .append(')');
     }
 
+    /**fc comment
+     * 参数没用上？
+     */
     @Override
     public int priorityQueueIndex(DefaultPriorityQueue<?> queue) {
         return queueIndex;
