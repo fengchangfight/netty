@@ -17,6 +17,8 @@
 package io.netty.util.concurrent;
 
 /**
+ * fc comment
+ * 看名字就好了，方法看起来跟Future同类，具体看哪里用到了
  * A {@link Future} which is used to indicate the progress of an operation.
  */
 public interface ProgressiveFuture<V> extends Future<V> {

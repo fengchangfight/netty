@@ -16,6 +16,10 @@
 package io.netty.util.concurrent;
 
 /**
+ * fc comment
+ * 套路：元素接口继承组接口， EventExecutor是一种EventExecutorGroup
+ * 所以也是ExecutorService， 具体方看起来还是有点抽象，用时再说
+ *
  * The {@link EventExecutor} is a special {@link EventExecutorGroup} which comes
  * with some handy methods to see if a {@link Thread} is executed in a event loop.
  * Besides this, it also extends the {@link EventExecutorGroup} to allow for a generic
