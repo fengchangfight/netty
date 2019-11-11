@@ -15,7 +15,8 @@
  */
 package io.netty.util;
 
-/**
+/**fc comment
+ * 一个接口，定义了需要实现的方法
  * A reference-counted object that requires explicit deallocation.
  * <p>
  * When a new {@link ReferenceCounted} is instantiated, it starts with the reference count of {@code 1}.
