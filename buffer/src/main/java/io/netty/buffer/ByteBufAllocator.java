@@ -15,7 +15,7 @@
  */
 package io.netty.buffer;
 
-/**
+/**fc comment 自定义buffer 接口
  * Implementations are responsible to allocate buffers. Implementations of this interface are expected to be
  * thread-safe.
  */

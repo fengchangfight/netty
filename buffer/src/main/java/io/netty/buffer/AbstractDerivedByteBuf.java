@@ -18,7 +18,8 @@ package io.netty.buffer;
 
 import java.nio.ByteBuffer;
 
-/**
+/** fc comment
+ * 抽象类继承抽象类,不赘述
  * Abstract base class for {@link ByteBuf} implementations that wrap another
  * {@link ByteBuf}.
  *

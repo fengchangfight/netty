@@ -23,7 +23,10 @@ import io.netty.util.ResourceLeakTracker;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.StringUtil;
 
-/**
+/**fc comment
+ * 套路:抽象类实现接口
+ * 定义一些成员常量
+ * 实现接口的所有方法，但对protected方法保持抽象，以做各种分支实现
  * Skeletal {@link ByteBufAllocator} implementation to extend.
  */
 public abstract class AbstractByteBufAllocator implements ByteBufAllocator {

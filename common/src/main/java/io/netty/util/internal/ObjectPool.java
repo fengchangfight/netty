@@ -18,6 +18,10 @@ package io.netty.util.internal;
 import io.netty.util.Recycler;
 
 /**
+ * fc comment
+ * 套路: 抽象类里定义接口
+ * 套路2: 抽象类内定义静态内部类继承自本接口
+ * 高层逻辑: 对象池
  * Light-weight object pool.
  *
  * @param <T> the type of the pooled object
