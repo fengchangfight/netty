@@ -41,6 +41,8 @@ import static io.netty.util.internal.MathUtil.isOutOfBounds;
 import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
 
 /**
+ * fc comment
+ * 抽象类，不过public 方法都不是抽象的，只有一些protected方法是抽象的，　算是一种套路吧
  * A skeletal implementation of a buffer.
  */
 public abstract class AbstractByteBuf extends ByteBuf {
