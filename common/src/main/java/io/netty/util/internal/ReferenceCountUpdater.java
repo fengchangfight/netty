@@ -22,7 +22,8 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import io.netty.util.IllegalReferenceCountException;
 import io.netty.util.ReferenceCounted;
 
-/**
+/**fc comment
+ * reference count updater，　顾名思义即可，结合ReferencedCounted接口和AtomicIntegerFieldUpdater
  * Common logic for {@link ReferenceCounted} implementations
  */
 public abstract class ReferenceCountUpdater<T extends ReferenceCounted> {
@@ -51,6 +52,10 @@ public abstract class ReferenceCountUpdater<T extends ReferenceCounted> {
         return -1;
     }
 
+    /**
+     * fc comment
+     * AtomicIntegerFieldUpdater 参考：https://www.cnblogs.com/hithlb/p/4516078.html
+     */
     protected abstract AtomicIntegerFieldUpdater<T> updater();
 
     protected abstract long unsafeOffset();
