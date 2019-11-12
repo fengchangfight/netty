@@ -71,6 +71,9 @@ public abstract class AbstractByteBuf extends ByteBuf {
 
     int readerIndex;
     int writerIndex;
+    /**
+     * ［展］研究下含义
+     */
     private int markedReaderIndex;
     private int markedWriterIndex;
     private int maxCapacity;

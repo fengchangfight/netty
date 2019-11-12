@@ -28,7 +28,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.GatheringByteChannel;
 import java.nio.channels.ScatteringByteChannel;
-
+/**
+ * fc comment
+ * 一个具体实现类，只能通过工厂方法生成对象,暂不赘述
+ */
 final class PooledDuplicatedByteBuf extends AbstractPooledDerivedByteBuf {
 
     private static final ObjectPool<PooledDuplicatedByteBuf> RECYCLER = ObjectPool.newPool(

@@ -50,6 +50,10 @@ abstract class AbstractPooledDerivedByteBuf extends AbstractReferenceCountedByte
         parent = newParent;
     }
 
+    /**
+     * fc comment
+     * 高频使用
+     */
     @Override
     public final AbstractByteBuf unwrap() {
         return rootParent;
