@@ -15,7 +15,7 @@
  */
 package io.netty.buffer;
 
-/**
+/** fc comment, 反正某种buffer不赘述，用到再说
  * {@link DuplicatedByteBuf} implementation that can do optimizations because it knows the duplicated buffer
  * is of type {@link AbstractByteBuf}.
  */
