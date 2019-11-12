@@ -22,7 +22,8 @@ import io.netty.util.internal.ObjectPool.Handle;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
+/**fc comment
+ * 抽象类继承抽象类，看起来略抽象,暂放，不过这个类目测比价重要　
  * Abstract base class for derived {@link ByteBuf} implementations.
  */
 abstract class AbstractPooledDerivedByteBuf extends AbstractReferenceCountedByteBuf {
