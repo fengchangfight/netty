@@ -14,7 +14,10 @@
  * under the License.
  */
 package io.netty.buffer;
-
+/**
+ * fc comment
+ * 返回一些统计指标,不赘述
+ */
 public interface ByteBufAllocatorMetric {
     /**
      * Returns the number of bytes of heap memory used by a {@link ByteBufAllocator} or {@code -1} if unknown.

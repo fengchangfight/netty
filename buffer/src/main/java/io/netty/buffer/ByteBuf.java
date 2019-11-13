@@ -245,6 +245,10 @@ import java.nio.charset.UnsupportedCharsetException;
  * Please refer to {@link ByteBufInputStream} and
  * {@link ByteBufOutputStream}.
  */
+/**
+ * fc comment
+ * 抽象类,实现了ReferenceCounted, 和Comparable
+ */
 public abstract class ByteBuf implements ReferenceCounted, Comparable<ByteBuf> {
 
     /**
