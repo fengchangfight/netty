@@ -21,7 +21,9 @@ import io.netty.util.ResourceLeakTracker;
 import io.netty.util.internal.ObjectUtil;
 
 import java.nio.ByteOrder;
-
+/**
+ * 跟leak相关,具体还要看看用处
+ */
 class SimpleLeakAwareByteBuf extends WrappedByteBuf {
 
     /**

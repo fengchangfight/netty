@@ -15,6 +15,8 @@
 package io.netty.util.internal;
 
 /**
+ * fc comment
+ * 顾名思义,不赘述
  * Math utility methods.
  */
 public final class MathUtil {
