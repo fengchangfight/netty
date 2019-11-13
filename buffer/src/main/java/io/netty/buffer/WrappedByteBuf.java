@@ -30,6 +30,7 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 
 /**
+ * fc comment,简单包装一下
  * Wraps another {@link ByteBuf}.
  *
  * It's important that the {@link #readerIndex()} and {@link #writerIndex()} will not do any adjustments on the

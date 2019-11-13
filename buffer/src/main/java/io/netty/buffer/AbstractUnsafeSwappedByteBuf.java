@@ -22,6 +22,8 @@ import java.nio.ByteOrder;
 import static io.netty.util.internal.PlatformDependent.BIG_ENDIAN_NATIVE_ORDER;
 
 /**
+ * fc comment
+ * 抽象类继承抽象类,不赘述
  * Special {@link SwappedByteBuf} for {@link ByteBuf}s that is using unsafe.
  */
 abstract class AbstractUnsafeSwappedByteBuf extends SwappedByteBuf {

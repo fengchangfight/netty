@@ -2174,7 +2174,8 @@ public abstract class ByteBuf implements ReferenceCounted, Comparable<ByteBuf> {
      */
     public abstract ByteBuf copy(int index, int length);
 
-    /**
+    /**fc comment
+     * 用到过,但不很清楚
      * Returns a slice of this buffer's readable bytes. Modifying the content
      * of the returned buffer or this buffer affects each other's content
      * while they maintain separate indexes and marks.  This method is

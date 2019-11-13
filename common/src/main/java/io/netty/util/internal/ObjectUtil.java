@@ -16,7 +16,8 @@ package io.netty.util.internal;
 
 import java.util.Collection;
 
-/**
+/**fc comment
+ * 工具类不赘述
  * A grab-bag of useful utility methods.
  */
 public final class ObjectUtil {
