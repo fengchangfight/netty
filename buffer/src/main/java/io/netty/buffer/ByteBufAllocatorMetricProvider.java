@@ -14,7 +14,10 @@
  * under the License.
  */
 package io.netty.buffer;
-
+/**
+ * fc comment
+ * 搞清楚返回的这个类型即可, provider接口(套路)
+ */
 public interface ByteBufAllocatorMetricProvider {
 
     /**

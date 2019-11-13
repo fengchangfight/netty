@@ -40,6 +40,10 @@ import java.io.InputStream;
  *
  * @see ByteBufOutputStream
  */
+/**
+ * fc comment
+ * 比较同质化的类,核心记住是一种InputStream
+ */
 public class ByteBufInputStream extends InputStream implements DataInput {
     private final ByteBuf buffer;
     private final int startIndex;

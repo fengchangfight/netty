@@ -17,7 +17,9 @@ package io.netty.buffer;
 
 import io.netty.util.ReferenceCounted;
 
-/**
+/**fc comment
+ * RC的子接口
+ * Holder 接口(套路)
  * A packet which is send or receive.
  */
 public interface ByteBufHolder extends ReferenceCounted {
