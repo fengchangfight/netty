@@ -29,6 +29,9 @@ import java.nio.charset.Charset;
 
 import static io.netty.util.internal.MathUtil.isOutOfBounds;
 
+/**
+ * fc comment 看关键字 sliced, 其他暂放
+ */
 abstract class AbstractUnpooledSlicedByteBuf extends AbstractDerivedByteBuf {
     private final ByteBuf buffer;
     private final int adjustment;
@@ -54,6 +57,7 @@ abstract class AbstractUnpooledSlicedByteBuf extends AbstractDerivedByteBuf {
 
     /**
      * Called by the constructor before {@link #writerIndex(int)}.
+     * 
      * @param length the {@code length} argument from the constructor.
      */
     void initLength(int length) {

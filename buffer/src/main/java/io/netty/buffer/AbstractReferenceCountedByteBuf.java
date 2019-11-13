@@ -21,27 +21,29 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import io.netty.util.internal.ReferenceCountUpdater;
 
 /**
- * Abstract base class for {@link ByteBuf} implementations that count references.
+ * fc comment 先看名，不赘述 Abstract base class for {@link ByteBuf} implementations
+ * that count references.
  */
 public abstract class AbstractReferenceCountedByteBuf extends AbstractByteBuf {
-    private static final long REFCNT_FIELD_OFFSET =
-            ReferenceCountUpdater.getUnsafeOffset(AbstractReferenceCountedByteBuf.class, "refCnt");
-    private static final AtomicIntegerFieldUpdater<AbstractReferenceCountedByteBuf> AIF_UPDATER =
-            AtomicIntegerFieldUpdater.newUpdater(AbstractReferenceCountedByteBuf.class, "refCnt");
+    private static final long REFCNT_FIELD_OFFSET = ReferenceCountUpdater
+            .getUnsafeOffset(AbstractReferenceCountedByteBuf.class, "refCnt");
+    private static final AtomicIntegerFieldUpdater<AbstractReferenceCountedByteBuf> AIF_UPDATER = AtomicIntegerFieldUpdater
+            .newUpdater(AbstractReferenceCountedByteBuf.class, "refCnt");
 
-    private static final ReferenceCountUpdater<AbstractReferenceCountedByteBuf> updater =
-            new ReferenceCountUpdater<AbstractReferenceCountedByteBuf>() {
+    private static final ReferenceCountUpdater<AbstractReferenceCountedByteBuf> updater = new ReferenceCountUpdater<AbstractReferenceCountedByteBuf>() {
         @Override
         protected AtomicIntegerFieldUpdater<AbstractReferenceCountedByteBuf> updater() {
             return AIF_UPDATER;
         }
+
         @Override
         protected long unsafeOffset() {
             return REFCNT_FIELD_OFFSET;
         }
     };
 
-    // Value might not equal "real" reference count, all access should be via the updater
+    // Value might not equal "real" reference count, all access should be via the
+    // updater
     @SuppressWarnings("unused")
     private volatile int refCnt = updater.initialValue();
 
@@ -51,7 +53,8 @@ public abstract class AbstractReferenceCountedByteBuf extends AbstractByteBuf {
 
     @Override
     boolean isAccessible() {
-        // Try to do non-volatile read for performance as the ensureAccessible() is racy anyway and only provide
+        // Try to do non-volatile read for performance as the ensureAccessible() is racy
+        // anyway and only provide
         // a best-effort guard.
         return updater.isLiveNonVolatile(this);
     }
@@ -62,14 +65,16 @@ public abstract class AbstractReferenceCountedByteBuf extends AbstractByteBuf {
     }
 
     /**
-     * An unsafe operation intended for use by a subclass that sets the reference count of the buffer directly
+     * An unsafe operation intended for use by a subclass that sets the reference
+     * count of the buffer directly
      */
     protected final void setRefCnt(int refCnt) {
         updater.setRefCnt(this, refCnt);
     }
 
     /**
-     * An unsafe operation intended for use by a subclass that resets the reference count of the buffer to 1
+     * An unsafe operation intended for use by a subclass that resets the reference
+     * count of the buffer to 1
      */
     protected final void resetRefCnt() {
         updater.resetRefCnt(this);

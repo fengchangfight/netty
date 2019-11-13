@@ -28,10 +28,11 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 
 /**
+ * fc comment 已经deprecated类 所谓byte order即LITTLE_ENDIAN或者BIG_ENDIAN 本类负责交换之，不赘述
  * Wrapper which swap the {@link ByteOrder} of a {@link ByteBuf}.
  *
- * @deprecated use the Little Endian accessors, e.g. {@code getShortLE}, {@code getIntLE}
- * instead.
+ * @deprecated use the Little Endian accessors, e.g. {@code getShortLE},
+ *             {@code getIntLE} instead.
  */
 @Deprecated
 public class SwappedByteBuf extends ByteBuf {
