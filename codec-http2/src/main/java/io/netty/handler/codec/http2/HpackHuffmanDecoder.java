@@ -37,7 +37,10 @@ import io.netty.util.ByteProcessor;
 import io.netty.util.internal.ThrowableUtil;
 
 import static io.netty.handler.codec.http2.Http2Error.COMPRESSION_ERROR;
-
+/**
+ * fc comment 
+ * 这个类暂时不知道干嘛的，只大概知道是哈弗曼编码decode，具体什么时候用，再看吧
+ */
 final class HpackHuffmanDecoder implements ByteProcessor {
 
     /* Scroll to the bottom! */
