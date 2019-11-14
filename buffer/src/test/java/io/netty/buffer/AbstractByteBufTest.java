@@ -138,6 +138,10 @@ public abstract class AbstractByteBufTest {
         assertEquals(0, buffer.readerIndex());
     }
 
+    /**
+     * fc comment
+     * 套路 expected = ...Exception.class
+     */
     @Test(expected = IndexOutOfBoundsException.class)
     public void readerIndexBoundaryCheck1() {
         try {
