@@ -18,7 +18,8 @@ package io.netty.buffer;
 
 import java.util.List;
 
-/**
+/**fc comment
+ * fc question what the hell is arena???
  * Expose metrics for an arena.
  */
 public interface PoolArenaMetric {

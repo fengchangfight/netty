@@ -28,7 +28,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
 import static java.lang.Math.max;
-
+/**
+ * fc comment
+ * 抽象类，看起来可能会比较有用的一个类，暂放
+ */
 abstract class PoolArena<T> implements PoolArenaMetric {
     static final boolean HAS_UNSAFE = PlatformDependent.hasUnsafe();
 
