@@ -30,11 +30,11 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 
 /**
- * fc comment,简单包装一下
- * Wraps another {@link ByteBuf}.
+ * fc comment 把一个ByteBuf包装起来，母鸡为毛,暂放 Wraps another {@link ByteBuf}.
  *
- * It's important that the {@link #readerIndex()} and {@link #writerIndex()} will not do any adjustments on the
- * indices on the fly because of internal optimizations made by {@link ByteBufUtil#writeAscii(ByteBuf, CharSequence)}
+ * It's important that the {@link #readerIndex()} and {@link #writerIndex()}
+ * will not do any adjustments on the indices on the fly because of internal
+ * optimizations made by {@link ByteBufUtil#writeAscii(ByteBuf, CharSequence)}
  * and {@link ByteBufUtil#writeUtf8(ByteBuf, CharSequence)}.
  */
 class WrappedByteBuf extends ByteBuf {

@@ -30,7 +30,7 @@ import java.nio.charset.Charset;
 import static io.netty.util.internal.MathUtil.isOutOfBounds;
 
 /**
- * fc comment 看关键字 sliced, 其他暂放
+ * fc comment 看关键字 sliced和checkSliceOutOfBounds函数, 其他暂放
  */
 abstract class AbstractUnpooledSlicedByteBuf extends AbstractDerivedByteBuf {
     private final ByteBuf buffer;
