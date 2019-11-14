@@ -35,6 +35,9 @@ import java.io.OutputStream;
  *
  * @see ByteBufInputStream
  */
+/**
+ * fc comment 一种output stream, 关于DataOutput接口，另行研究
+ */
 public class ByteBufOutputStream extends OutputStream implements DataOutput {
 
     private final ByteBuf buffer;
@@ -101,7 +104,7 @@ public class ByteBufOutputStream extends OutputStream implements DataOutput {
     @Override
     public void writeChars(String s) throws IOException {
         int len = s.length();
-        for (int i = 0 ; i < len ; i ++) {
+        for (int i = 0; i < len; i++) {
             buffer.writeChar(s.charAt(i));
         }
     }

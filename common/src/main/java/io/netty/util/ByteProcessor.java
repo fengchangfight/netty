@@ -20,7 +20,8 @@ import static io.netty.util.ByteProcessorUtils.LINE_FEED;
 import static io.netty.util.ByteProcessorUtils.SPACE;
 
 /**
- * Provides a mechanism to iterate over a collection of bytes.
+ * fc comment 套路: interface内部class继承本interface Provides a mechanism to iterate
+ * over a collection of bytes.
  */
 public interface ByteProcessor {
     /**
@@ -40,7 +41,8 @@ public interface ByteProcessor {
     }
 
     /**
-     * A {@link ByteProcessor} which finds the first appearance which is not of a specific byte.
+     * A {@link ByteProcessor} which finds the first appearance which is not of a
+     * specific byte.
      */
     class IndexNotOfProcessor implements ByteProcessor {
         private final byte byteToNotFind;
@@ -111,7 +113,8 @@ public interface ByteProcessor {
     };
 
     /**
-     * Aborts on a byte which is neither a {@code CR ('\r')} nor a {@code LF ('\n')}.
+     * Aborts on a byte which is neither a {@code CR ('\r')} nor a
+     * {@code LF ('\n')}.
      */
     ByteProcessor FIND_NON_CRLF = new ByteProcessor() {
         @Override
@@ -131,7 +134,8 @@ public interface ByteProcessor {
     };
 
     /**
-     * Aborts on a byte which is not a linear whitespace (neither {@code ' '} nor {@code '\t'}).
+     * Aborts on a byte which is not a linear whitespace (neither {@code ' '} nor
+     * {@code '\t'}).
      */
     ByteProcessor FIND_NON_LINEAR_WHITESPACE = new ByteProcessor() {
         @Override
@@ -141,8 +145,9 @@ public interface ByteProcessor {
     };
 
     /**
-     * @return {@code true} if the processor wants to continue the loop and handle the next byte in the buffer.
-     *         {@code false} if the processor wants to stop handling bytes and abort the loop.
+     * @return {@code true} if the processor wants to continue the loop and handle
+     *         the next byte in the buffer. {@code false} if the processor wants to
+     *         stop handling bytes and abort the loop.
      */
     boolean process(byte value) throws Exception;
 }

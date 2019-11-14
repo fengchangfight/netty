@@ -19,6 +19,8 @@ package io.netty.buffer;
 import io.netty.util.ByteProcessor;
 
 /**
+ * fc comment 接口继承接口 已经deprecated了就不赘述了
+ * 
  * @deprecated Use {@link ByteProcessor}.
  */
 @Deprecated
