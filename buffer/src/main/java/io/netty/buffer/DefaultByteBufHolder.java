@@ -19,6 +19,9 @@ import io.netty.util.IllegalReferenceCountException;
 import io.netty.util.internal.StringUtil;
 
 /**
+ * fc comment
+ * fc to do:　仔细研究这个RefCount的做法
+ * 实现了ByteBufHolder的一个具体类，用到时再说
  * Default implementation of a {@link ByteBufHolder} that holds it's data in a {@link ByteBuf}.
  *
  */
