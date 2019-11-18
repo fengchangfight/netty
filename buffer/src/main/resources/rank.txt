@@ -2555,8 +2555,8 @@
     2428 handler/src/main/java/io/netty/handler/ssl/ReferenceCountedOpenSslEngine.java
     2485 buffer/src/main/java/io/netty/buffer/ByteBuf.java
    2909 resolver-dns/src/test/java/io/netty/resolver/dns/DnsNameResolverTest.java
-    3428 handler/src/test/java/io/netty/handler/ssl/SSLEngineTest.java
-    4737 codec-http2/src/main/java/io/netty/handler/codec/http2/HpackHuffmanDecoder.java
-    4927 buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
+    ---3428 handler/src/test/java/io/netty/handler/ssl/SSLEngineTest.java
+    ---4737 codec-http2/src/main/java/io/netty/handler/codec/http2/HpackHuffmanDecoder.java
+    ---4927 buffer/src/test/java/io/netty/buffer/AbstractByteBufTest.java
  176152 total
   325564 total
