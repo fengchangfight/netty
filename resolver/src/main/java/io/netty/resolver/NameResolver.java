@@ -24,7 +24,8 @@ import java.io.Closeable;
 import java.util.List;
 
 /**
- * Resolves an arbitrary string that represents the name of an endpoint into an address.
+ * fc comment, look below description, better know more about Promise Resolves
+ * an arbitrary string that represents the name of an endpoint into an address.
  */
 @UnstableApi
 public interface NameResolver<T> extends Closeable {
@@ -42,7 +43,8 @@ public interface NameResolver<T> extends Closeable {
      * Resolves the specified name into an address.
      *
      * @param inetHost the name to resolve
-     * @param promise the {@link Promise} which will be fulfilled when the name resolution is finished
+     * @param promise  the {@link Promise} which will be fulfilled when the name
+     *                 resolution is finished
      *
      * @return the address as the result of the resolution
      */
@@ -61,7 +63,8 @@ public interface NameResolver<T> extends Closeable {
      * Resolves the specified host name and port into a list of address.
      *
      * @param inetHost the name to resolve
-     * @param promise the {@link Promise} which will be fulfilled when the name resolution is finished
+     * @param promise  the {@link Promise} which will be fulfilled when the name
+     *                 resolution is finished
      *
      * @return the list of the address as the result of the resolution
      */

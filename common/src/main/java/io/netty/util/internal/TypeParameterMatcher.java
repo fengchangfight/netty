@@ -34,8 +34,8 @@ public abstract class TypeParameterMatcher {
     };
 
     public static TypeParameterMatcher get(final Class<?> parameterType) {
-        final Map<Class<?>, TypeParameterMatcher> getCache =
-                InternalThreadLocalMap.get().typeParameterMatcherGetCache();
+        final Map<Class<?>, TypeParameterMatcher> getCache = InternalThreadLocalMap.get()
+                .typeParameterMatcherGetCache();
 
         TypeParameterMatcher matcher = getCache.get(parameterType);
         if (matcher == null) {
@@ -50,11 +50,11 @@ public abstract class TypeParameterMatcher {
         return matcher;
     }
 
-    public static TypeParameterMatcher find(
-            final Object object, final Class<?> parametrizedSuperclass, final String typeParamName) {
+    public static TypeParameterMatcher find(final Object object, final Class<?> parametrizedSuperclass,
+            final String typeParamName) {
 
-        final Map<Class<?>, Map<String, TypeParameterMatcher>> findCache =
-                InternalThreadLocalMap.get().typeParameterMatcherFindCache();
+        final Map<Class<?>, Map<String, TypeParameterMatcher>> findCache = InternalThreadLocalMap.get()
+                .typeParameterMatcherFindCache();
         final Class<?> thisClass = object.getClass();
 
         Map<String, TypeParameterMatcher> map = findCache.get(thisClass);
@@ -72,8 +72,7 @@ public abstract class TypeParameterMatcher {
         return matcher;
     }
 
-    private static Class<?> find0(
-            final Object object, Class<?> parametrizedSuperclass, String typeParamName) {
+    private static Class<?> find0(final Object object, Class<?> parametrizedSuperclass, String typeParamName) {
 
         final Class<?> thisClass = object.getClass();
         Class<?> currentClass = thisClass;
@@ -81,7 +80,7 @@ public abstract class TypeParameterMatcher {
             if (currentClass.getSuperclass() == parametrizedSuperclass) {
                 int typeParamIndex = -1;
                 TypeVariable<?>[] typeParams = currentClass.getSuperclass().getTypeParameters();
-                for (int i = 0; i < typeParams.length; i ++) {
+                for (int i = 0; i < typeParams.length; i++) {
                     if (typeParamName.equals(typeParams[i].getName())) {
                         typeParamIndex = i;
                         break;
@@ -147,6 +146,9 @@ public abstract class TypeParameterMatcher {
                 "cannot determine the type of the type parameter '" + typeParamName + "': " + type);
     }
 
+    /**
+     * fc comment: 本抽象类主体
+     */
     public abstract boolean match(Object msg);
 
     private static final class ReflectiveMatcher extends TypeParameterMatcher {
@@ -162,5 +164,6 @@ public abstract class TypeParameterMatcher {
         }
     }
 
-    TypeParameterMatcher() { }
+    TypeParameterMatcher() {
+    }
 }

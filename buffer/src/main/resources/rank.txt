@@ -2542,7 +2542,7 @@
    1424 resolver-dns/src/main/java/io/netty/resolver/dns/DnsNameResolver.java
     1478 buffer/src/main/java/io/netty/buffer/ByteBufUtil.java
    1478 pom.xml
-    1482 common/src/main/java/io/netty/util/internal/PlatformDependent.java
+    ---1482 common/src/main/java/io/netty/util/internal/PlatformDependent.java
     1514 codec-http/src/main/java/io/netty/handler/codec/http/multipart/HttpPostMultipartRequestDecoder.java
    1523 transport/src/main/java/io/netty/channel/DefaultChannelPipeline.java
     1525 buffer/src/main/java/io/netty/buffer/AbstractByteBuf.java

@@ -17,6 +17,9 @@ package io.netty.util.concurrent;
 
 import io.netty.util.internal.ObjectUtil;
 
+/**
+ * fc comment looks like just a wrapper of runnable
+ */
 final class FastThreadLocalRunnable implements Runnable {
     private final Runnable runnable;
 

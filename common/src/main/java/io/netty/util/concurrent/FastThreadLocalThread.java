@@ -19,7 +19,9 @@ import io.netty.util.internal.InternalThreadLocalMap;
 import io.netty.util.internal.UnstableApi;
 
 /**
- * A special {@link Thread} that provides fast access to {@link FastThreadLocal} variables.
+ * fc comment: 两个环境变量:InternalThreadLocal & cleanupFastThreadLocals（标志位） A
+ * special {@link Thread} that provides fast access to {@link FastThreadLocal}
+ * variables.
  */
 public class FastThreadLocalThread extends Thread {
     // This will be set to true if we have a chance to wrap the Runnable.
@@ -67,23 +69,26 @@ public class FastThreadLocalThread extends Thread {
     }
 
     /**
-     * Returns the internal data structure that keeps the thread-local variables bound to this thread.
-     * Note that this method is for internal use only, and thus is subject to change at any time.
+     * Returns the internal data structure that keeps the thread-local variables
+     * bound to this thread. Note that this method is for internal use only, and
+     * thus is subject to change at any time.
      */
     public final InternalThreadLocalMap threadLocalMap() {
         return threadLocalMap;
     }
 
     /**
-     * Sets the internal data structure that keeps the thread-local variables bound to this thread.
-     * Note that this method is for internal use only, and thus is subject to change at any time.
+     * Sets the internal data structure that keeps the thread-local variables bound
+     * to this thread. Note that this method is for internal use only, and thus is
+     * subject to change at any time.
      */
     public final void setThreadLocalMap(InternalThreadLocalMap threadLocalMap) {
         this.threadLocalMap = threadLocalMap;
     }
 
     /**
-     * Returns {@code true} if {@link FastThreadLocal#removeAll()} will be called once {@link #run()} completes.
+     * Returns {@code true} if {@link FastThreadLocal#removeAll()} will be called
+     * once {@link #run()} completes.
      */
     @UnstableApi
     public boolean willCleanupFastThreadLocals() {
@@ -91,11 +96,12 @@ public class FastThreadLocalThread extends Thread {
     }
 
     /**
-     * Returns {@code true} if {@link FastThreadLocal#removeAll()} will be called once {@link Thread#run()} completes.
+     * Returns {@code true} if {@link FastThreadLocal#removeAll()} will be called
+     * once {@link Thread#run()} completes.
      */
     @UnstableApi
     public static boolean willCleanupFastThreadLocals(Thread thread) {
-        return thread instanceof FastThreadLocalThread &&
-                ((FastThreadLocalThread) thread).willCleanupFastThreadLocals();
+        return thread instanceof FastThreadLocalThread
+                && ((FastThreadLocalThread) thread).willCleanupFastThreadLocals();
     }
 }
