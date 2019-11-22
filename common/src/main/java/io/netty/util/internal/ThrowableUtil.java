@@ -19,7 +19,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
-
+/**
+ * fc comment
+ * 一个工具类, 不赘述
+ */
 public final class ThrowableUtil {
 
     private ThrowableUtil() { }
