@@ -17,7 +17,8 @@
 package io.netty.handler.codec;
 
 /**
- * Provides the accessor methods for the {@link DecoderResult} property of a decoded message.
+ * fc comment: 目测是带着DecoderResult（类似于rtn）的信息， Provides the accessor methods for
+ * the {@link DecoderResult} property of a decoded message.
  */
 public interface DecoderResultProvider {
     /**
@@ -26,8 +27,9 @@ public interface DecoderResultProvider {
     DecoderResult decoderResult();
 
     /**
-     * Updates the result of decoding this object. This method is supposed to be invoked by a decoder.
-     * Do not call this method unless you know what you are doing.
+     * Updates the result of decoding this object. This method is supposed to be
+     * invoked by a decoder. Do not call this method unless you know what you are
+     * doing.
      */
     void setDecoderResult(DecoderResult result);
 }

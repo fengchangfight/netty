@@ -15,10 +15,10 @@
  */
 package io.netty.util;
 
-
 /**
- * A special {@link Error} which is used to signal some state or request by throwing it.
- * {@link Signal} has an empty stack trace and has no cause to save the instantiation overhead.
+ * fc comment: is a kind of Error A special {@link Error} which is used to
+ * signal some state or request by throwing it. {@link Signal} has an empty
+ * stack trace and has no cause to save the instantiation overhead.
  */
 public final class Signal extends Error implements Constant<Signal> {
 
@@ -39,7 +39,8 @@ public final class Signal extends Error implements Constant<Signal> {
     }
 
     /**
-     * Shortcut of {@link #valueOf(String) valueOf(firstNameComponent.getName() + "#" + secondNameComponent)}.
+     * Shortcut of {@link #valueOf(String) valueOf(firstNameComponent.getName() +
+     * "#" + secondNameComponent)}.
      */
     public static Signal valueOf(Class<?> firstNameComponent, String secondNameComponent) {
         return pool.valueOf(firstNameComponent, secondNameComponent);
@@ -55,8 +56,8 @@ public final class Signal extends Error implements Constant<Signal> {
     }
 
     /**
-     * Check if the given {@link Signal} is the same as this instance. If not an {@link IllegalStateException} will
-     * be thrown.
+     * Check if the given {@link Signal} is the same as this instance. If not an
+     * {@link IllegalStateException} will be thrown.
      */
     public void expect(Signal signal) {
         if (this != signal) {

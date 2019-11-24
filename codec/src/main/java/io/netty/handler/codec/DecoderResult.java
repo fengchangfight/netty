@@ -17,11 +17,15 @@ package io.netty.handler.codec;
 
 import io.netty.util.Signal;
 
+/**
+ * fc comment: 解码结果？ 以一个throwable类型为核心成员变量
+ */
 public class DecoderResult {
 
     protected static final Signal SIGNAL_UNFINISHED = Signal.valueOf(DecoderResult.class, "UNFINISHED");
     protected static final Signal SIGNAL_SUCCESS = Signal.valueOf(DecoderResult.class, "SUCCESS");
 
+    // fc comment: 套路：类包含本类对象
     public static final DecoderResult UNFINISHED = new DecoderResult(SIGNAL_UNFINISHED);
     public static final DecoderResult SUCCESS = new DecoderResult(SIGNAL_SUCCESS);
 
@@ -32,6 +36,7 @@ public class DecoderResult {
         return new DecoderResult(cause);
     }
 
+    // fc comment: 核心成员变量
     private final Throwable cause;
 
     protected DecoderResult(Throwable cause) {
@@ -69,11 +74,7 @@ public class DecoderResult {
             }
 
             String cause = cause().toString();
-            return new StringBuilder(cause.length() + 17)
-                .append("failure(")
-                .append(cause)
-                .append(')')
-                .toString();
+            return new StringBuilder(cause.length() + 17).append("failure(").append(cause).append(')').toString();
         } else {
             return "unfinished";
         }

@@ -25,7 +25,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
- * Disk FileUpload implementation that stores file into real files
+ * fc comment: 具体实现类of disk file upload Disk FileUpload implementation that
+ * stores file into real files
  */
 public class DiskFileUpload extends AbstractDiskHttpData implements FileUpload {
     public static String baseDirectory;
@@ -42,8 +43,8 @@ public class DiskFileUpload extends AbstractDiskHttpData implements FileUpload {
 
     private String contentTransferEncoding;
 
-    public DiskFileUpload(String name, String filename, String contentType,
-            String contentTransferEncoding, Charset charset, long size) {
+    public DiskFileUpload(String name, String filename, String contentType, String contentTransferEncoding,
+            Charset charset, long size) {
         super(name, charset, size);
         setFilename(filename);
         setContentType(contentType);
@@ -81,8 +82,7 @@ public class DiskFileUpload extends AbstractDiskHttpData implements FileUpload {
     @Override
     public int compareTo(InterfaceHttpData o) {
         if (!(o instanceof FileUpload)) {
-            throw new ClassCastException("Cannot compare " + getHttpDataType() +
-                    " with " + o.getHttpDataType());
+            throw new ClassCastException("Cannot compare " + getHttpDataType() + " with " + o.getHttpDataType());
         }
         return compareTo((FileUpload) o);
     }
@@ -123,16 +123,14 @@ public class DiskFileUpload extends AbstractDiskHttpData implements FileUpload {
             // Should not occur.
         }
 
-        return HttpHeaderNames.CONTENT_DISPOSITION + ": " +
-               HttpHeaderValues.FORM_DATA + "; " + HttpHeaderValues.NAME + "=\"" + getName() +
-                "\"; " + HttpHeaderValues.FILENAME + "=\"" + filename + "\"\r\n" +
-                HttpHeaderNames.CONTENT_TYPE + ": " + contentType +
-                (getCharset() != null? "; " + HttpHeaderValues.CHARSET + '=' + getCharset().name() + "\r\n" : "\r\n") +
-                HttpHeaderNames.CONTENT_LENGTH + ": " + length() + "\r\n" +
-                "Completed: " + isCompleted() +
-                "\r\nIsInMemory: " + isInMemory() + "\r\nRealFile: " +
-                (file != null ? file.getAbsolutePath() : "null") + " DefaultDeleteAfter: " +
-                deleteOnExitTemporaryFile;
+        return HttpHeaderNames.CONTENT_DISPOSITION + ": " + HttpHeaderValues.FORM_DATA + "; " + HttpHeaderValues.NAME
+                + "=\"" + getName() + "\"; " + HttpHeaderValues.FILENAME + "=\"" + filename + "\"\r\n"
+                + HttpHeaderNames.CONTENT_TYPE + ": " + contentType
+                + (getCharset() != null ? "; " + HttpHeaderValues.CHARSET + '=' + getCharset().name() + "\r\n" : "\r\n")
+                + HttpHeaderNames.CONTENT_LENGTH + ": " + length() + "\r\n" + "Completed: " + isCompleted()
+                + "\r\nIsInMemory: " + isInMemory() + "\r\nRealFile: "
+                + (file != null ? file.getAbsolutePath() : "null") + " DefaultDeleteAfter: "
+                + deleteOnExitTemporaryFile;
     }
 
     @Override
@@ -194,8 +192,8 @@ public class DiskFileUpload extends AbstractDiskHttpData implements FileUpload {
 
     @Override
     public FileUpload replace(ByteBuf content) {
-        DiskFileUpload upload = new DiskFileUpload(
-                getName(), getFilename(), getContentType(), getContentTransferEncoding(), getCharset(), size);
+        DiskFileUpload upload = new DiskFileUpload(getName(), getFilename(), getContentType(),
+                getContentTransferEncoding(), getCharset(), size);
         if (content != null) {
             try {
                 upload.setContent(content);

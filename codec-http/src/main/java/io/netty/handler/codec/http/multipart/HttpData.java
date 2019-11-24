@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 /**
- * Extended interface for InterfaceHttpData
+ * fc comment, 暂时没法用一句话描述这个接口的性质，先留着吧 Extended interface for InterfaceHttpData
  */
 public interface HttpData extends InterfaceHttpData, ByteBufHolder {
 
@@ -34,24 +34,23 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     long getMaxSize();
 
     /**
-     * Set the maxSize for this HttpData. When limit will be reached, an exception will be raised.
-     * Setting it to (-1) means no limitation.
+     * Set the maxSize for this HttpData. When limit will be reached, an exception
+     * will be raised. Setting it to (-1) means no limitation.
      *
      * By default, to be set from the HttpDataFactory.
      */
     void setMaxSize(long maxSize);
 
     /**
-     * Check if the new size is not reaching the max limit allowed.
-     * The limit is always computed in term of bytes.
+     * Check if the new size is not reaching the max limit allowed. The limit is
+     * always computed in term of bytes.
      */
     void checkSize(long newSize) throws IOException;
 
     /**
      * Set the content from the ChannelBuffer (erase any previous data)
      *
-     * @param buffer
-     *            must be not null
+     * @param buffer must be not null
      * @throws IOException
      */
     void setContent(ByteBuf buffer) throws IOException;
@@ -59,10 +58,8 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     /**
      * Add the content from the ChannelBuffer
      *
-     * @param buffer
-     *            must be not null except if last is set to False
-     * @param last
-     *            True of the buffer is the last one
+     * @param buffer must be not null except if last is set to False
+     * @param last   True of the buffer is the last one
      * @throws IOException
      */
     void addContent(ByteBuf buffer, boolean last) throws IOException;
@@ -70,8 +67,7 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     /**
      * Set the content from the file (erase any previous data)
      *
-     * @param file
-     *            must be not null
+     * @param file must be not null
      * @throws IOException
      */
     void setContent(File file) throws IOException;
@@ -79,8 +75,7 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     /**
      * Set the content from the inputStream (erase any previous data)
      *
-     * @param inputStream
-     *            must be not null
+     * @param inputStream must be not null
      * @throws IOException
      */
     void setContent(InputStream inputStream) throws IOException;
@@ -101,14 +96,16 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     /**
      * Returns the defined length of the HttpData.
      *
-     * If no Content-Length is provided in the request, the defined length is
-     * always 0 (whatever during decoding or in final state).
+     * If no Content-Length is provided in the request, the defined length is always
+     * 0 (whatever during decoding or in final state).
      *
-     * If Content-Length is provided in the request, this is this given defined length.
-     * This value does not change, whatever during decoding or in the final state.
+     * If Content-Length is provided in the request, this is this given defined
+     * length. This value does not change, whatever during decoding or in the final
+     * state.
      *
-     * This method could be used for instance to know the amount of bytes transmitted for
-     * one particular HttpData, for example one {@link FileUpload} or any known big {@link Attribute}.
+     * This method could be used for instance to know the amount of bytes
+     * transmitted for one particular HttpData, for example one {@link FileUpload}
+     * or any known big {@link Attribute}.
      *
      * @return the defined length of the HttpData
      */
@@ -138,9 +135,9 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
 
     /**
      * Returns a ChannelBuffer for the content from the current position with at
-     * most length read bytes, increasing the current position of the Bytes
-     * read. Once it arrives at the end, it returns an EMPTY_BUFFER and it
-     * resets the current position to 0.
+     * most length read bytes, increasing the current position of the Bytes read.
+     * Once it arrives at the end, it returns an EMPTY_BUFFER and it resets the
+     * current position to 0.
      *
      * @return a ChannelBuffer for the content from the current position or an
      *         EMPTY_BUFFER if there is no more data to return
@@ -161,8 +158,7 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
      * Returns the contents of the file item as a String, using the specified
      * charset.
      *
-     * @param encoding
-     *            the charset to use
+     * @param encoding the charset to use
      * @return the contents of the file item as a String, using the specified
      *         charset.
      * @throws IOException
@@ -172,8 +168,7 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     /**
      * Set the Charset passed by the browser if defined
      *
-     * @param charset
-     *            Charset to set - must be not null
+     * @param charset Charset to set - must be not null
      */
     void setCharset(Charset charset);
 
@@ -186,12 +181,11 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
 
     /**
      * A convenience getMethod to write an uploaded item to disk. If a previous one
-     * exists, it will be deleted. Once this getMethod is called, if successful,
-     * the new file will be out of the cleaner of the factory that creates the
-     * original InterfaceHttpData object.
+     * exists, it will be deleted. Once this getMethod is called, if successful, the
+     * new file will be out of the cleaner of the factory that creates the original
+     * InterfaceHttpData object.
      *
-     * @param dest
-     *            destination file - must be not null
+     * @param dest destination file - must be not null
      * @return True if the write is successful
      * @throws IOException
      */
@@ -208,8 +202,7 @@ public interface HttpData extends InterfaceHttpData, ByteBufHolder {
     /**
      *
      * @return the associated File if this data is represented in a file
-     * @exception IOException
-     *                if this data is not represented by a file
+     * @exception IOException if this data is not represented by a file
      */
     File getFile() throws IOException;
 

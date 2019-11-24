@@ -17,10 +17,9 @@ package io.netty.buffer;
 
 import io.netty.util.ReferenceCounted;
 
-/**fc comment
- * RC的子接口
- * Holder 接口(套路)
- * A packet which is send or receive.
+/**
+ * fc comment ReferenceCount的子接口 Holder 接口(套路) A packet which is send or
+ * receive.
  */
 public interface ByteBufHolder extends ReferenceCounted {
 
@@ -35,19 +34,22 @@ public interface ByteBufHolder extends ReferenceCounted {
     ByteBufHolder copy();
 
     /**
-     * Duplicates this {@link ByteBufHolder}. Be aware that this will not automatically call {@link #retain()}.
+     * Duplicates this {@link ByteBufHolder}. Be aware that this will not
+     * automatically call {@link #retain()}.
      */
     ByteBufHolder duplicate();
 
     /**
-     * Duplicates this {@link ByteBufHolder}. This method returns a retained duplicate unlike {@link #duplicate()}.
+     * Duplicates this {@link ByteBufHolder}. This method returns a retained
+     * duplicate unlike {@link #duplicate()}.
      *
      * @see ByteBuf#retainedDuplicate()
      */
     ByteBufHolder retainedDuplicate();
 
     /**
-     * Returns a new {@link ByteBufHolder} which contains the specified {@code content}.
+     * Returns a new {@link ByteBufHolder} which contains the specified
+     * {@code content}.
      */
     ByteBufHolder replace(ByteBuf content);
 

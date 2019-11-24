@@ -18,6 +18,9 @@ package io.netty.handler.codec.http;
 import io.netty.handler.codec.DecoderResult;
 import io.netty.handler.codec.DecoderResultProvider;
 
+/**
+ * fc comment: 本接口 添加了一个方法,而且还是deprecated的所以就不赘述了
+ */
 public interface HttpObject extends DecoderResultProvider {
     /**
      * @deprecated Use {@link #decoderResult()} instead.
