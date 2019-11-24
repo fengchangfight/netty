@@ -16,40 +16,48 @@
 package io.netty.util;
 
 /**
- * Abstraction for hash code generation and equality comparison.
+ * fc comment: Abstraction for hash code generation and equality comparison.
  */
 public interface HashingStrategy<T> {
     /**
      * Generate a hash code for {@code obj}.
      * <p>
-     * This method must obey the same relationship that {@link java.lang.Object#hashCode()} has with
+     * This method must obey the same relationship that
+     * {@link java.lang.Object#hashCode()} has with
      * {@link java.lang.Object#equals(Object)}:
      * <ul>
-     * <li>Calling this method multiple times with the same {@code obj} should return the same result</li>
-     * <li>If {@link #equals(Object, Object)} with parameters {@code a} and {@code b} returns {@code true}
-     * then the return value for this method for parameters {@code a} and {@code b} must return the same result</li>
-     * <li>If {@link #equals(Object, Object)} with parameters {@code a} and {@code b} returns {@code false}
-     * then the return value for this method for parameters {@code a} and {@code b} does <strong>not</strong> have to
-     * return different results results. However this property is desirable.</li>
+     * <li>Calling this method multiple times with the same {@code obj} should
+     * return the same result</li>
+     * <li>If {@link #equals(Object, Object)} with parameters {@code a} and
+     * {@code b} returns {@code true} then the return value for this method for
+     * parameters {@code a} and {@code b} must return the same result</li>
+     * <li>If {@link #equals(Object, Object)} with parameters {@code a} and
+     * {@code b} returns {@code false} then the return value for this method for
+     * parameters {@code a} and {@code b} does <strong>not</strong> have to return
+     * different results results. However this property is desirable.</li>
      * <li>if {@code obj} is {@code null} then this method return {@code 0}</li>
      * </ul>
      */
     int hashCode(T obj);
 
     /**
-     * Returns {@code true} if the arguments are equal to each other and {@code false} otherwise.
-     * This method has the following restrictions:
+     * Returns {@code true} if the arguments are equal to each other and
+     * {@code false} otherwise. This method has the following restrictions:
      * <ul>
      * <li><i>reflexive</i> - {@code equals(a, a)} should return true</li>
-     * <li><i>symmetric</i> - {@code equals(a, b)} returns {@code true} if {@code equals(b, a)} returns
+     * <li><i>symmetric</i> - {@code equals(a, b)} returns {@code true} if
+     * {@code equals(b, a)} returns {@code true}</li>
+     * <li><i>transitive</i> - if {@code equals(a, b)} returns {@code true} and
+     * {@code equals(a, c)} returns {@code true} then {@code equals(b, c)} should
+     * also return {@code true}</li>
+     * <li><i>consistent</i> - {@code equals(a, b)} should return the same result
+     * when called multiple times assuming {@code a} and {@code b} remain unchanged
+     * relative to the comparison criteria</li>
+     * <li>if {@code a} and {@code b} are both {@code null} then this method returns
      * {@code true}</li>
-     * <li><i>transitive</i> - if {@code equals(a, b)} returns {@code true} and {@code equals(a, c)} returns
-     * {@code true} then {@code equals(b, c)} should also return {@code true}</li>
-     * <li><i>consistent</i> - {@code equals(a, b)} should return the same result when called multiple times
-     * assuming {@code a} and {@code b} remain unchanged relative to the comparison criteria</li>
-     * <li>if {@code a} and {@code b} are both {@code null} then this method returns {@code true}</li>
-     * <li>if {@code a} is {@code null} and {@code b} is non-{@code null}, or {@code a} is non-{@code null} and
-     * {@code b} is {@code null} then this method returns {@code false}</li>
+     * <li>if {@code a} is {@code null} and {@code b} is non-{@code null}, or
+     * {@code a} is non-{@code null} and {@code b} is {@code null} then this method
+     * returns {@code false}</li>
      * </ul>
      */
     boolean equals(T a, T b);

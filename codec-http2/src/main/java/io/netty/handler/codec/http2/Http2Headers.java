@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
- * A collection of headers sent or received via HTTP/2.
+ * fc comment: A collection of headers sent or received via HTTP/2.
  */
 @UnstableApi
 public interface Http2Headers extends Headers<CharSequence, CharSequence, Http2Headers> {
@@ -81,7 +81,8 @@ public interface Http2Headers extends Headers<CharSequence, CharSequence, Http2H
         }
 
         /**
-         * Indicates whether the specified header follows the pseudo-header format (begins with ':' character)
+         * Indicates whether the specified header follows the pseudo-header format
+         * (begins with ':' character)
          *
          * @return {@code true} if the header follow the pseudo-header format
          */
@@ -102,9 +103,11 @@ public interface Http2Headers extends Headers<CharSequence, CharSequence, Http2H
         }
 
         /**
-         * Returns the {@link PseudoHeaderName} corresponding to the specified header name.
+         * Returns the {@link PseudoHeaderName} corresponding to the specified header
+         * name.
          *
-         * @return corresponding {@link PseudoHeaderName} if any, {@code null} otherwise.
+         * @return corresponding {@link PseudoHeaderName} if any, {@code null}
+         *         otherwise.
          */
         public static PseudoHeaderName getPseudoHeader(CharSequence header) {
             return PSEUDO_HEADERS.get(header);
@@ -121,15 +124,16 @@ public interface Http2Headers extends Headers<CharSequence, CharSequence, Http2H
     }
 
     /**
-     * Returns an iterator over all HTTP/2 headers. The iteration order is as follows:
-     *   1. All pseudo headers (order not specified).
-     *   2. All non-pseudo headers (in insertion order).
+     * Returns an iterator over all HTTP/2 headers. The iteration order is as
+     * follows: 1. All pseudo headers (order not specified). 2. All non-pseudo
+     * headers (in insertion order).
      */
     @Override
     Iterator<Entry<CharSequence, CharSequence>> iterator();
 
     /**
      * Equivalent to {@link #getAll(Object)} but no intermediate list is generated.
+     * 
      * @param name the name of the header to retrieve
      * @return an {@link Iterator} of header values corresponding to {@code name}.
      */
@@ -146,54 +150,65 @@ public interface Http2Headers extends Headers<CharSequence, CharSequence, Http2H
     Http2Headers scheme(CharSequence value);
 
     /**
-     * Sets the {@link PseudoHeaderName#AUTHORITY} header or {@code null} if there is no such header
+     * Sets the {@link PseudoHeaderName#AUTHORITY} header or {@code null} if there
+     * is no such header
      */
     Http2Headers authority(CharSequence value);
 
     /**
-     * Sets the {@link PseudoHeaderName#PATH} header or {@code null} if there is no such header
+     * Sets the {@link PseudoHeaderName#PATH} header or {@code null} if there is no
+     * such header
      */
     Http2Headers path(CharSequence value);
 
     /**
-     * Sets the {@link PseudoHeaderName#STATUS} header or {@code null} if there is no such header
+     * Sets the {@link PseudoHeaderName#STATUS} header or {@code null} if there is
+     * no such header
      */
     Http2Headers status(CharSequence value);
 
     /**
-     * Gets the {@link PseudoHeaderName#METHOD} header or {@code null} if there is no such header
+     * Gets the {@link PseudoHeaderName#METHOD} header or {@code null} if there is
+     * no such header
      */
     CharSequence method();
 
     /**
-     * Gets the {@link PseudoHeaderName#SCHEME} header or {@code null} if there is no such header
+     * Gets the {@link PseudoHeaderName#SCHEME} header or {@code null} if there is
+     * no such header
      */
     CharSequence scheme();
 
     /**
-     * Gets the {@link PseudoHeaderName#AUTHORITY} header or {@code null} if there is no such header
+     * Gets the {@link PseudoHeaderName#AUTHORITY} header or {@code null} if there
+     * is no such header
      */
     CharSequence authority();
 
     /**
-     * Gets the {@link PseudoHeaderName#PATH} header or {@code null} if there is no such header
+     * Gets the {@link PseudoHeaderName#PATH} header or {@code null} if there is no
+     * such header
      */
     CharSequence path();
 
     /**
-     * Gets the {@link PseudoHeaderName#STATUS} header or {@code null} if there is no such header
+     * Gets the {@link PseudoHeaderName#STATUS} header or {@code null} if there is
+     * no such header
      */
     CharSequence status();
 
     /**
-     * Returns {@code true} if a header with the {@code name} and {@code value} exists, {@code false} otherwise.
+     * Returns {@code true} if a header with the {@code name} and {@code value}
+     * exists, {@code false} otherwise.
      * <p>
-     * If {@code caseInsensitive} is {@code true} then a case insensitive compare is done on the value.
+     * If {@code caseInsensitive} is {@code true} then a case insensitive compare is
+     * done on the value.
      *
-     * @param name the name of the header to find
-     * @param value the value of the header to find
-     * @param caseInsensitive {@code true} then a case insensitive compare is run to compare values.
-     * otherwise a case sensitive compare is run to compare values.
+     * @param name            the name of the header to find
+     * @param value           the value of the header to find
+     * @param caseInsensitive {@code true} then a case insensitive compare is run to
+     *                        compare values. otherwise a case sensitive compare is
+     *                        run to compare values.
      */
     boolean contains(CharSequence name, CharSequence value, boolean caseInsensitive);
 }

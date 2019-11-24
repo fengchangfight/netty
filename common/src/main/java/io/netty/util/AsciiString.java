@@ -33,15 +33,20 @@ import static io.netty.util.internal.MathUtil.isOutOfBounds;
 import static io.netty.util.internal.ObjectUtil.checkNotNull;
 
 /**
- * A string which has been encoded into a character encoding whose character always takes a single byte, similarly to
- * ASCII. It internally keeps its content in a byte array unlike {@link String}, which uses a character array, for
- * reduced memory footprint and faster data transfer from/to byte-based data structures such as a byte array and
- * {@link ByteBuffer}. It is often used in conjunction with {@code Headers} that require a {@link CharSequence}.
+ * fc comment:看说明:内部用byte[]作为核心数据结构 A string which has been encoded into a
+ * character encoding whose character always takes a single byte, similarly to
+ * ASCII. It internally keeps its content in a byte array unlike {@link String},
+ * which uses a character array, for reduced memory footprint and faster data
+ * transfer from/to byte-based data structures such as a byte array and
+ * {@link ByteBuffer}. It is often used in conjunction with {@code Headers} that
+ * require a {@link CharSequence}.
  * <p>
- * This class was designed to provide an immutable array of bytes, and caches some internal state based upon the value
- * of this array. However underlying access to this byte array is provided via not copying the array on construction or
- * {@link #array()}. If any changes are made to the underlying byte array it is the user's responsibility to call
- * {@link #arrayChanged()} so the state of this class can be reset.
+ * This class was designed to provide an immutable array of bytes, and caches
+ * some internal state based upon the value of this array. However underlying
+ * access to this byte array is provided via not copying the array on
+ * construction or {@link #array()}. If any changes are made to the underlying
+ * byte array it is the user's responsibility to call {@link #arrayChanged()} so
+ * the state of this class can be reset.
  */
 public final class AsciiString implements CharSequence, Comparable<CharSequence> {
     public static final AsciiString EMPTY_STRING = cached("");
@@ -50,20 +55,24 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     public static final int INDEX_NOT_FOUND = -1;
 
     /**
-     * If this value is modified outside the constructor then call {@link #arrayChanged()}.
+     * If this value is modified outside the constructor then call
+     * {@link #arrayChanged()}.
      */
     private final byte[] value;
     /**
-     * Offset into {@link #value} that all operations should use when acting upon {@link #value}.
+     * Offset into {@link #value} that all operations should use when acting upon
+     * {@link #value}.
      */
     private final int offset;
     /**
-     * Length in bytes for {@link #value} that we care about. This is independent from {@code value.length}
-     * because we may be looking at a subsection of the array.
+     * Length in bytes for {@link #value} that we care about. This is independent
+     * from {@code value.length} because we may be looking at a subsection of the
+     * array.
      */
     private final int length;
     /**
-     * The hash code is cached after it is first computed. It can be reset with {@link #arrayChanged()}.
+     * The hash code is cached after it is first computed. It can be reset with
+     * {@link #arrayChanged()}.
      */
     private int hash;
     /**
@@ -79,8 +88,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Initialize this byte string based upon a byte array.
-     * {@code copy} determines if a copy is made or the array is shared.
+     * Initialize this byte string based upon a byte array. {@code copy} determines
+     * if a copy is made or the array is shared.
      */
     public AsciiString(byte[] value, boolean copy) {
         this(value, 0, value.length, copy);
@@ -88,8 +97,9 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Construct a new instance from a {@code byte[]} array.
-     * @param copy {@code true} then a copy of the memory will be made. {@code false} the underlying memory
-     * will be shared.
+     * 
+     * @param copy {@code true} then a copy of the memory will be made.
+     *             {@code false} the underlying memory will be shared.
      */
     public AsciiString(byte[] value, int start, int length, boolean copy) {
         if (copy) {
@@ -97,8 +107,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
             this.offset = 0;
         } else {
             if (isOutOfBounds(start, length, value.length)) {
-                throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" +
-                        length + ") <= " + "value.length(" + value.length + ')');
+                throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length("
+                        + length + ") <= " + "value.length(" + value.length + ')');
             }
             this.value = value;
             this.offset = start;
@@ -107,8 +117,9 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Create a copy of the underlying storage from {@code value}.
-     * The copy will start at {@link ByteBuffer#position()} and copy {@link ByteBuffer#remaining()} bytes.
+     * Create a copy of the underlying storage from {@code value}. The copy will
+     * start at {@link ByteBuffer#position()} and copy
+     * {@link ByteBuffer#remaining()} bytes.
      */
     public AsciiString(ByteBuffer value) {
         this(value, true);
@@ -116,24 +127,26 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Initialize an instance based upon the underlying storage from {@code value}.
-     * There is a potential to share the underlying array storage if {@link ByteBuffer#hasArray()} is {@code true}.
-     * if {@code copy} is {@code true} a copy will be made of the memory.
-     * if {@code copy} is {@code false} the underlying storage will be shared, if possible.
+     * There is a potential to share the underlying array storage if
+     * {@link ByteBuffer#hasArray()} is {@code true}. if {@code copy} is
+     * {@code true} a copy will be made of the memory. if {@code copy} is
+     * {@code false} the underlying storage will be shared, if possible.
      */
     public AsciiString(ByteBuffer value, boolean copy) {
         this(value, value.position(), value.remaining(), copy);
     }
 
     /**
-     * Initialize an {@link AsciiString} based upon the underlying storage from {@code value}.
-     * There is a potential to share the underlying array storage if {@link ByteBuffer#hasArray()} is {@code true}.
-     * if {@code copy} is {@code true} a copy will be made of the memory.
-     * if {@code copy} is {@code false} the underlying storage will be shared, if possible.
+     * Initialize an {@link AsciiString} based upon the underlying storage from
+     * {@code value}. There is a potential to share the underlying array storage if
+     * {@link ByteBuffer#hasArray()} is {@code true}. if {@code copy} is
+     * {@code true} a copy will be made of the memory. if {@code copy} is
+     * {@code false} the underlying storage will be shared, if possible.
      */
     public AsciiString(ByteBuffer value, int start, int length, boolean copy) {
         if (isOutOfBounds(start, length, value.capacity())) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
-                            + ") <= " + "value.capacity(" + value.capacity() + ')');
+                    + ") <= " + "value.capacity(" + value.capacity() + ')');
         }
 
         if (value.hasArray()) {
@@ -169,7 +182,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     public AsciiString(char[] value, int start, int length) {
         if (isOutOfBounds(start, length, value.length)) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
-                            + ") <= " + "value.length(" + value.length + ')');
+                    + ") <= " + "value.length(" + value.length + ')');
         }
 
         this.value = PlatformDependent.allocateUninitializedArray(length);
@@ -181,15 +194,17 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Create a copy of {@code value} into this instance using the encoding type of {@code charset}.
+     * Create a copy of {@code value} into this instance using the encoding type of
+     * {@code charset}.
      */
     public AsciiString(char[] value, Charset charset) {
         this(value, charset, 0, value.length);
     }
 
     /**
-     * Create a copy of {@code value} into a this instance using the encoding type of {@code charset}.
-     * The copy will start at index {@code start} and copy {@code length} bytes.
+     * Create a copy of {@code value} into a this instance using the encoding type
+     * of {@code charset}. The copy will start at index {@code start} and copy
+     * {@code length} bytes.
      */
     public AsciiString(char[] value, Charset charset, int start, int length) {
         CharBuffer cbuf = CharBuffer.wrap(value, start, length);
@@ -199,7 +214,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         final int bufferOffset = nativeBuffer.arrayOffset();
         this.value = Arrays.copyOfRange(nativeBuffer.array(), bufferOffset, bufferOffset + nativeBuffer.position());
         this.offset = 0;
-        this.length =  this.value.length;
+        this.length = this.value.length;
     }
 
     /**
@@ -216,7 +231,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     public AsciiString(CharSequence value, int start, int length) {
         if (isOutOfBounds(start, length, value.length())) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= start + length(" + length
-                            + ") <= " + "value.length(" + value.length() + ')');
+                    + ") <= " + "value.length(" + value.length() + ')');
         }
 
         this.value = PlatformDependent.allocateUninitializedArray(length);
@@ -228,15 +243,17 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Create a copy of {@code value} into this instance using the encoding type of {@code charset}.
+     * Create a copy of {@code value} into this instance using the encoding type of
+     * {@code charset}.
      */
     public AsciiString(CharSequence value, Charset charset) {
         this(value, charset, 0, value.length());
     }
 
     /**
-     * Create a copy of {@code value} into this instance using the encoding type of {@code charset}.
-     * The copy will start at index {@code start} and copy {@code length} bytes.
+     * Create a copy of {@code value} into this instance using the encoding type of
+     * {@code charset}. The copy will start at index {@code start} and copy
+     * {@code length} bytes.
      */
     public AsciiString(CharSequence value, Charset charset, int start, int length) {
         CharBuffer cbuf = CharBuffer.wrap(value, start, start + length);
@@ -250,21 +267,25 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Iterates over the readable bytes of this buffer with the specified {@code processor} in ascending order.
+     * Iterates over the readable bytes of this buffer with the specified
+     * {@code processor} in ascending order.
      *
-     * @return {@code -1} if the processor iterated to or beyond the end of the readable bytes.
-     *         The last-visited index If the {@link ByteProcessor#process(byte)} returned {@code false}.
+     * @return {@code -1} if the processor iterated to or beyond the end of the
+     *         readable bytes. The last-visited index If the
+     *         {@link ByteProcessor#process(byte)} returned {@code false}.
      */
     public int forEachByte(ByteProcessor visitor) throws Exception {
         return forEachByte0(0, length(), visitor);
     }
 
     /**
-     * Iterates over the specified area of this buffer with the specified {@code processor} in ascending order.
-     * (i.e. {@code index}, {@code (index + 1)},  .. {@code (index + length - 1)}).
+     * Iterates over the specified area of this buffer with the specified
+     * {@code processor} in ascending order. (i.e. {@code index},
+     * {@code (index + 1)}, .. {@code (index + length - 1)}).
      *
-     * @return {@code -1} if the processor iterated to or beyond the end of the specified area.
-     *         The last-visited index If the {@link ByteProcessor#process(byte)} returned {@code false}.
+     * @return {@code -1} if the processor iterated to or beyond the end of the
+     *         specified area. The last-visited index If the
+     *         {@link ByteProcessor#process(byte)} returned {@code false}.
      */
     public int forEachByte(int index, int length, ByteProcessor visitor) throws Exception {
         if (isOutOfBounds(index, length, length())) {
@@ -285,21 +306,25 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Iterates over the readable bytes of this buffer with the specified {@code processor} in descending order.
+     * Iterates over the readable bytes of this buffer with the specified
+     * {@code processor} in descending order.
      *
-     * @return {@code -1} if the processor iterated to or beyond the beginning of the readable bytes.
-     *         The last-visited index If the {@link ByteProcessor#process(byte)} returned {@code false}.
+     * @return {@code -1} if the processor iterated to or beyond the beginning of
+     *         the readable bytes. The last-visited index If the
+     *         {@link ByteProcessor#process(byte)} returned {@code false}.
      */
     public int forEachByteDesc(ByteProcessor visitor) throws Exception {
         return forEachByteDesc0(0, length(), visitor);
     }
 
     /**
-     * Iterates over the specified area of this buffer with the specified {@code processor} in descending order.
-     * (i.e. {@code (index + length - 1)}, {@code (index + length - 2)}, ... {@code index}).
+     * Iterates over the specified area of this buffer with the specified
+     * {@code processor} in descending order. (i.e. {@code (index + length - 1)},
+     * {@code (index + length - 2)}, ... {@code index}).
      *
-     * @return {@code -1} if the processor iterated to or beyond the beginning of the specified area.
-     *         The last-visited index If the {@link ByteProcessor#process(byte)} returned {@code false}.
+     * @return {@code -1} if the processor iterated to or beyond the beginning of
+     *         the specified area. The last-visited index If the
+     *         {@link ByteProcessor#process(byte)} returned {@code false}.
      */
     public int forEachByteDesc(int index, int length, ByteProcessor visitor) throws Exception {
         if (isOutOfBounds(index, length, length())) {
@@ -320,8 +345,10 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     public byte byteAt(int index) {
-        // We must do a range check here to enforce the access does not go outside our sub region of the array.
-        // We rely on the array access itself to pick up the array out of bounds conditions
+        // We must do a range check here to enforce the access does not go outside our
+        // sub region of the array.
+        // We rely on the array access itself to pick up the array out of bounds
+        // conditions
         if (index < 0 || index >= length) {
             throw new IndexOutOfBoundsException("index: " + index + " must be in the range [0," + length + ")");
         }
@@ -348,8 +375,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * During normal use cases the {@link AsciiString} should be immutable, but if the underlying array is shared,
-     * and changes then this needs to be called.
+     * During normal use cases the {@link AsciiString} should be immutable, but if
+     * the underlying array is shared, and changes then this needs to be called.
      */
     public void arrayChanged() {
         string = null;
@@ -357,9 +384,10 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * This gives direct access to the underlying storage array.
-     * The {@link #toByteArray()} should be preferred over this method.
-     * If the return value is changed then {@link #arrayChanged()} must be called.
+     * This gives direct access to the underlying storage array. The
+     * {@link #toByteArray()} should be preferred over this method. If the return
+     * value is changed then {@link #arrayChanged()} must be called.
+     * 
      * @see #arrayOffset()
      * @see #isEntireArrayUsed()
      */
@@ -369,6 +397,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * The offset into {@link #array()} for which data for this ByteString begins.
+     * 
      * @see #array()
      * @see #isEntireArrayUsed()
      */
@@ -378,6 +407,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Determine if the storage represented by {@link #array()} is entirely used.
+     * 
      * @see #array()
      */
     public boolean isEntireArrayUsed() {
@@ -392,8 +422,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Converts a subset of this string to a byte array.
-     * The subset is defined by the range [{@code start}, {@code end}).
+     * Converts a subset of this string to a byte array. The subset is defined by
+     * the range [{@code start}, {@code end}).
      */
     public byte[] toByteArray(int start, int end) {
         return Arrays.copyOfRange(value, start + offset, end + offset);
@@ -403,14 +433,14 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
      * Copies the content of this string to a byte array.
      *
      * @param srcIdx the starting offset of characters to copy.
-     * @param dst the destination byte array.
+     * @param dst    the destination byte array.
      * @param dstIdx the starting offset in the destination byte array.
      * @param length the number of characters to copy.
      */
     public void copy(int srcIdx, byte[] dst, int dstIdx, int length) {
         if (isOutOfBounds(srcIdx, length, length())) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= srcIdx(" + srcIdx + ") <= srcIdx + length("
-                            + length + ") <= srcLen(" + length() + ')');
+                    + length + ") <= srcLen(" + length() + ')');
         }
 
         System.arraycopy(value, srcIdx + offset, checkNotNull(dst, "dst"), dstIdx, length);
@@ -422,26 +452,32 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Determines if this {@code String} contains the sequence of characters in the {@code CharSequence} passed.
+     * Determines if this {@code String} contains the sequence of characters in the
+     * {@code CharSequence} passed.
      *
      * @param cs the character sequence to search for.
-     * @return {@code true} if the sequence of characters are contained in this string, otherwise {@code false}.
+     * @return {@code true} if the sequence of characters are contained in this
+     *         string, otherwise {@code false}.
      */
     public boolean contains(CharSequence cs) {
         return indexOf(cs) >= 0;
     }
 
     /**
-     * Compares the specified string to this string using the ASCII values of the characters. Returns 0 if the strings
-     * contain the same characters in the same order. Returns a negative integer if the first non-equal character in
-     * this string has an ASCII value which is less than the ASCII value of the character at the same position in the
-     * specified string, or if this string is a prefix of the specified string. Returns a positive integer if the first
-     * non-equal character in this string has a ASCII value which is greater than the ASCII value of the character at
-     * the same position in the specified string, or if the specified string is a prefix of this string.
+     * Compares the specified string to this string using the ASCII values of the
+     * characters. Returns 0 if the strings contain the same characters in the same
+     * order. Returns a negative integer if the first non-equal character in this
+     * string has an ASCII value which is less than the ASCII value of the character
+     * at the same position in the specified string, or if this string is a prefix
+     * of the specified string. Returns a positive integer if the first non-equal
+     * character in this string has a ASCII value which is greater than the ASCII
+     * value of the character at the same position in the specified string, or if
+     * the specified string is a prefix of this string.
      *
      * @param string the string to compare.
-     * @return 0 if the strings are equal, a negative integer if this string is before the specified string, or a
-     *         positive integer if this string is after the specified string.
+     * @return 0 if the strings are equal, a negative integer if this string is
+     *         before the specified string, or a positive integer if this string is
+     *         after the specified string.
      * @throws NullPointerException if {@code string} is {@code null}.
      */
     @Override
@@ -468,7 +504,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
      * Concatenates this string and the specified string.
      *
      * @param string the string to concatenate
-     * @return a new string which is the concatenation of this string and the specified string.
+     * @return a new string which is the concatenation of this string and the
+     *         specified string.
      */
     public AsciiString concat(CharSequence string) {
         int thisLen = length();
@@ -503,10 +540,12 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares the specified string to this string to determine if the specified string is a suffix.
+     * Compares the specified string to this string to determine if the specified
+     * string is a suffix.
      *
      * @param suffix the suffix to look for.
-     * @return {@code true} if the specified string is a suffix of this string, {@code false} otherwise.
+     * @return {@code true} if the specified string is a suffix of this string,
+     *         {@code false} otherwise.
      * @throws NullPointerException if {@code suffix} is {@code null}.
      */
     public boolean endsWith(CharSequence suffix) {
@@ -515,11 +554,12 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares the specified string to this string ignoring the case of the characters and returns true if they are
-     * equal.
+     * Compares the specified string to this string ignoring the case of the
+     * characters and returns true if they are equal.
      *
      * @param string the string to compare.
-     * @return {@code true} if the specified string is equal to this string, {@code false} otherwise.
+     * @return {@code true} if the specified string is equal to this string,
+     *         {@code false} otherwise.
      */
     public boolean contentEqualsIgnoreCase(CharSequence string) {
         if (this == string) {
@@ -569,8 +609,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         }
 
         if (isOutOfBounds(start, length, length())) {
-            throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= srcIdx + length("
-                            + length + ") <= srcLen(" + length() + ')');
+            throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= srcIdx + length(" + length
+                    + ") <= srcLen(" + length() + ')');
         }
 
         final char[] buffer = new char[length];
@@ -584,7 +624,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
      * Copied the content of this string to a character array.
      *
      * @param srcIdx the starting offset of characters to copy.
-     * @param dst the destination character array.
+     * @param dst    the destination character array.
      * @param dstIdx the starting offset in the destination byte array.
      * @param length the number of characters to copy.
      */
@@ -595,7 +635,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
         if (isOutOfBounds(srcIdx, length, length())) {
             throw new IndexOutOfBoundsException("expected: " + "0 <= srcIdx(" + srcIdx + ") <= srcIdx + length("
-                            + length + ") <= srcLen(" + length() + ')');
+                    + length + ") <= srcLen(" + length() + ')');
         }
 
         final int dstEnd = dstIdx + length;
@@ -606,9 +646,12 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Copies a range of characters into a new string.
+     * 
      * @param start the offset of the first character (inclusive).
-     * @return a new string containing the characters from start to the end of the string.
-     * @throws IndexOutOfBoundsException if {@code start < 0} or {@code start > length()}.
+     * @return a new string containing the characters from start to the end of the
+     *         string.
+     * @throws IndexOutOfBoundsException if {@code start < 0} or
+     *                                   {@code start > length()}.
      */
     public AsciiString subSequence(int start) {
         return subSequence(start, length());
@@ -616,29 +659,36 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Copies a range of characters into a new string.
+     * 
      * @param start the offset of the first character (inclusive).
-     * @param end The index to stop at (exclusive).
-     * @return a new string containing the characters from start to the end of the string.
-     * @throws IndexOutOfBoundsException if {@code start < 0} or {@code start > length()}.
+     * @param end   The index to stop at (exclusive).
+     * @return a new string containing the characters from start to the end of the
+     *         string.
+     * @throws IndexOutOfBoundsException if {@code start < 0} or
+     *                                   {@code start > length()}.
      */
     @Override
     public AsciiString subSequence(int start, int end) {
-       return subSequence(start, end, true);
+        return subSequence(start, end, true);
     }
 
     /**
      * Either copy or share a subset of underlying sub-sequence of bytes.
+     * 
      * @param start the offset of the first character (inclusive).
-     * @param end The index to stop at (exclusive).
-     * @param copy If {@code true} then a copy of the underlying storage will be made.
-     * If {@code false} then the underlying storage will be shared.
-     * @return a new string containing the characters from start to the end of the string.
-     * @throws IndexOutOfBoundsException if {@code start < 0} or {@code start > length()}.
+     * @param end   The index to stop at (exclusive).
+     * @param copy  If {@code true} then a copy of the underlying storage will be
+     *              made. If {@code false} then the underlying storage will be
+     *              shared.
+     * @return a new string containing the characters from start to the end of the
+     *         string.
+     * @throws IndexOutOfBoundsException if {@code start < 0} or
+     *                                   {@code start > length()}.
      */
     public AsciiString subSequence(int start, int end, boolean copy) {
         if (isOutOfBounds(start, end - start, length())) {
-            throw new IndexOutOfBoundsException("expected: 0 <= start(" + start + ") <= end (" + end + ") <= length("
-                            + length() + ')');
+            throw new IndexOutOfBoundsException(
+                    "expected: 0 <= start(" + start + ") <= end (" + end + ") <= length(" + length() + ')');
         }
 
         if (start == 0 && end == length()) {
@@ -653,12 +703,13 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Searches in this string for the first index of the specified string. The search for the string starts at the
-     * beginning and moves towards the end of this string.
+     * Searches in this string for the first index of the specified string. The
+     * search for the string starts at the beginning and moves towards the end of
+     * this string.
      *
      * @param string the string to find.
-     * @return the index of the first character of the specified string in this string, -1 if the specified string is
-     *         not a substring.
+     * @return the index of the first character of the specified string in this
+     *         string, -1 if the specified string is not a substring.
      * @throws NullPointerException if {@code string} is {@code null}.
      */
     public int indexOf(CharSequence string) {
@@ -666,13 +717,14 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Searches in this string for the index of the specified string. The search for the string starts at the specified
-     * offset and moves towards the end of this string.
+     * Searches in this string for the index of the specified string. The search for
+     * the string starts at the specified offset and moves towards the end of this
+     * string.
      *
      * @param subString the string to find.
-     * @param start the starting offset.
-     * @return the index of the first character of the specified string in this string, -1 if the specified string is
-     *         not a substring.
+     * @param start     the starting offset.
+     * @return the index of the first character of the specified string in this
+     *         string, -1 if the specified string is not a substring.
      * @throws NullPointerException if {@code subString} is {@code null}.
      */
     public int indexOf(CharSequence subString, int start) {
@@ -708,13 +760,14 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Searches in this string for the index of the specified char {@code ch}.
-     * The search for the char starts at the specified offset {@code start} and moves towards the end of this string.
+     * Searches in this string for the index of the specified char {@code ch}. The
+     * search for the char starts at the specified offset {@code start} and moves
+     * towards the end of this string.
      *
-     * @param ch the char to find.
+     * @param ch    the char to find.
      * @param start the starting offset.
-     * @return the index of the first occurrence of the specified char {@code ch} in this string,
-     * -1 if found no occurrence.
+     * @return the index of the first occurrence of the specified char {@code ch} in
+     *         this string, -1 if found no occurrence.
      */
     public int indexOf(char ch, int start) {
         if (ch > MAX_CHAR_VALUE) {
@@ -736,12 +789,13 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Searches in this string for the last index of the specified string. The search for the string starts at the end
-     * and moves towards the beginning of this string.
+     * Searches in this string for the last index of the specified string. The
+     * search for the string starts at the end and moves towards the beginning of
+     * this string.
      *
      * @param string the string to find.
-     * @return the index of the first character of the specified string in this string, -1 if the specified string is
-     *         not a substring.
+     * @return the index of the first character of the specified string in this
+     *         string, -1 if the specified string is not a substring.
      * @throws NullPointerException if {@code string} is {@code null}.
      */
     public int lastIndexOf(CharSequence string) {
@@ -750,13 +804,14 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Searches in this string for the index of the specified string. The search for the string starts at the specified
-     * offset and moves towards the beginning of this string.
+     * Searches in this string for the index of the specified string. The search for
+     * the string starts at the specified offset and moves towards the beginning of
+     * this string.
      *
      * @param subString the string to find.
-     * @param start the starting offset.
-     * @return the index of the first character of the specified string in this string , -1 if the specified string is
-     *         not a substring.
+     * @param start     the starting offset.
+     * @return the index of the first character of the specified string in this
+     *         string , -1 if the specified string is not a substring.
      * @throws NullPointerException if {@code subString} is {@code null}.
      */
     public int lastIndexOf(CharSequence subString, int start) {
@@ -789,14 +844,15 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares the specified string to this string and compares the specified range of characters to determine if they
-     * are the same.
+     * Compares the specified string to this string and compares the specified range
+     * of characters to determine if they are the same.
      *
      * @param thisStart the starting offset in this string.
-     * @param string the string to compare.
-     * @param start the starting offset in the specified string.
-     * @param length the number of characters to compare.
-     * @return {@code true} if the ranges of characters are equal, {@code false} otherwise
+     * @param string    the string to compare.
+     * @param start     the starting offset in the specified string.
+     * @param length    the number of characters to compare.
+     * @return {@code true} if the ranges of characters are equal, {@code false}
+     *         otherwise
      * @throws NullPointerException if {@code string} is {@code null}.
      */
     public boolean regionMatches(int thisStart, CharSequence string, int start, int length) {
@@ -827,15 +883,17 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares the specified string to this string and compares the specified range of characters to determine if they
-     * are the same. When ignoreCase is true, the case of the characters is ignored during the comparison.
+     * Compares the specified string to this string and compares the specified range
+     * of characters to determine if they are the same. When ignoreCase is true, the
+     * case of the characters is ignored during the comparison.
      *
      * @param ignoreCase specifies if case should be ignored.
-     * @param thisStart the starting offset in this string.
-     * @param string the string to compare.
-     * @param start the starting offset in the specified string.
-     * @param length the number of characters to compare.
-     * @return {@code true} if the ranges of characters are equal, {@code false} otherwise.
+     * @param thisStart  the starting offset in this string.
+     * @param string     the string to compare.
+     * @param start      the starting offset in the specified string.
+     * @param length     the number of characters to compare.
+     * @return {@code true} if the ranges of characters are equal, {@code false}
+     *         otherwise.
      * @throws NullPointerException if {@code string} is {@code null}.
      */
     public boolean regionMatches(boolean ignoreCase, int thisStart, CharSequence string, int start, int length) {
@@ -866,7 +924,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Copies this string replacing occurrences of the specified character with another character.
+     * Copies this string replacing occurrences of the specified character with
+     * another character.
      *
      * @param oldChar the character to replace.
      * @param newChar the replacement character.
@@ -897,10 +956,12 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares the specified string to this string to determine if the specified string is a prefix.
+     * Compares the specified string to this string to determine if the specified
+     * string is a prefix.
      *
      * @param prefix the string to look for.
-     * @return {@code true} if the specified string is a prefix of this string, {@code false} otherwise
+     * @return {@code true} if the specified string is a prefix of this string,
+     *         {@code false} otherwise
      * @throws NullPointerException if {@code prefix} is {@code null}.
      */
     public boolean startsWith(CharSequence prefix) {
@@ -908,13 +969,13 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares the specified string to this string, starting at the specified offset, to determine if the specified
-     * string is a prefix.
+     * Compares the specified string to this string, starting at the specified
+     * offset, to determine if the specified string is a prefix.
      *
      * @param prefix the string to look for.
-     * @param start the starting offset.
-     * @return {@code true} if the specified string occurs in this string at the specified offset, {@code false}
-     *         otherwise.
+     * @param start  the starting offset.
+     * @return {@code true} if the specified string occurs in this string at the
+     *         specified offset, {@code false} otherwise.
      * @throws NullPointerException if {@code prefix} is {@code null}.
      */
     public boolean startsWith(CharSequence prefix, int start) {
@@ -922,9 +983,11 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Converts the characters in this string to lowercase, using the default Locale.
+     * Converts the characters in this string to lowercase, using the default
+     * Locale.
      *
-     * @return a new string containing the lowercase characters equivalent to the characters in this string.
+     * @return a new string containing the lowercase characters equivalent to the
+     *         characters in this string.
      */
     public AsciiString toLowerCase() {
         boolean lowercased = true;
@@ -952,9 +1015,11 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Converts the characters in this string to uppercase, using the default Locale.
+     * Converts the characters in this string to uppercase, using the default
+     * Locale.
      *
-     * @return a new string containing the uppercase characters equivalent to the characters in this string.
+     * @return a new string containing the uppercase characters equivalent to the
+     *         characters in this string.
      */
     public AsciiString toUpperCase() {
         boolean uppercased = true;
@@ -982,11 +1047,12 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Copies this string removing white space characters from the beginning and end of the string, and tries not to
-     * copy if possible.
+     * Copies this string removing white space characters from the beginning and end
+     * of the string, and tries not to copy if possible.
      *
      * @param c The {@link CharSequence} to trim.
-     * @return a new string with characters {@code <= \\u0020} removed from the beginning and the end.
+     * @return a new string with characters {@code <= \\u0020} removed from the
+     *         beginning and the end.
      */
     public static CharSequence trim(CharSequence c) {
         if (c instanceof AsciiString) {
@@ -1010,10 +1076,11 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Duplicates this string removing white space characters from the beginning and end of the
-     * string, without copying.
+     * Duplicates this string removing white space characters from the beginning and
+     * end of the string, without copying.
      *
-     * @return a new string with characters {@code <= \\u0020} removed from the beginning and the end.
+     * @return a new string with characters {@code <= \\u0020} removed from the
+     *         beginning and the end.
      */
     public AsciiString trim() {
         int start = arrayOffset(), last = arrayOffset() + length() - 1;
@@ -1031,7 +1098,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Compares a {@code CharSequence} to this {@code String} to determine if their contents are equal.
+     * Compares a {@code CharSequence} to this {@code String} to determine if their
+     * contents are equal.
      *
      * @param a the character sequence to compare to.
      * @return {@code true} if equal, otherwise {@code false}
@@ -1061,22 +1129,26 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
      *
      * @param expr the regular expression to be matched.
      * @return {@code true} if the expression matches, otherwise {@code false}.
-     * @throws PatternSyntaxException if the syntax of the supplied regular expression is not valid.
-     * @throws NullPointerException if {@code expr} is {@code null}.
+     * @throws PatternSyntaxException if the syntax of the supplied regular
+     *                                expression is not valid.
+     * @throws NullPointerException   if {@code expr} is {@code null}.
      */
     public boolean matches(String expr) {
         return Pattern.matches(expr, this);
     }
 
     /**
-     * Splits this string using the supplied regular expression {@code expr}. The parameter {@code max} controls the
-     * behavior how many times the pattern is applied to the string.
+     * Splits this string using the supplied regular expression {@code expr}. The
+     * parameter {@code max} controls the behavior how many times the pattern is
+     * applied to the string.
      *
      * @param expr the regular expression used to divide the string.
-     * @param max the number of entries in the resulting array.
-     * @return an array of Strings created by separating the string along matches of the regular expression.
-     * @throws NullPointerException if {@code expr} is {@code null}.
-     * @throws PatternSyntaxException if the syntax of the supplied regular expression is not valid.
+     * @param max  the number of entries in the resulting array.
+     * @return an array of Strings created by separating the string along matches of
+     *         the regular expression.
+     * @throws NullPointerException   if {@code expr} is {@code null}.
+     * @throws PatternSyntaxException if the syntax of the supplied regular
+     *                                expression is not valid.
      * @see Pattern#split(CharSequence, int)
      */
     public AsciiString[] split(String expr, int max) {
@@ -1148,13 +1220,13 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         }
 
         AsciiString other = (AsciiString) obj;
-        return length() == other.length() &&
-               hashCode() == other.hashCode() &&
-               PlatformDependent.equals(array(), arrayOffset(), other.array(), other.arrayOffset(), length());
+        return length() == other.length() && hashCode() == other.hashCode()
+                && PlatformDependent.equals(array(), arrayOffset(), other.array(), other.arrayOffset(), length());
     }
 
     /**
      * Translates the entire byte string to a {@link String}.
+     * 
      * @see #toString(int)
      */
     @Override
@@ -1168,7 +1240,9 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Translates the entire byte string to a {@link String} using the {@code charset} encoding.
+     * Translates the entire byte string to a {@link String} using the
+     * {@code charset} encoding.
+     * 
      * @see #toString(int, int)
      */
     public String toString(int start) {
@@ -1176,7 +1250,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Translates the [{@code start}, {@code end}) range of this byte string to a {@link String}.
+     * Translates the [{@code start}, {@code end}) range of this byte string to a
+     * {@link String}.
      */
     public String toString(int start, int end) {
         int length = end - start;
@@ -1185,8 +1260,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         }
 
         if (isOutOfBounds(start, length, length())) {
-            throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= srcIdx + length("
-                            + length + ") <= srcLen(" + length() + ')');
+            throw new IndexOutOfBoundsException("expected: " + "0 <= start(" + start + ") <= srcIdx + length(" + length
+                    + ") <= srcLen(" + length() + ')');
         }
 
         @SuppressWarnings("deprecation")
@@ -1204,8 +1279,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     public char parseChar(int start) {
         if (start + 1 >= length()) {
-            throw new IndexOutOfBoundsException("2 bytes required to convert to character. index " +
-                    start + " would go out of bounds.");
+            throw new IndexOutOfBoundsException(
+                    "2 bytes required to convert to character. index " + start + " would go out of bounds.");
         }
         final int startWithOffset = start + offset;
         return (char) ((b2c(value[startWithOffset]) << 8) | b2c(value[startWithOffset + 1]));
@@ -1362,8 +1437,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         return Double.parseDouble(toString(start, end));
     }
 
-    public static final HashingStrategy<CharSequence> CASE_INSENSITIVE_HASHER =
-            new HashingStrategy<CharSequence>() {
+    public static final HashingStrategy<CharSequence> CASE_INSENSITIVE_HASHER = new HashingStrategy<CharSequence>() {
         @Override
         public int hashCode(CharSequence o) {
             return AsciiString.hashCode(o);
@@ -1375,8 +1449,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         }
     };
 
-    public static final HashingStrategy<CharSequence> CASE_SENSITIVE_HASHER =
-            new HashingStrategy<CharSequence>() {
+    public static final HashingStrategy<CharSequence> CASE_SENSITIVE_HASHER = new HashingStrategy<CharSequence>() {
         @Override
         public int hashCode(CharSequence o) {
             return AsciiString.hashCode(o);
@@ -1389,18 +1462,19 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     };
 
     /**
-     * Returns an {@link AsciiString} containing the given character sequence. If the given string is already a
-     * {@link AsciiString}, just returns the same instance.
+     * Returns an {@link AsciiString} containing the given character sequence. If
+     * the given string is already a {@link AsciiString}, just returns the same
+     * instance.
      */
     public static AsciiString of(CharSequence string) {
         return string instanceof AsciiString ? (AsciiString) string : new AsciiString(string);
     }
 
     /**
-     * Returns an {@link AsciiString} containing the given string and retains/caches the input
-     * string for later use in {@link #toString()}.
-     * Used for the constants (which already stored in the JVM's string table) and in cases
-     * where the guaranteed use of the {@link #toString()} method.
+     * Returns an {@link AsciiString} containing the given string and retains/caches
+     * the input string for later use in {@link #toString()}. Used for the constants
+     * (which already stored in the JVM's string table) and in cases where the
+     * guaranteed use of the {@link #toString()} method.
      */
     public static AsciiString cached(String string) {
         AsciiString asciiString = new AsciiString(string);
@@ -1409,9 +1483,10 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Returns the case-insensitive hash code of the specified string. Note that this method uses the same hashing
-     * algorithm with {@link #hashCode()} so that you can put both {@link AsciiString}s and arbitrary
-     * {@link CharSequence}s into the same headers.
+     * Returns the case-insensitive hash code of the specified string. Note that
+     * this method uses the same hashing algorithm with {@link #hashCode()} so that
+     * you can put both {@link AsciiString}s and arbitrary {@link CharSequence}s
+     * into the same headers.
      */
     public static int hashCode(CharSequence value) {
         if (value == null) {
@@ -1439,8 +1514,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Returns {@code true} if both {@link CharSequence}'s are equals when ignore the case. This only supports 8-bit
-     * ASCII.
+     * Returns {@code true} if both {@link CharSequence}'s are equals when ignore
+     * the case. This only supports 8-bit ASCII.
      */
     public static boolean contentEqualsIgnoreCase(CharSequence a, CharSequence b) {
         if (a == null || b == null) {
@@ -1458,7 +1533,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
             return false;
         }
         for (int i = 0; i < a.length(); ++i) {
-            if (!equalsIgnoreCase(a.charAt(i),  b.charAt(i))) {
+            if (!equalsIgnoreCase(a.charAt(i), b.charAt(i))) {
                 return false;
             }
         }
@@ -1467,11 +1542,15 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Determine if {@code collection} contains {@code value} and using
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values.
-     * @param collection The collection to look for and equivalent element as {@code value}.
-     * @param value The value to look for in {@code collection}.
-     * @return {@code true} if {@code collection} contains {@code value} according to
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)}. {@code false} otherwise.
+     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare
+     * values.
+     * 
+     * @param collection The collection to look for and equivalent element as
+     *                   {@code value}.
+     * @param value      The value to look for in {@code collection}.
+     * @return {@code true} if {@code collection} contains {@code value} according
+     *         to {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)}.
+     *         {@code false} otherwise.
      * @see #contentEqualsIgnoreCase(CharSequence, CharSequence)
      */
     public static boolean containsContentEqualsIgnoreCase(Collection<CharSequence> collection, CharSequence value) {
@@ -1485,11 +1564,14 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * Determine if {@code a} contains all of the values in {@code b} using
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values.
+     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare
+     * values.
+     * 
      * @param a The collection under test.
      * @param b The values to test for.
-     * @return {@code true} if {@code a} contains all of the values in {@code b} using
-     * {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to compare values. {@code false} otherwise.
+     * @return {@code true} if {@code a} contains all of the values in {@code b}
+     *         using {@link #contentEqualsIgnoreCase(CharSequence, CharSequence)} to
+     *         compare values. {@code false} otherwise.
      * @see #contentEqualsIgnoreCase(CharSequence, CharSequence)
      */
     public static boolean containsAllContentEqualsIgnoreCase(Collection<CharSequence> a, Collection<CharSequence> b) {
@@ -1502,7 +1584,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * Returns {@code true} if the content of both {@link CharSequence}'s are equals. This only supports 8-bit ASCII.
+     * Returns {@code true} if the content of both {@link CharSequence}'s are
+     * equals. This only supports 8-bit ASCII.
      */
     public static boolean contentEquals(CharSequence a, CharSequence b) {
         if (a == null || b == null) {
@@ -1520,7 +1603,7 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         if (a.length() != b.length()) {
             return false;
         }
-        for (int i = 0; i <  a.length(); ++i) {
+        for (int i = 0; i < a.length(); ++i) {
             if (a.charAt(i) != b.charAt(i)) {
                 return false;
             }
@@ -1536,13 +1619,16 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         return res;
     }
 
+    // fc comment: 类内部定义interface
     private interface CharEqualityComparator {
         boolean equals(char a, char b);
     }
 
     private static final class DefaultCharEqualityComparator implements CharEqualityComparator {
         static final DefaultCharEqualityComparator INSTANCE = new DefaultCharEqualityComparator();
-        private DefaultCharEqualityComparator() { }
+
+        private DefaultCharEqualityComparator() {
+        }
 
         @Override
         public boolean equals(char a, char b) {
@@ -1551,9 +1637,10 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     private static final class AsciiCaseInsensitiveCharEqualityComparator implements CharEqualityComparator {
-        static final AsciiCaseInsensitiveCharEqualityComparator
-                INSTANCE = new AsciiCaseInsensitiveCharEqualityComparator();
-        private AsciiCaseInsensitiveCharEqualityComparator() { }
+        static final AsciiCaseInsensitiveCharEqualityComparator INSTANCE = new AsciiCaseInsensitiveCharEqualityComparator();
+
+        private AsciiCaseInsensitiveCharEqualityComparator() {
+        }
 
         @Override
         public boolean equals(char a, char b) {
@@ -1562,15 +1649,16 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     private static final class GeneralCaseInsensitiveCharEqualityComparator implements CharEqualityComparator {
-        static final GeneralCaseInsensitiveCharEqualityComparator
-                INSTANCE = new GeneralCaseInsensitiveCharEqualityComparator();
-        private GeneralCaseInsensitiveCharEqualityComparator() { }
+        static final GeneralCaseInsensitiveCharEqualityComparator INSTANCE = new GeneralCaseInsensitiveCharEqualityComparator();
+
+        private GeneralCaseInsensitiveCharEqualityComparator() {
+        }
 
         @Override
         public boolean equals(char a, char b) {
-            //For motivation, why we need two checks, see comment in String#regionMatches
-            return Character.toUpperCase(a) == Character.toUpperCase(b) ||
-                Character.toLowerCase(a) == Character.toLowerCase(b);
+            // For motivation, why we need two checks, see comment in String#regionMatches
+            return Character.toUpperCase(a) == Character.toUpperCase(b)
+                    || Character.toLowerCase(a) == Character.toLowerCase(b);
         }
     }
 
@@ -1589,7 +1677,8 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
                     return true;
                 }
             } else if (a.length() - i < b.length()) {
-                // If there are not enough characters left in a for b to be contained, then false.
+                // If there are not enough characters left in a for b to be contained, then
+                // false.
                 return false;
             } else {
                 bStart = 0;
@@ -1599,9 +1688,9 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     private static boolean regionMatchesCharSequences(final CharSequence cs, final int csStart,
-                                         final CharSequence string, final int start, final int length,
-                                         CharEqualityComparator charEqualityComparator) {
-        //general purpose implementation for CharSequences
+            final CharSequence string, final int start, final int length,
+            CharEqualityComparator charEqualityComparator) {
+        // general purpose implementation for CharSequences
         if (csStart < 0 || length > cs.length() - csStart) {
             return false;
         }
@@ -1626,16 +1715,18 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
 
     /**
      * This methods make regionMatches operation correctly for any chars in strings
-     * @param cs the {@code CharSequence} to be processed
+     * 
+     * @param cs         the {@code CharSequence} to be processed
      * @param ignoreCase specifies if case should be ignored.
-     * @param csStart the starting offset in the {@code cs} CharSequence
-     * @param string the {@code CharSequence} to compare.
-     * @param start the starting offset in the specified {@code string}.
-     * @param length the number of characters to compare.
-     * @return {@code true} if the ranges of characters are equal, {@code false} otherwise.
+     * @param csStart    the starting offset in the {@code cs} CharSequence
+     * @param string     the {@code CharSequence} to compare.
+     * @param start      the starting offset in the specified {@code string}.
+     * @param length     the number of characters to compare.
+     * @return {@code true} if the ranges of characters are equal, {@code false}
+     *         otherwise.
      */
     public static boolean regionMatches(final CharSequence cs, final boolean ignoreCase, final int csStart,
-                                        final CharSequence string, final int start, final int length) {
+            final CharSequence string, final int start, final int length) {
         if (cs == null || string == null) {
             return false;
         }
@@ -1649,30 +1740,35 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         }
 
         return regionMatchesCharSequences(cs, csStart, string, start, length,
-                                            ignoreCase ? GeneralCaseInsensitiveCharEqualityComparator.INSTANCE :
-                                                    DefaultCharEqualityComparator.INSTANCE);
+                ignoreCase ? GeneralCaseInsensitiveCharEqualityComparator.INSTANCE
+                        : DefaultCharEqualityComparator.INSTANCE);
     }
 
     /**
      * This is optimized version of regionMatches for string with ASCII chars only
-     * @param cs the {@code CharSequence} to be processed
+     * 
+     * @param cs         the {@code CharSequence} to be processed
      * @param ignoreCase specifies if case should be ignored.
-     * @param csStart the starting offset in the {@code cs} CharSequence
-     * @param string the {@code CharSequence} to compare.
-     * @param start the starting offset in the specified {@code string}.
-     * @param length the number of characters to compare.
-     * @return {@code true} if the ranges of characters are equal, {@code false} otherwise.
+     * @param csStart    the starting offset in the {@code cs} CharSequence
+     * @param string     the {@code CharSequence} to compare.
+     * @param start      the starting offset in the specified {@code string}.
+     * @param length     the number of characters to compare.
+     * @return {@code true} if the ranges of characters are equal, {@code false}
+     *         otherwise.
      */
     public static boolean regionMatchesAscii(final CharSequence cs, final boolean ignoreCase, final int csStart,
-                                        final CharSequence string, final int start, final int length) {
+            final CharSequence string, final int start, final int length) {
         if (cs == null || string == null) {
             return false;
         }
 
         if (!ignoreCase && cs instanceof String && string instanceof String) {
-            //we don't call regionMatches from String for ignoreCase==true. It's a general purpose method,
-            //which make complex comparison in case of ignoreCase==true, which is useless for ASCII-only strings.
-            //To avoid applying this complex ignore-case comparison, we will use regionMatchesCharSequences
+            // we don't call regionMatches from String for ignoreCase==true. It's a general
+            // purpose method,
+            // which make complex comparison in case of ignoreCase==true, which is useless
+            // for ASCII-only strings.
+            // To avoid applying this complex ignore-case comparison, we will use
+            // regionMatchesCharSequences
             return ((String) cs).regionMatches(false, csStart, (String) string, start, length);
         }
 
@@ -1681,19 +1777,22 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
         }
 
         return regionMatchesCharSequences(cs, csStart, string, start, length,
-                                          ignoreCase ? AsciiCaseInsensitiveCharEqualityComparator.INSTANCE :
-                                                      DefaultCharEqualityComparator.INSTANCE);
+                ignoreCase ? AsciiCaseInsensitiveCharEqualityComparator.INSTANCE
+                        : DefaultCharEqualityComparator.INSTANCE);
     }
 
     /**
-     * <p>Case in-sensitive find of the first index within a CharSequence
-     * from the specified position.</p>
+     * <p>
+     * Case in-sensitive find of the first index within a CharSequence from the
+     * specified position.
+     * </p>
      *
-     * <p>A {@code null} CharSequence will return {@code -1}.
-     * A negative start position is treated as zero.
-     * An empty ("") search CharSequence always matches.
-     * A start position greater than the string length only matches
-     * an empty search CharSequence.</p>
+     * <p>
+     * A {@code null} CharSequence will return {@code -1}. A negative start position
+     * is treated as zero. An empty ("") search CharSequence always matches. A start
+     * position greater than the string length only matches an empty search
+     * CharSequence.
+     * </p>
      *
      * <pre>
      * AsciiString.indexOfIgnoreCase(null, *, *)          = -1
@@ -1709,11 +1808,11 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
      * AsciiString.indexOfIgnoreCase("abc", "", 9)        = -1
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @param searchStr  the CharSequence to find, may be null
+     * @param str       the CharSequence to check, may be null
+     * @param searchStr the CharSequence to find, may be null
      * @param startPos  the start position, negative treated as zero
-     * @return the first index of the search CharSequence (always &ge; startPos),
-     *  -1 if no match or {@code null} string input
+     * @return the first index of the search CharSequence (always &ge; startPos), -1
+     *         if no match or {@code null} string input
      */
     public static int indexOfIgnoreCase(final CharSequence str, final CharSequence searchStr, int startPos) {
         if (str == null || searchStr == null) {
@@ -1739,14 +1838,18 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * <p>Case in-sensitive find of the first index within a CharSequence
-     * from the specified position. This method optimized and works correctly for ASCII CharSequences only</p>
+     * <p>
+     * Case in-sensitive find of the first index within a CharSequence from the
+     * specified position. This method optimized and works correctly for ASCII
+     * CharSequences only
+     * </p>
      *
-     * <p>A {@code null} CharSequence will return {@code -1}.
-     * A negative start position is treated as zero.
-     * An empty ("") search CharSequence always matches.
-     * A start position greater than the string length only matches
-     * an empty search CharSequence.</p>
+     * <p>
+     * A {@code null} CharSequence will return {@code -1}. A negative start position
+     * is treated as zero. An empty ("") search CharSequence always matches. A start
+     * position greater than the string length only matches an empty search
+     * CharSequence.
+     * </p>
      *
      * <pre>
      * AsciiString.indexOfIgnoreCase(null, *, *)          = -1
@@ -1762,11 +1865,11 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
      * AsciiString.indexOfIgnoreCase("abc", "", 9)        = -1
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @param searchStr  the CharSequence to find, may be null
+     * @param str       the CharSequence to check, may be null
+     * @param searchStr the CharSequence to find, may be null
      * @param startPos  the start position, negative treated as zero
-     * @return the first index of the search CharSequence (always &ge; startPos),
-     *  -1 if no match or {@code null} string input
+     * @return the first index of the search CharSequence (always &ge; startPos), -1
+     *         if no match or {@code null} string input
      */
     public static int indexOfIgnoreCaseAscii(final CharSequence str, final CharSequence searchStr, int startPos) {
         if (str == null || searchStr == null) {
@@ -1792,16 +1895,18 @@ public final class AsciiString implements CharSequence, Comparable<CharSequence>
     }
 
     /**
-     * <p>Finds the first index in the {@code CharSequence} that matches the
-     * specified character.</p>
+     * <p>
+     * Finds the first index in the {@code CharSequence} that matches the specified
+     * character.
+     * </p>
      *
-     * @param cs  the {@code CharSequence} to be processed, not null
+     * @param cs         the {@code CharSequence} to be processed, not null
      * @param searchChar the char to be searched for
-     * @param start  the start index, negative starts at the string start
-     * @return the index where the search char was found,
-     * -1 if char {@code searchChar} is not found or {@code cs == null}
+     * @param start      the start index, negative starts at the string start
+     * @return the index where the search char was found, -1 if char
+     *         {@code searchChar} is not found or {@code cs == null}
      */
-    //-----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     public static int indexOf(final CharSequence cs, final char searchChar, int start) {
         if (cs instanceof String) {
             return ((String) cs).indexOf(searchChar, start);
