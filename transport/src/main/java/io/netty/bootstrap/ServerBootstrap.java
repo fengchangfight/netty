@@ -38,8 +38,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 一个具体类，根据其继承的抽象类功能来看，其作用至少也包含启动一个channel... {@link Bootstrap} sub-class which
- * allows easy bootstrap of {@link ServerChannel}
+ * fc comment: 一个具体类，根据其继承的抽象类功能来看，其作用至少也包含启动一个channel... {@link Bootstrap}
+ * sub-class which allows easy bootstrap of {@link ServerChannel}
  *
  */
 public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerChannel> {
