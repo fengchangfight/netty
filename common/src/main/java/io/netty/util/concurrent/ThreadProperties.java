@@ -16,7 +16,7 @@
 package io.netty.util.concurrent;
 
 /**
- * Expose details for a {@link Thread}.
+ * fc comment: 简单接口，线程的各种属性方法,不赘述 Expose details for a {@link Thread}.
  */
 public interface ThreadProperties {
     /**

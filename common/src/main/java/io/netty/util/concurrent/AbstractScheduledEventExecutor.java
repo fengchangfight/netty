@@ -27,7 +27,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * fc comment: 仍是个抽象类,添加了scheduling Abstract base class for
+ * fc comment: 仍是个抽象类,添加了scheduling Abstract base class for, 暂放
  * {@link EventExecutor}s that want to support scheduling.
  */
 public abstract class AbstractScheduledEventExecutor extends AbstractEventExecutor {

@@ -16,7 +16,7 @@
 package io.netty.util;
 
 /**
- * Represents a supplier of {@code int}-valued results.
+ * fc comment 应该是一种套路 Represents a supplier of {@code int}-valued results.
  */
 public interface IntSupplier {
 

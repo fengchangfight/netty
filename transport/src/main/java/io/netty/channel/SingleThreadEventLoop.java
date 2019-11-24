@@ -27,7 +27,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Abstract base class for {@link EventLoop}s that execute all its submitted tasks in a single thread.
+ * fc comment, 仍然是个抽象类，多加了Runnable队列，实现了更多方法 Abstract base class for
+ * {@link EventLoop}s that execute all its submitted tasks in a single thread.
  *
  */
 public abstract class SingleThreadEventLoop extends SingleThreadEventExecutor implements EventLoop {
@@ -45,23 +46,21 @@ public abstract class SingleThreadEventLoop extends SingleThreadEventExecutor im
         this(parent, executor, addTaskWakesUp, DEFAULT_MAX_PENDING_TASKS, RejectedExecutionHandlers.reject());
     }
 
-    protected SingleThreadEventLoop(EventLoopGroup parent, ThreadFactory threadFactory,
-                                    boolean addTaskWakesUp, int maxPendingTasks,
-                                    RejectedExecutionHandler rejectedExecutionHandler) {
+    protected SingleThreadEventLoop(EventLoopGroup parent, ThreadFactory threadFactory, boolean addTaskWakesUp,
+            int maxPendingTasks, RejectedExecutionHandler rejectedExecutionHandler) {
         super(parent, threadFactory, addTaskWakesUp, maxPendingTasks, rejectedExecutionHandler);
         tailTasks = newTaskQueue(maxPendingTasks);
     }
 
-    protected SingleThreadEventLoop(EventLoopGroup parent, Executor executor,
-                                    boolean addTaskWakesUp, int maxPendingTasks,
-                                    RejectedExecutionHandler rejectedExecutionHandler) {
+    protected SingleThreadEventLoop(EventLoopGroup parent, Executor executor, boolean addTaskWakesUp,
+            int maxPendingTasks, RejectedExecutionHandler rejectedExecutionHandler) {
         super(parent, executor, addTaskWakesUp, maxPendingTasks, rejectedExecutionHandler);
         tailTasks = newTaskQueue(maxPendingTasks);
     }
 
-    protected SingleThreadEventLoop(EventLoopGroup parent, Executor executor,
-                                    boolean addTaskWakesUp, Queue<Runnable> taskQueue, Queue<Runnable> tailTaskQueue,
-                                    RejectedExecutionHandler rejectedExecutionHandler) {
+    protected SingleThreadEventLoop(EventLoopGroup parent, Executor executor, boolean addTaskWakesUp,
+            Queue<Runnable> taskQueue, Queue<Runnable> tailTaskQueue,
+            RejectedExecutionHandler rejectedExecutionHandler) {
         super(parent, executor, addTaskWakesUp, taskQueue, rejectedExecutionHandler);
         tailTasks = ObjectUtil.checkNotNull(tailTaskQueue, "tailTaskQueue");
     }
@@ -103,7 +102,8 @@ public abstract class SingleThreadEventLoop extends SingleThreadEventExecutor im
     }
 
     /**
-     * Adds a task to be run once at the end of next (or current) {@code eventloop} iteration.
+     * Adds a task to be run once at the end of next (or current) {@code eventloop}
+     * iteration.
      *
      * @param task to be added.
      */
@@ -124,7 +124,8 @@ public abstract class SingleThreadEventLoop extends SingleThreadEventExecutor im
     }
 
     /**
-     * Removes a task that was added previously via {@link #executeAfterEventLoopIteration(Runnable)}.
+     * Removes a task that was added previously via
+     * {@link #executeAfterEventLoopIteration(Runnable)}.
      *
      * @param task to be removed.
      *
@@ -151,9 +152,9 @@ public abstract class SingleThreadEventLoop extends SingleThreadEventExecutor im
     }
 
     /**
-     * Returns the number of {@link Channel}s registered with this {@link EventLoop} or {@code -1}
-     * if operation is not supported. The returned value is not guaranteed to be exact accurate and
-     * should be viewed as a best effort.
+     * Returns the number of {@link Channel}s registered with this {@link EventLoop}
+     * or {@code -1} if operation is not supported. The returned value is not
+     * guaranteed to be exact accurate and should be viewed as a best effort.
      */
     @UnstableApi
     public int registeredChannels() {
