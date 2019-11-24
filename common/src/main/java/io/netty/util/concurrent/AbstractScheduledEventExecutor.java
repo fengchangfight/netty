@@ -27,20 +27,22 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Abstract base class for {@link EventExecutor}s that want to support scheduling.
+ * fc comment: 仍是个抽象类,添加了scheduling Abstract base class for
+ * {@link EventExecutor}s that want to support scheduling.
  */
 public abstract class AbstractScheduledEventExecutor extends AbstractEventExecutor {
-    private static final Comparator<ScheduledFutureTask<?>> SCHEDULED_FUTURE_TASK_COMPARATOR =
-            new Comparator<ScheduledFutureTask<?>>() {
-                @Override
-                public int compare(ScheduledFutureTask<?> o1, ScheduledFutureTask<?> o2) {
-                    return o1.compareTo(o2);
-                }
-            };
+    private static final Comparator<ScheduledFutureTask<?>> SCHEDULED_FUTURE_TASK_COMPARATOR = new Comparator<ScheduledFutureTask<?>>() {
+        @Override
+        public int compare(ScheduledFutureTask<?> o1, ScheduledFutureTask<?> o2) {
+            return o1.compareTo(o2);
+        }
+    };
 
-   static final Runnable WAKEUP_TASK = new Runnable() {
-       @Override
-       public void run() { } // Do nothing
+    // fc comment: 套路: how to new a runnalble
+    static final Runnable WAKEUP_TASK = new Runnable() {
+        @Override
+        public void run() {
+        } // Do nothing
     };
 
     PriorityQueue<ScheduledFutureTask<?>> scheduledTaskQueue;
@@ -59,18 +61,23 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
     }
 
     /**
-     * Given an arbitrary deadline {@code deadlineNanos}, calculate the number of nano seconds from now
-     * {@code deadlineNanos} would expire.
+     * Given an arbitrary deadline {@code deadlineNanos}, calculate the number of
+     * nano seconds from now {@code deadlineNanos} would expire.
+     * 
      * @param deadlineNanos An arbitrary deadline in nano seconds.
-     * @return the number of nano seconds from now {@code deadlineNanos} would expire.
+     * @return the number of nano seconds from now {@code deadlineNanos} would
+     *         expire.
      */
     protected static long deadlineToDelayNanos(long deadlineNanos) {
         return ScheduledFutureTask.deadlineToDelayNanos(deadlineNanos);
     }
 
     /**
-     * The initial value used for delay and computations based upon a monatomic time source.
-     * @return initial value used for delay and computations based upon a monatomic time source.
+     * The initial value used for delay and computations based upon a monatomic time
+     * source.
+     * 
+     * @return initial value used for delay and computations based upon a monatomic
+     *         time source.
      */
     protected static long initialNanoTime() {
         return ScheduledFutureTask.initialNanoTime();
@@ -78,8 +85,7 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
 
     PriorityQueue<ScheduledFutureTask<?>> scheduledTaskQueue() {
         if (scheduledTaskQueue == null) {
-            scheduledTaskQueue = new DefaultPriorityQueue<ScheduledFutureTask<?>>(
-                    SCHEDULED_FUTURE_TASK_COMPARATOR,
+            scheduledTaskQueue = new DefaultPriorityQueue<ScheduledFutureTask<?>>(SCHEDULED_FUTURE_TASK_COMPARATOR,
                     // Use same initial capacity as java.util.PriorityQueue
                     11);
         }
@@ -102,10 +108,9 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
             return;
         }
 
-        final ScheduledFutureTask<?>[] scheduledTasks =
-                scheduledTaskQueue.toArray(new ScheduledFutureTask<?>[0]);
+        final ScheduledFutureTask<?>[] scheduledTasks = scheduledTaskQueue.toArray(new ScheduledFutureTask<?>[0]);
 
-        for (ScheduledFutureTask<?> task: scheduledTasks) {
+        for (ScheduledFutureTask<?> task : scheduledTasks) {
             task.cancelWithoutRemove(false);
         }
 
@@ -120,8 +125,9 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
     }
 
     /**
-     * Return the {@link Runnable} which is ready to be executed with the given {@code nanoTime}.
-     * You should use {@link #nanoTime()} to retrieve the correct {@code nanoTime}.
+     * Return the {@link Runnable} which is ready to be executed with the given
+     * {@code nanoTime}. You should use {@link #nanoTime()} to retrieve the correct
+     * {@code nanoTime}.
      */
     protected final Runnable pollScheduledTask(long nanoTime) {
         assert inEventLoop();
@@ -136,7 +142,8 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
     }
 
     /**
-     * Return the nanoseconds until the next scheduled task is ready to be run or {@code -1} if no task is scheduled.
+     * Return the nanoseconds until the next scheduled task is ready to be run or
+     * {@code -1} if no task is scheduled.
      */
     protected final long nextScheduledTaskNano() {
         ScheduledFutureTask<?> scheduledTask = peekScheduledTask();
@@ -144,8 +151,8 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
     }
 
     /**
-     * Return the deadline (in nanoseconds) when the next scheduled task is ready to be run or {@code -1}
-     * if no task is scheduled.
+     * Return the deadline (in nanoseconds) when the next scheduled task is ready to
+     * be run or {@code -1} if no task is scheduled.
      */
     protected final long nextScheduledTaskDeadlineNanos() {
         ScheduledFutureTask<?> scheduledTask = peekScheduledTask();
@@ -174,8 +181,7 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
         }
         validateScheduled0(delay, unit);
 
-        return schedule(new ScheduledFutureTask<Void>(
-                this, command, deadlineNanos(unit.toNanos(delay))));
+        return schedule(new ScheduledFutureTask<Void>(this, command, deadlineNanos(unit.toNanos(delay))));
     }
 
     @Override
@@ -195,18 +201,16 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
         ObjectUtil.checkNotNull(command, "command");
         ObjectUtil.checkNotNull(unit, "unit");
         if (initialDelay < 0) {
-            throw new IllegalArgumentException(
-                    String.format("initialDelay: %d (expected: >= 0)", initialDelay));
+            throw new IllegalArgumentException(String.format("initialDelay: %d (expected: >= 0)", initialDelay));
         }
         if (period <= 0) {
-            throw new IllegalArgumentException(
-                    String.format("period: %d (expected: > 0)", period));
+            throw new IllegalArgumentException(String.format("period: %d (expected: > 0)", period));
         }
         validateScheduled0(initialDelay, unit);
         validateScheduled0(period, unit);
 
-        return schedule(new ScheduledFutureTask<Void>(
-                this, command, deadlineNanos(unit.toNanos(initialDelay)), unit.toNanos(period)));
+        return schedule(new ScheduledFutureTask<Void>(this, command, deadlineNanos(unit.toNanos(initialDelay)),
+                unit.toNanos(period)));
     }
 
     @Override
@@ -214,19 +218,17 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
         ObjectUtil.checkNotNull(command, "command");
         ObjectUtil.checkNotNull(unit, "unit");
         if (initialDelay < 0) {
-            throw new IllegalArgumentException(
-                    String.format("initialDelay: %d (expected: >= 0)", initialDelay));
+            throw new IllegalArgumentException(String.format("initialDelay: %d (expected: >= 0)", initialDelay));
         }
         if (delay <= 0) {
-            throw new IllegalArgumentException(
-                    String.format("delay: %d (expected: > 0)", delay));
+            throw new IllegalArgumentException(String.format("delay: %d (expected: > 0)", delay));
         }
 
         validateScheduled0(initialDelay, unit);
         validateScheduled0(delay, unit);
 
-        return schedule(new ScheduledFutureTask<Void>(
-                this, command, deadlineNanos(unit.toNanos(initialDelay)), -unit.toNanos(delay)));
+        return schedule(new ScheduledFutureTask<Void>(this, command, deadlineNanos(unit.toNanos(initialDelay)),
+                -unit.toNanos(delay)));
     }
 
     @SuppressWarnings("deprecation")
@@ -235,7 +237,8 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
     }
 
     /**
-     * Sub-classes may override this to restrict the maximal amount of time someone can use to schedule a task.
+     * Sub-classes may override this to restrict the maximal amount of time someone
+     * can use to schedule a task.
      *
      * @deprecated will be removed in the future.
      */
@@ -280,27 +283,33 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
     }
 
     /**
-     * Called from arbitrary non-{@link EventExecutor} threads prior to scheduled task submission.
-     * Returns {@code true} if the {@link EventExecutor} thread should be woken immediately to
-     * process the scheduled task (if not already awake).
+     * Called from arbitrary non-{@link EventExecutor} threads prior to scheduled
+     * task submission. Returns {@code true} if the {@link EventExecutor} thread
+     * should be woken immediately to process the scheduled task (if not already
+     * awake).
      * <p>
-     * If {@code false} is returned, {@link #afterScheduledTaskSubmitted(long)} will be called with
-     * the same value <i>after</i> the scheduled task is enqueued, providing another opportunity
-     * to wake the {@link EventExecutor} thread if required.
+     * If {@code false} is returned, {@link #afterScheduledTaskSubmitted(long)} will
+     * be called with the same value <i>after</i> the scheduled task is enqueued,
+     * providing another opportunity to wake the {@link EventExecutor} thread if
+     * required.
      *
-     * @param deadlineNanos deadline of the to-be-scheduled task
-     *     relative to {@link AbstractScheduledEventExecutor#nanoTime()}
-     * @return {@code true} if the {@link EventExecutor} thread should be woken, {@code false} otherwise
+     * @param deadlineNanos deadline of the to-be-scheduled task relative to
+     *                      {@link AbstractScheduledEventExecutor#nanoTime()}
+     * @return {@code true} if the {@link EventExecutor} thread should be woken,
+     *         {@code false} otherwise
      */
     protected boolean beforeScheduledTaskSubmitted(long deadlineNanos) {
         return true;
     }
 
     /**
-     * See {@link #beforeScheduledTaskSubmitted(long)}. Called only after that method returns false.
+     * See {@link #beforeScheduledTaskSubmitted(long)}. Called only after that
+     * method returns false.
      *
-     * @param deadlineNanos relative to {@link AbstractScheduledEventExecutor#nanoTime()}
-     * @return  {@code true} if the {@link EventExecutor} thread should be woken, {@code false} otherwise
+     * @param deadlineNanos relative to
+     *                      {@link AbstractScheduledEventExecutor#nanoTime()}
+     * @return {@code true} if the {@link EventExecutor} thread should be woken,
+     *         {@code false} otherwise
      */
     protected boolean afterScheduledTaskSubmitted(long deadlineNanos) {
         return true;

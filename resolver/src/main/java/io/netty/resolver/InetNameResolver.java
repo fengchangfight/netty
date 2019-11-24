@@ -23,15 +23,17 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 /**
- * A skeletal {@link NameResolver} implementation that resolves {@link InetAddress}.
+ * fc comment: 抽象类继承抽象类 A skeletal {@link NameResolver} implementation that
+ * resolves {@link InetAddress}.
  */
 @UnstableApi
 public abstract class InetNameResolver extends SimpleNameResolver<InetAddress> {
     private volatile AddressResolver<InetSocketAddress> addressResolver;
 
     /**
-     * @param executor the {@link EventExecutor} which is used to notify the listeners of the {@link Future} returned
-     *                 by {@link #resolve(String)}
+     * @param executor the {@link EventExecutor} which is used to notify the
+     *                 listeners of the {@link Future} returned by
+     *                 {@link #resolve(String)}
      */
     protected InetNameResolver(EventExecutor executor) {
         super(executor);
@@ -44,6 +46,7 @@ public abstract class InetNameResolver extends SimpleNameResolver<InetAddress> {
     public AddressResolver<InetSocketAddress> asAddressResolver() {
         AddressResolver<InetSocketAddress> result = addressResolver;
         if (result == null) {
+            // fc comment: 套路：同步保证不为空
             synchronized (this) {
                 result = addressResolver;
                 if (result == null) {
