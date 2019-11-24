@@ -27,7 +27,8 @@ import java.net.SocketAddress;
 import java.util.Map;
 
 /**
- * Exposes the configuration of an {@link AbstractBootstrap}.
+ * fc comment: bootstrap相关配置，不赘述 Exposes the configuration of an
+ * {@link AbstractBootstrap}.
  */
 public abstract class AbstractBootstrapConfig<B extends AbstractBootstrap<B, C>, C extends Channel> {
 
@@ -38,14 +39,16 @@ public abstract class AbstractBootstrapConfig<B extends AbstractBootstrap<B, C>,
     }
 
     /**
-     * Returns the configured local address or {@code null} if non is configured yet.
+     * Returns the configured local address or {@code null} if non is configured
+     * yet.
      */
     public final SocketAddress localAddress() {
         return bootstrap.localAddress();
     }
 
     /**
-     * Returns the configured {@link ChannelFactory} or {@code null} if non is configured yet.
+     * Returns the configured {@link ChannelFactory} or {@code null} if non is
+     * configured yet.
      */
     @SuppressWarnings("deprecation")
     public final ChannelFactory<? extends C> channelFactory() {
@@ -53,7 +56,8 @@ public abstract class AbstractBootstrapConfig<B extends AbstractBootstrap<B, C>,
     }
 
     /**
-     * Returns the configured {@link ChannelHandler} or {@code null} if non is configured yet.
+     * Returns the configured {@link ChannelHandler} or {@code null} if non is
+     * configured yet.
      */
     public final ChannelHandler handler() {
         return bootstrap.handler();
@@ -74,7 +78,8 @@ public abstract class AbstractBootstrapConfig<B extends AbstractBootstrap<B, C>,
     }
 
     /**
-     * Returns the configured {@link EventLoopGroup} or {@code null} if non is configured yet.
+     * Returns the configured {@link EventLoopGroup} or {@code null} if non is
+     * configured yet.
      */
     @SuppressWarnings("deprecation")
     public final EventLoopGroup group() {
@@ -83,46 +88,32 @@ public abstract class AbstractBootstrapConfig<B extends AbstractBootstrap<B, C>,
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder()
-                .append(StringUtil.simpleClassName(this))
-                .append('(');
+        StringBuilder buf = new StringBuilder().append(StringUtil.simpleClassName(this)).append('(');
         EventLoopGroup group = group();
         if (group != null) {
-            buf.append("group: ")
-                    .append(StringUtil.simpleClassName(group))
-                    .append(", ");
+            buf.append("group: ").append(StringUtil.simpleClassName(group)).append(", ");
         }
         @SuppressWarnings("deprecation")
         ChannelFactory<? extends C> factory = channelFactory();
         if (factory != null) {
-            buf.append("channelFactory: ")
-                    .append(factory)
-                    .append(", ");
+            buf.append("channelFactory: ").append(factory).append(", ");
         }
         SocketAddress localAddress = localAddress();
         if (localAddress != null) {
-            buf.append("localAddress: ")
-                    .append(localAddress)
-                    .append(", ");
+            buf.append("localAddress: ").append(localAddress).append(", ");
         }
 
         Map<ChannelOption<?>, Object> options = options();
         if (!options.isEmpty()) {
-            buf.append("options: ")
-                    .append(options)
-                    .append(", ");
+            buf.append("options: ").append(options).append(", ");
         }
         Map<AttributeKey<?>, Object> attrs = attrs();
         if (!attrs.isEmpty()) {
-            buf.append("attrs: ")
-                    .append(attrs)
-                    .append(", ");
+            buf.append("attrs: ").append(attrs).append(", ");
         }
         ChannelHandler handler = handler();
         if (handler != null) {
-            buf.append("handler: ")
-                    .append(handler)
-                    .append(", ");
+            buf.append("handler: ").append(handler).append(", ");
         }
         if (buf.charAt(buf.length() - 1) == '(') {
             buf.append(')');

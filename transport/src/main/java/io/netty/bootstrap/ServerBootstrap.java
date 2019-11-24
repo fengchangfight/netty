@@ -38,7 +38,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@link Bootstrap} sub-class which allows easy bootstrap of {@link ServerChannel}
+ * 一个具体类，根据其继承的抽象类功能来看，其作用至少也包含启动一个channel... {@link Bootstrap} sub-class which
+ * allows easy bootstrap of {@link ServerChannel}
  *
  */
 public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerChannel> {
@@ -51,7 +52,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     private volatile EventLoopGroup childGroup;
     private volatile ChannelHandler childHandler;
 
-    public ServerBootstrap() { }
+    public ServerBootstrap() {
+    }
 
     private ServerBootstrap(ServerBootstrap bootstrap) {
         super(bootstrap);
@@ -62,7 +64,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     /**
-     * Specify the {@link EventLoopGroup} which is used for the parent (acceptor) and the child (client).
+     * Specify the {@link EventLoopGroup} which is used for the parent (acceptor)
+     * and the child (client).
      */
     @Override
     public ServerBootstrap group(EventLoopGroup group) {
@@ -70,9 +73,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     /**
-     * Set the {@link EventLoopGroup} for the parent (acceptor) and the child (client). These
-     * {@link EventLoopGroup}'s are used to handle all the events and IO for {@link ServerChannel} and
-     * {@link Channel}'s.
+     * Set the {@link EventLoopGroup} for the parent (acceptor) and the child
+     * (client). These {@link EventLoopGroup}'s are used to handle all the events
+     * and IO for {@link ServerChannel} and {@link Channel}'s.
      */
     public ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup) {
         super.group(parentGroup);
@@ -85,8 +88,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     /**
-     * Allow to specify a {@link ChannelOption} which is used for the {@link Channel} instances once they get created
-     * (after the acceptor accepted the {@link Channel}). Use a value of {@code null} to remove a previous set
+     * Allow to specify a {@link ChannelOption} which is used for the
+     * {@link Channel} instances once they get created (after the acceptor accepted
+     * the {@link Channel}). Use a value of {@code null} to remove a previous set
      * {@link ChannelOption}.
      */
     public <T> ServerBootstrap childOption(ChannelOption<T> childOption, T value) {
@@ -100,8 +104,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     /**
-     * Set the specific {@link AttributeKey} with the given value on every child {@link Channel}. If the value is
-     * {@code null} the {@link AttributeKey} is removed
+     * Set the specific {@link AttributeKey} with the given value on every child
+     * {@link Channel}. If the value is {@code null} the {@link AttributeKey} is
+     * removed
      */
     public <T> ServerBootstrap childAttr(AttributeKey<T> childKey, T value) {
         ObjectUtil.checkNotNull(childKey, "childKey");
@@ -114,7 +119,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     /**
-     * Set the {@link ChannelHandler} which is used to serve the request for the {@link Channel}'s.
+     * Set the {@link ChannelHandler} which is used to serve the request for the
+     * {@link Channel}'s.
      */
     public ServerBootstrap childHandler(ChannelHandler childHandler) {
         this.childHandler = ObjectUtil.checkNotNull(childHandler, "childHandler");
@@ -130,8 +136,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
         final EventLoopGroup currentChildGroup = childGroup;
         final ChannelHandler currentChildHandler = childHandler;
-        final Entry<ChannelOption<?>, Object>[] currentChildOptions =
-                childOptions.entrySet().toArray(newOptionArray(0));
+        final Entry<ChannelOption<?>, Object>[] currentChildOptions = childOptions.entrySet()
+                .toArray(newOptionArray(0));
         final Entry<AttributeKey<?>, Object>[] currentChildAttrs = childAttrs.entrySet().toArray(newAttrArray(0));
 
         p.addLast(new ChannelInitializer<Channel>() {
@@ -146,8 +152,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 ch.eventLoop().execute(new Runnable() {
                     @Override
                     public void run() {
-                        pipeline.addLast(new ServerBootstrapAcceptor(
-                                ch, currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
+                        pipeline.addLast(new ServerBootstrapAcceptor(ch, currentChildGroup, currentChildHandler,
+                                currentChildOptions, currentChildAttrs));
                     }
                 });
             }
@@ -175,8 +181,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         private final Entry<AttributeKey<?>, Object>[] childAttrs;
         private final Runnable enableAutoReadTask;
 
-        ServerBootstrapAcceptor(
-                final Channel channel, EventLoopGroup childGroup, ChannelHandler childHandler,
+        ServerBootstrapAcceptor(final Channel channel, EventLoopGroup childGroup, ChannelHandler childHandler,
                 Entry<ChannelOption<?>, Object>[] childOptions, Entry<AttributeKey<?>, Object>[] childAttrs) {
             this.childGroup = childGroup;
             this.childHandler = childHandler;
@@ -184,7 +189,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             this.childAttrs = childAttrs;
 
             // Task which is scheduled to re-enable auto-read.
-            // It's important to create this Runnable before we try to submit it as otherwise the URLClassLoader may
+            // It's important to create this Runnable before we try to submit it as
+            // otherwise the URLClassLoader may
             // not be able to load the class because of the file limit it already reached.
             //
             // See https://github.com/netty/netty/issues/1328
@@ -234,7 +240,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 config.setAutoRead(false);
                 ctx.channel().eventLoop().schedule(enableAutoReadTask, 1, TimeUnit.SECONDS);
             }
-            // still let the exceptionCaught event flow through the pipeline to give the user
+            // still let the exceptionCaught event flow through the pipeline to give the
+            // user
             // a chance to do something with it
             ctx.fireExceptionCaught(cause);
         }
@@ -247,8 +254,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     /**
-     * Return the configured {@link EventLoopGroup} which will be used for the child channels or {@code null}
-     * if non is configured yet.
+     * Return the configured {@link EventLoopGroup} which will be used for the child
+     * channels or {@code null} if non is configured yet.
      *
      * @deprecated Use {@link #config()} instead.
      */
