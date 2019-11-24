@@ -24,6 +24,9 @@ import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * fc comment: 一个类型检查器,暂不赘述
+ */
 public abstract class TypeParameterMatcher {
 
     private static final TypeParameterMatcher NOOP = new TypeParameterMatcher() {
@@ -147,10 +150,11 @@ public abstract class TypeParameterMatcher {
     }
 
     /**
-     * fc comment: 本抽象类主体
+     * fc comment: 本抽象类核心方法，需要被重写实现
      */
     public abstract boolean match(Object msg);
 
+    // fc comment: 套路： 静态内部类实现本抽象类
     private static final class ReflectiveMatcher extends TypeParameterMatcher {
         private final Class<?> type;
 

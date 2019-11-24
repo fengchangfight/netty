@@ -32,10 +32,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * The internal data structure that stores the thread-local variables for Netty
- * and all {@link FastThreadLocal}s. Note that this class is for internal use
- * only and is subject to change at any time. Use {@link FastThreadLocal} unless
- * you know what you are doing.
+ * fc comment The internal data structure that stores the thread-local variables
+ * for Netty and all {@link FastThreadLocal}s. Note that this class is for
+ * internal use only and is subject to change at any time. Use
+ * {@link FastThreadLocal} unless you know what you are doing.
  */
 public final class InternalThreadLocalMap extends UnpaddedInternalThreadLocalMap {
 
@@ -81,6 +81,7 @@ public final class InternalThreadLocalMap extends UnpaddedInternalThreadLocalMap
     private static InternalThreadLocalMap fastGet(FastThreadLocalThread thread) {
         InternalThreadLocalMap threadLocalMap = thread.threadLocalMap();
         if (threadLocalMap == null) {
+            // fc comment: 套路： 等号表达式
             thread.setThreadLocalMap(threadLocalMap = new InternalThreadLocalMap());
         }
         return threadLocalMap;
@@ -132,7 +133,11 @@ public final class InternalThreadLocalMap extends UnpaddedInternalThreadLocalMap
     }
 
     private static Object[] newIndexedVariableTable() {
+        /**
+         * 套路:初始化一个同样元素固定长度的array
+         */
         Object[] array = new Object[32];
+        // fc comment: 套路：Arrays.fill
         Arrays.fill(array, UNSET);
         return array;
     }

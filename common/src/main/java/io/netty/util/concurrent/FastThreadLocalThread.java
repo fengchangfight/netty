@@ -19,9 +19,9 @@ import io.netty.util.internal.InternalThreadLocalMap;
 import io.netty.util.internal.UnstableApi;
 
 /**
- * fc comment: 两个环境变量:InternalThreadLocal & cleanupFastThreadLocals（标志位） A
- * special {@link Thread} that provides fast access to {@link FastThreadLocal}
- * variables.
+ * fc comment: 是一种thread 两个环境变量:InternalThreadLocal &
+ * cleanupFastThreadLocals（标志位） A special {@link Thread} that provides fast
+ * access to {@link FastThreadLocal} variables.
  */
 public class FastThreadLocalThread extends Thread {
     // This will be set to true if we have a chance to wrap the Runnable.

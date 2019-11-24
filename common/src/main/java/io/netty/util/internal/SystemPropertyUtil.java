@@ -187,4 +187,9 @@ public final class SystemPropertyUtil {
     private SystemPropertyUtil() {
         // Unused
     }
+
+    public static void main(String[] args) {
+        String s = SystemPropertyUtil.get("what");
+        System.out.println(s);
+    }
 }
