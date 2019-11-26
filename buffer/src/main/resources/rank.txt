@@ -2501,9 +2501,9 @@
     881 transport/src/main/java/io/netty/channel/embedded/EmbeddedChannel.java
      892 codec-http2/src/test/java/io/netty/handler/codec/http2/Http2FrameCodecTest.java
      893 buffer/src/main/java/io/netty/buffer/Unpooled.java
-     893 codec-http2/src/main/java/io/netty/handler/codec/http2/ReadOnlyHttp2Headers.java
-     898 example/src/main/java/io/netty/example/http/upload/HttpUploadClient.java
-    902 transport/src/main/java/io/netty/channel/nio/NioEventLoop.java
+     ---893 codec-http2/src/main/java/io/netty/handler/codec/http2/ReadOnlyHttp2Headers.java
+     ---898 example/src/main/java/io/netty/example/http/upload/HttpUploadClient.java
+    ---902 transport/src/main/java/io/netty/channel/nio/NioEventLoop.java
      919 codec-http2/src/test/java/io/netty/handler/codec/http2/DefaultHttp2ConnectionEncoderTest.java
      936 codec-http2/src/test/java/io/netty/handler/codec/http2/Http2StreamFrameToHttpObjectCodecTest.java
      936 codec-http2/src/test/java/io/netty/handler/codec/http2/WeightedFairQueueByteDistributorDependencyTreeTest.java

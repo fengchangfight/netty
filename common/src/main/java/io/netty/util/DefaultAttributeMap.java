@@ -20,20 +20,25 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * Default {@link AttributeMap} implementation which use simple synchronization per bucket to keep the memory overhead
- * as low as possible.
+ * fc comment: AttributeMap接口的一个实现类 Default {@link AttributeMap} implementation
+ * which use simple synchronization per bucket to keep the memory overhead as
+ * low as possible.
  */
 public class DefaultAttributeMap implements AttributeMap {
 
     @SuppressWarnings("rawtypes")
-    private static final AtomicReferenceFieldUpdater<DefaultAttributeMap, AtomicReferenceArray> updater =
-            AtomicReferenceFieldUpdater.newUpdater(DefaultAttributeMap.class, AtomicReferenceArray.class, "attributes");
+    private static final AtomicReferenceFieldUpdater<DefaultAttributeMap, AtomicReferenceArray> updater = AtomicReferenceFieldUpdater
+            .newUpdater(DefaultAttributeMap.class, AtomicReferenceArray.class, "attributes");
 
     private static final int BUCKET_SIZE = 4;
-    private static final int MASK = BUCKET_SIZE  - 1;
+    private static final int MASK = BUCKET_SIZE - 1;
 
-    // Initialize lazily to reduce memory consumption; updated by AtomicReferenceFieldUpdater above.
+    // Initialize lazily to reduce memory consumption; updated by
+    // AtomicReferenceFieldUpdater above.
+    // fc comment， 核心属性
     @SuppressWarnings("UnusedDeclaration")
+
+    // fc comment: DefaultAttribute是个内部类
     private volatile AtomicReferenceArray<DefaultAttribute<?>> attributes;
 
     @SuppressWarnings("unchecked")
@@ -55,8 +60,10 @@ public class DefaultAttributeMap implements AttributeMap {
         int i = index(key);
         DefaultAttribute<?> head = attributes.get(i);
         if (head == null) {
-            // No head exists yet which means we may be able to add the attribute without synchronization and just
-            // use compare and set. At worst we need to fallback to synchronization and waste two allocations.
+            // No head exists yet which means we may be able to add the attribute without
+            // synchronization and just
+            // use compare and set. At worst we need to fallback to synchronization and
+            // waste two allocations.
             head = new DefaultAttribute();
             DefaultAttribute<T> attr = new DefaultAttribute<T>(head, key);
             head.next = attr;
@@ -102,7 +109,8 @@ public class DefaultAttributeMap implements AttributeMap {
         int i = index(key);
         DefaultAttribute<?> head = attributes.get(i);
         if (head == null) {
-            // No attribute exists which point to the bucket in which the head should be located
+            // No attribute exists which point to the bucket in which the head should be
+            // located
             return false;
         }
 
@@ -137,7 +145,8 @@ public class DefaultAttributeMap implements AttributeMap {
         private DefaultAttribute<?> prev;
         private DefaultAttribute<?> next;
 
-        // Will be set to true one the attribute is removed via getAndRemove() or remove()
+        // Will be set to true one the attribute is removed via getAndRemove() or
+        // remove()
         private volatile boolean removed;
 
         DefaultAttribute(DefaultAttribute<?> head, AttributeKey<T> key) {
@@ -195,7 +204,8 @@ public class DefaultAttributeMap implements AttributeMap {
                     next.prev = prev;
                 }
 
-                // Null out prev and next - this will guard against multiple remove0() calls which may corrupt
+                // Null out prev and next - this will guard against multiple remove0() calls
+                // which may corrupt
                 // the linked list for the bucket.
                 prev = null;
                 next = null;

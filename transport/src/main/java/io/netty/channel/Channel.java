@@ -27,7 +27,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
- * fc comment 看下面这段描述什么事channel A nexus to a network socket or a component which
+ * fc comment 看下面这段描述什么是channel A nexus to a network socket or a component which
  * is capable of I/O operations such as read, write, connect, and bind.
  * <p>
  * A channel provides a user:
