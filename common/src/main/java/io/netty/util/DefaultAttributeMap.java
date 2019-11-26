@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * fc comment: AttributeMap接口的一个实现类 Default {@link AttributeMap} implementation
- * which use simple synchronization per bucket to keep the memory overhead as
- * low as possible.
+ * fc comment: AttributeMap接口的一个实现类, 暂不细看 Default {@link AttributeMap}
+ * implementation which use simple synchronization per bucket to keep the memory
+ * overhead as low as possible.
  */
 public class DefaultAttributeMap implements AttributeMap {
 
