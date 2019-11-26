@@ -18,27 +18,28 @@ package io.netty.util.internal;
 import io.netty.util.Recycler;
 
 /**
- * fc comment
- * 套路: 抽象类里定义接口
- * 套路2: 抽象类内定义静态内部类继承自本接口
- * 高层逻辑: 对象池
- * Light-weight object pool.
+ * fc comment 套路: 抽象类里定义接口 套路2: 抽象类内定义静态内部类继承自本抽象类 高层逻辑: 对象池 Light-weight object
+ * pool.
  *
  * @param <T> the type of the pooled object
  */
 public abstract class ObjectPool<T> {
 
-    ObjectPool() { }
+    ObjectPool() {
+    }
 
     /**
-     * Get a {@link Object} from the {@link ObjectPool}. The returned {@link Object} may be created via
-     * {@link ObjectCreator#newObject(Handle)} if no pooled {@link Object} is ready to be reused.
+     * Get a {@link Object} from the {@link ObjectPool}. The returned {@link Object}
+     * may be created via {@link ObjectCreator#newObject(Handle)} if no pooled
+     * {@link Object} is ready to be reused.
      */
     public abstract T get();
 
     /**
-     * Handle for an pooled {@link Object} that will be used to notify the {@link ObjectPool} once it can
-     * reuse the pooled {@link Object} again.
+     * fc comment：回收动作的handle Handle for an pooled {@link Object} that will be used
+     * to notify the {@link ObjectPool} once it can reuse the pooled {@link Object}
+     * again.
+     * 
      * @param <T>
      */
     public interface Handle<T> {
@@ -49,23 +50,23 @@ public abstract class ObjectPool<T> {
     }
 
     /**
-     * Creates a new Object which references the given {@link Handle} and calls {@link Handle#recycle(Object)} once
-     * it can be re-used.
+     * Creates a new Object which references the given {@link Handle} and calls
+     * {@link Handle#recycle(Object)} once it can be re-used.
      *
      * @param <T> the type of the pooled object
      */
     public interface ObjectCreator<T> {
 
         /**
-         * Creates an returns a new {@link Object} that can be used and later recycled via
-         * {@link Handle#recycle(Object)}.
+         * Creates an returns a new {@link Object} that can be used and later recycled
+         * via {@link Handle#recycle(Object)}.
          */
         T newObject(Handle<T> handle);
     }
 
     /**
-     * Creates a new {@link ObjectPool} which will use the given {@link ObjectCreator} to create the {@link Object}
-     * that should be pooled.
+     * Creates a new {@link ObjectPool} which will use the given
+     * {@link ObjectCreator} to create the {@link Object} that should be pooled.
      */
     public static <T> ObjectPool<T> newPool(final ObjectCreator<T> creator) {
         ObjectUtil.checkNotNull(creator, "creator");
@@ -77,7 +78,7 @@ public abstract class ObjectPool<T> {
         private final Recycler<T> recycler;
 
         RecyclerObjectPool(final ObjectCreator<T> creator) {
-             recycler = new Recycler<T>() {
+            recycler = new Recycler<T>() {
                 @Override
                 protected T newObject(Handle<T> handle) {
                     return creator.newObject(handle);

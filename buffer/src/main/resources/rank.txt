@@ -2498,7 +2498,7 @@
      867 codec-http2/src/test/java/io/netty/handler/codec/http2/InboundHttp2ToHttpAdapterTest.java
     873 transport/src/main/java/io/netty/channel/ChannelOutboundBuffer.java
      881 common/src/main/java/io/netty/util/internal/PlatformDependent0.java
-    881 transport/src/main/java/io/netty/channel/embedded/EmbeddedChannel.java
+    ---881 transport/src/main/java/io/netty/channel/embedded/EmbeddedChannel.java
      892 codec-http2/src/test/java/io/netty/handler/codec/http2/Http2FrameCodecTest.java
      893 buffer/src/main/java/io/netty/buffer/Unpooled.java
      ---893 codec-http2/src/main/java/io/netty/handler/codec/http2/ReadOnlyHttp2Headers.java

@@ -39,27 +39,29 @@ import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import static java.lang.Math.min;
 
 /**
- * (Transport implementors only) an internal data structure used by {@link AbstractChannel} to store its pending
- * outbound write requests.
+ * fc comment: 看第一句话: (Transport implementors only) an internal data structure
+ * used by {@link AbstractChannel} to store its pending outbound write requests.
  * <p>
- * All methods must be called by a transport implementation from an I/O thread, except the following ones:
+ * All methods must be called by a transport implementation from an I/O thread,
+ * except the following ones:
  * <ul>
  * <li>{@link #size()} and {@link #isEmpty()}</li>
  * <li>{@link #isWritable()}</li>
- * <li>{@link #getUserDefinedWritability(int)} and {@link #setUserDefinedWritability(int, boolean)}</li>
+ * <li>{@link #getUserDefinedWritability(int)} and
+ * {@link #setUserDefinedWritability(int, boolean)}</li>
  * </ul>
  * </p>
  */
 public final class ChannelOutboundBuffer {
     // Assuming a 64-bit JVM:
-    //  - 16 bytes object header
-    //  - 8 reference fields
-    //  - 2 long fields
-    //  - 2 int fields
-    //  - 1 boolean field
-    //  - padding
-    static final int CHANNEL_OUTBOUND_BUFFER_ENTRY_OVERHEAD =
-            SystemPropertyUtil.getInt("io.netty.transport.outboundBufferEntrySizeOverhead", 96);
+    // - 16 bytes object header
+    // - 8 reference fields
+    // - 2 long fields
+    // - 2 int fields
+    // - 1 boolean field
+    // - padding
+    static final int CHANNEL_OUTBOUND_BUFFER_ENTRY_OVERHEAD = SystemPropertyUtil
+            .getInt("io.netty.transport.outboundBufferEntrySizeOverhead", 96);
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(ChannelOutboundBuffer.class);
 
@@ -88,14 +90,14 @@ public final class ChannelOutboundBuffer {
 
     private boolean inFail;
 
-    private static final AtomicLongFieldUpdater<ChannelOutboundBuffer> TOTAL_PENDING_SIZE_UPDATER =
-            AtomicLongFieldUpdater.newUpdater(ChannelOutboundBuffer.class, "totalPendingSize");
+    private static final AtomicLongFieldUpdater<ChannelOutboundBuffer> TOTAL_PENDING_SIZE_UPDATER = AtomicLongFieldUpdater
+            .newUpdater(ChannelOutboundBuffer.class, "totalPendingSize");
 
     @SuppressWarnings("UnusedDeclaration")
     private volatile long totalPendingSize;
 
-    private static final AtomicIntegerFieldUpdater<ChannelOutboundBuffer> UNWRITABLE_UPDATER =
-            AtomicIntegerFieldUpdater.newUpdater(ChannelOutboundBuffer.class, "unwritable");
+    private static final AtomicIntegerFieldUpdater<ChannelOutboundBuffer> UNWRITABLE_UPDATER = AtomicIntegerFieldUpdater
+            .newUpdater(ChannelOutboundBuffer.class, "unwritable");
 
     @SuppressWarnings("UnusedDeclaration")
     private volatile int unwritable;
@@ -107,8 +109,8 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Add given message to this {@link ChannelOutboundBuffer}. The given {@link ChannelPromise} will be notified once
-     * the message was written.
+     * Add given message to this {@link ChannelOutboundBuffer}. The given
+     * {@link ChannelPromise} will be notified once the message was written.
      */
     public void addMessage(Object msg, int size, ChannelPromise promise) {
         Entry entry = Entry.newInstance(msg, size, total(msg), promise);
@@ -129,11 +131,12 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Add a flush to this {@link ChannelOutboundBuffer}. This means all previous added messages are marked as flushed
-     * and so you will be able to handle them.
+     * Add a flush to this {@link ChannelOutboundBuffer}. This means all previous
+     * added messages are marked as flushed and so you will be able to handle them.
      */
     public void addFlush() {
-        // There is no need to process all entries if there was already a flush before and no new messages
+        // There is no need to process all entries if there was already a flush before
+        // and no new messages
         // where added in the meantime.
         //
         // See https://github.com/netty/netty/issues/2577
@@ -144,7 +147,7 @@ public final class ChannelOutboundBuffer {
                 flushedEntry = entry;
             }
             do {
-                flushed ++;
+                flushed++;
                 if (!entry.promise.setUncancellable()) {
                     // Was cancelled so make sure we free up memory and notify about the freed bytes
                     int pending = entry.cancel();
@@ -159,8 +162,8 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Increment the pending bytes which will be written at some point.
-     * This method is thread-safe!
+     * Increment the pending bytes which will be written at some point. This method
+     * is thread-safe!
      */
     void incrementPendingOutboundBytes(long size) {
         incrementPendingOutboundBytes(size, true);
@@ -178,8 +181,8 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Decrement the pending bytes which will be written at some point.
-     * This method is thread-safe!
+     * Decrement the pending bytes which will be written at some point. This method
+     * is thread-safe!
      */
     void decrementPendingOutboundBytes(long size) {
         decrementPendingOutboundBytes(size, true, true);
@@ -210,7 +213,8 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Return the current message to write or {@code null} if nothing was flushed before and so is ready to be written.
+     * Return the current message to write or {@code null} if nothing was flushed
+     * before and so is ready to be written.
      */
     public Object current() {
         Entry entry = flushedEntry;
@@ -223,7 +227,9 @@ public final class ChannelOutboundBuffer {
 
     /**
      * Return the current message flush progress.
-     * @return {@code 0} if nothing was flushed before for the current message or there is no current message
+     * 
+     * @return {@code 0} if nothing was flushed before for the current message or
+     *         there is no current message
      */
     public long currentProgress() {
         Entry entry = flushedEntry;
@@ -234,7 +240,8 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Notify the {@link ChannelPromise} of the current message about writing progress.
+     * Notify the {@link ChannelPromise} of the current message about writing
+     * progress.
      */
     public void progress(long amount) {
         Entry e = flushedEntry;
@@ -248,9 +255,10 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Will remove the current message, mark its {@link ChannelPromise} as success and return {@code true}. If no
-     * flushed message exists at the time this method is called it will return {@code false} to signal that no more
-     * messages are ready to be handled.
+     * Will remove the current message, mark its {@link ChannelPromise} as success
+     * and return {@code true}. If no flushed message exists at the time this method
+     * is called it will return {@code false} to signal that no more messages are
+     * ready to be handled.
      */
     public boolean remove() {
         Entry e = flushedEntry;
@@ -279,9 +287,10 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Will remove the current message, mark its {@link ChannelPromise} as failure using the given {@link Throwable}
-     * and return {@code true}. If no   flushed message exists at the time this method is called it will return
-     * {@code false} to signal that no more messages are ready to be handled.
+     * Will remove the current message, mark its {@link ChannelPromise} as failure
+     * using the given {@link Throwable} and return {@code true}. If no flushed
+     * message exists at the time this method is called it will return {@code false}
+     * to signal that no more messages are ready to be handled.
      */
     public boolean remove(Throwable cause) {
         return remove0(cause, true);
@@ -315,7 +324,7 @@ public final class ChannelOutboundBuffer {
     }
 
     private void removeEntry(Entry e) {
-        if (-- flushed == 0) {
+        if (--flushed == 0) {
             // processed everything
             flushedEntry = null;
             if (e == tailEntry) {
@@ -328,8 +337,9 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Removes the fully written entries and update the reader index of the partially written entry.
-     * This operation assumes all messages in this buffer is {@link ByteBuf}.
+     * Removes the fully written entries and update the reader index of the
+     * partially written entry. This operation assumes all messages in this buffer
+     * is {@link ByteBuf}.
      */
     public void removeBytes(long writtenBytes) {
         for (;;) {
@@ -371,13 +381,15 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Returns an array of direct NIO buffers if the currently pending messages are made of {@link ByteBuf} only.
-     * {@link #nioBufferCount()} and {@link #nioBufferSize()} will return the number of NIO buffers in the returned
-     * array and the total number of readable bytes of the NIO buffers respectively.
+     * Returns an array of direct NIO buffers if the currently pending messages are
+     * made of {@link ByteBuf} only. {@link #nioBufferCount()} and
+     * {@link #nioBufferSize()} will return the number of NIO buffers in the
+     * returned array and the total number of readable bytes of the NIO buffers
+     * respectively.
      * <p>
      * Note that the returned array is reused and thus should not escape
-     * {@link AbstractChannel#doWrite(ChannelOutboundBuffer)}.
-     * Refer to {@link NioSocketChannel#doWrite(ChannelOutboundBuffer)} for an example.
+     * {@link AbstractChannel#doWrite(ChannelOutboundBuffer)}. Refer to
+     * {@link NioSocketChannel#doWrite(ChannelOutboundBuffer)} for an example.
      * </p>
      */
     public ByteBuffer[] nioBuffers() {
@@ -385,18 +397,24 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Returns an array of direct NIO buffers if the currently pending messages are made of {@link ByteBuf} only.
-     * {@link #nioBufferCount()} and {@link #nioBufferSize()} will return the number of NIO buffers in the returned
-     * array and the total number of readable bytes of the NIO buffers respectively.
+     * Returns an array of direct NIO buffers if the currently pending messages are
+     * made of {@link ByteBuf} only. {@link #nioBufferCount()} and
+     * {@link #nioBufferSize()} will return the number of NIO buffers in the
+     * returned array and the total number of readable bytes of the NIO buffers
+     * respectively.
      * <p>
      * Note that the returned array is reused and thus should not escape
-     * {@link AbstractChannel#doWrite(ChannelOutboundBuffer)}.
-     * Refer to {@link NioSocketChannel#doWrite(ChannelOutboundBuffer)} for an example.
+     * {@link AbstractChannel#doWrite(ChannelOutboundBuffer)}. Refer to
+     * {@link NioSocketChannel#doWrite(ChannelOutboundBuffer)} for an example.
      * </p>
-     * @param maxCount The maximum amount of buffers that will be added to the return value.
-     * @param maxBytes A hint toward the maximum number of bytes to include as part of the return value. Note that this
-     *                 value maybe exceeded because we make a best effort to include at least 1 {@link ByteBuffer}
-     *                 in the return value to ensure write progress is made.
+     * 
+     * @param maxCount The maximum amount of buffers that will be added to the
+     *                 return value.
+     * @param maxBytes A hint toward the maximum number of bytes to include as part
+     *                 of the return value. Note that this value maybe exceeded
+     *                 because we make a best effort to include at least 1
+     *                 {@link ByteBuffer} in the return value to ensure write
+     *                 progress is made.
      */
     public ByteBuffer[] nioBuffers(int maxCount, long maxBytes) {
         assert maxCount > 0;
@@ -414,12 +432,16 @@ public final class ChannelOutboundBuffer {
 
                 if (readableBytes > 0) {
                     if (maxBytes - readableBytes < nioBufferSize && nioBufferCount != 0) {
-                        // If the nioBufferSize + readableBytes will overflow maxBytes, and there is at least one entry
+                        // If the nioBufferSize + readableBytes will overflow maxBytes, and there is at
+                        // least one entry
                         // we stop populate the ByteBuffer array. This is done for 2 reasons:
-                        // 1. bsd/osx don't allow to write more bytes then Integer.MAX_VALUE with one writev(...) call
-                        // and so will return 'EINVAL', which will raise an IOException. On Linux it may work depending
+                        // 1. bsd/osx don't allow to write more bytes then Integer.MAX_VALUE with one
+                        // writev(...) call
+                        // and so will return 'EINVAL', which will raise an IOException. On Linux it may
+                        // work depending
                         // on the architecture and kernel but to be safe we also enforce the limit here.
-                        // 2. There is no sense in putting more data in the array than is likely to be accepted by the
+                        // 2. There is no sense in putting more data in the array than is likely to be
+                        // accepted by the
                         // OS.
                         //
                         // See also:
@@ -430,7 +452,7 @@ public final class ChannelOutboundBuffer {
                     nioBufferSize += readableBytes;
                     int count = entry.count;
                     if (count == -1) {
-                        //noinspection ConstantValueVariableUse
+                        // noinspection ConstantValueVariableUse
                         entry.count = count = buf.nioBufferCount();
                     }
                     int neededSpace = min(maxCount, nioBufferCount + count);
@@ -447,7 +469,8 @@ public final class ChannelOutboundBuffer {
                         }
                         nioBuffers[nioBufferCount++] = nioBuf;
                     } else {
-                        // The code exists in an extra method to ensure the method is not too big to inline as this
+                        // The code exists in an extra method to ensure the method is not too big to
+                        // inline as this
                         // branch is not very likely to get hit very frequently.
                         nioBufferCount = nioBuffers(entry, buf, nioBuffers, nioBufferCount, maxCount);
                     }
@@ -503,36 +526,37 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Returns the number of {@link ByteBuffer} that can be written out of the {@link ByteBuffer} array that was
-     * obtained via {@link #nioBuffers()}. This method <strong>MUST</strong> be called after {@link #nioBuffers()}
-     * was called.
+     * Returns the number of {@link ByteBuffer} that can be written out of the
+     * {@link ByteBuffer} array that was obtained via {@link #nioBuffers()}. This
+     * method <strong>MUST</strong> be called after {@link #nioBuffers()} was
+     * called.
      */
     public int nioBufferCount() {
         return nioBufferCount;
     }
 
     /**
-     * Returns the number of bytes that can be written out of the {@link ByteBuffer} array that was
-     * obtained via {@link #nioBuffers()}. This method <strong>MUST</strong> be called after {@link #nioBuffers()}
-     * was called.
+     * Returns the number of bytes that can be written out of the {@link ByteBuffer}
+     * array that was obtained via {@link #nioBuffers()}. This method
+     * <strong>MUST</strong> be called after {@link #nioBuffers()} was called.
      */
     public long nioBufferSize() {
         return nioBufferSize;
     }
 
     /**
-     * Returns {@code true} if and only if {@linkplain #totalPendingWriteBytes() the total number of pending bytes} did
-     * not exceed the write watermark of the {@link Channel} and
-     * no {@linkplain #setUserDefinedWritability(int, boolean) user-defined writability flag} has been set to
-     * {@code false}.
+     * Returns {@code true} if and only if {@linkplain #totalPendingWriteBytes() the
+     * total number of pending bytes} did not exceed the write watermark of the
+     * {@link Channel} and no {@linkplain #setUserDefinedWritability(int, boolean)
+     * user-defined writability flag} has been set to {@code false}.
      */
     public boolean isWritable() {
         return unwritable == 0;
     }
 
     /**
-     * Returns {@code true} if and only if the user-defined writability flag at the specified index is set to
-     * {@code true}.
+     * Returns {@code true} if and only if the user-defined writability flag at the
+     * specified index is set to {@code true}.
      */
     public boolean getUserDefinedWritability(int index) {
         return (unwritable & writabilityMask(index)) == 0;
@@ -636,16 +660,18 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Returns {@code true} if there are flushed messages in this {@link ChannelOutboundBuffer} or {@code false}
-     * otherwise.
+     * Returns {@code true} if there are flushed messages in this
+     * {@link ChannelOutboundBuffer} or {@code false} otherwise.
      */
     public boolean isEmpty() {
         return flushed == 0;
     }
 
     void failFlushed(Throwable cause, boolean notify) {
-        // Make sure that this method does not reenter.  A listener added to the current promise can be notified by the
-        // current thread in the tryFailure() call of the loop below, and the listener can trigger another fail() call
+        // Make sure that this method does not reenter. A listener added to the current
+        // promise can be notified by the
+        // current thread in the tryFailure() call of the loop below, and the listener
+        // can trigger another fail() call
         // indirectly (usually by closing the channel.)
         //
         // See https://github.com/netty/netty/issues/1501
@@ -711,13 +737,15 @@ public final class ChannelOutboundBuffer {
     }
 
     private static void safeSuccess(ChannelPromise promise) {
-        // Only log if the given promise is not of type VoidChannelPromise as trySuccess(...) is expected to return
+        // Only log if the given promise is not of type VoidChannelPromise as
+        // trySuccess(...) is expected to return
         // false.
         PromiseNotificationUtil.trySuccess(promise, null, promise instanceof VoidChannelPromise ? null : logger);
     }
 
     private static void safeFail(ChannelPromise promise, Throwable cause) {
-        // Only log if the given promise is not of type VoidChannelPromise as tryFailure(...) is expected to return
+        // Only log if the given promise is not of type VoidChannelPromise as
+        // tryFailure(...) is expected to return
         // false.
         PromiseNotificationUtil.tryFailure(promise, cause, promise instanceof VoidChannelPromise ? null : logger);
     }
@@ -732,13 +760,16 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Get how many bytes can be written until {@link #isWritable()} returns {@code false}.
-     * This quantity will always be non-negative. If {@link #isWritable()} is {@code false} then 0.
+     * Get how many bytes can be written until {@link #isWritable()} returns
+     * {@code false}. This quantity will always be non-negative. If
+     * {@link #isWritable()} is {@code false} then 0.
      */
     public long bytesBeforeUnwritable() {
         long bytes = channel.config().getWriteBufferHighWaterMark() - totalPendingSize;
-        // If bytes is negative we know we are not writable, but if bytes is non-negative we have to check writability.
-        // Note that totalPendingSize and isWritable() use different volatile variables that are not synchronized
+        // If bytes is negative we know we are not writable, but if bytes is
+        // non-negative we have to check writability.
+        // Note that totalPendingSize and isWritable() use different volatile variables
+        // that are not synchronized
         // together. totalPendingSize will be updated before isWritable().
         if (bytes > 0) {
             return isWritable() ? bytes : 0;
@@ -747,13 +778,16 @@ public final class ChannelOutboundBuffer {
     }
 
     /**
-     * Get how many bytes must be drained from the underlying buffer until {@link #isWritable()} returns {@code true}.
-     * This quantity will always be non-negative. If {@link #isWritable()} is {@code true} then 0.
+     * Get how many bytes must be drained from the underlying buffer until
+     * {@link #isWritable()} returns {@code true}. This quantity will always be
+     * non-negative. If {@link #isWritable()} is {@code true} then 0.
      */
     public long bytesBeforeWritable() {
         long bytes = totalPendingSize - channel.config().getWriteBufferLowWaterMark();
-        // If bytes is negative we know we are writable, but if bytes is non-negative we have to check writability.
-        // Note that totalPendingSize and isWritable() use different volatile variables that are not synchronized
+        // If bytes is negative we know we are writable, but if bytes is non-negative we
+        // have to check writability.
+        // Note that totalPendingSize and isWritable() use different volatile variables
+        // that are not synchronized
         // together. totalPendingSize will be updated before isWritable().
         if (bytes > 0) {
             return isWritable() ? 0 : bytes;
@@ -763,8 +797,9 @@ public final class ChannelOutboundBuffer {
 
     /**
      * Call {@link MessageProcessor#processMessage(Object)} for each flushed message
-     * in this {@link ChannelOutboundBuffer} until {@link MessageProcessor#processMessage(Object)}
-     * returns {@code false} or there are no more flushed messages to process.
+     * in this {@link ChannelOutboundBuffer} until
+     * {@link MessageProcessor#processMessage(Object)} returns {@code false} or
+     * there are no more flushed messages to process.
      */
     public void forEachFlushedMessage(MessageProcessor processor) throws Exception {
         if (processor == null) {
@@ -792,8 +827,8 @@ public final class ChannelOutboundBuffer {
 
     public interface MessageProcessor {
         /**
-         * Will be called for each flushed message until it either there are no more flushed messages or this
-         * method returns {@code false}.
+         * Will be called for each flushed message until it either there are no more
+         * flushed messages or this method returns {@code false}.
          */
         boolean processMessage(Object msg) throws Exception;
     }
