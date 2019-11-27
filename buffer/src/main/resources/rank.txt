@@ -2429,7 +2429,7 @@
      589 codec-http2/src/test/java/io/netty/handler/codec/http2/HttpToHttp2ConnectionHandlerTest.java
      589 handler/src/main/java/io/netty/handler/timeout/IdleStateHandler.java
      597 codec-http2/src/main/java/io/netty/handler/codec/http2/AbstractHttp2ConnectionHandlerBuilder.java
-     597 common/src/main/java/io/netty/util/internal/logging/Log4JLogger.java
+     --597 common/src/main/java/io/netty/util/internal/logging/Log4JLogger.java
     601 transport/src/test/java/io/netty/channel/local/LocalTransportThreadModelTest.java
      602 handler/src/main/java/io/netty/handler/ssl/OpenSsl.java
     602 microbench/target/generated-sources/annotations/io/netty/microbench/channel/generated/DefaultChannelPipelineBenchmark_propagateEvent_jmhTest.java
