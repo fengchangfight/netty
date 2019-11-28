@@ -32,9 +32,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
+/**
+ * fc comment: 普通test case测关于网络地址的,不赘述
+ */
 public class NetUtilTest {
 
+    // fc comment 一个序列变成map, 两个两个取,前key ,后value
+    // 算是个小套路吧
     private static final class TestMap extends HashMap<String, String> {
         private static final long serialVersionUID = -298642816998608473L;
 
