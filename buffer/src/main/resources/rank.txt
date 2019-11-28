@@ -2398,8 +2398,8 @@
      514 codec/src/main/java/io/netty/handler/codec/LengthFieldBasedFrameDecoder.java
     514 transport/src/main/java/io/netty/channel/pool/FixedChannelPool.java
      516 codec-http/src/test/java/io/netty/handler/codec/spdy/SpdyHeaderBlockRawDecoderTest.java
-     520 codec-http2/src/main/java/io/netty/handler/codec/http2/HpackEncoder.java
-     524 common/src/main/java/io/netty/util/internal/NativeLibraryLoader.java
+     ---520 codec-http2/src/main/java/io/netty/handler/codec/http2/HpackEncoder.java
+     ---524 common/src/main/java/io/netty/util/internal/NativeLibraryLoader.java
      524 handler/src/main/java/io/netty/handler/ssl/JdkSslContext.java
     524 microbench/target/generated-sources/annotations/io/netty/microbench/handler/ssl/generated/SslEngineHandshakeBenchmark_handshake_jmhTest.java
      526 codec/src/main/java/io/netty/handler/codec/EmptyHeaders.java

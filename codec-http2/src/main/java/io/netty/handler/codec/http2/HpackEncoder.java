@@ -55,18 +55,22 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 /**
+ * fc comment: 什么是HPACK, 参考： https://tools.ietf.org/html/rfc7541， 具体暂放
+ * 
  * An HPACK encoder.
  *
- * <p>Implementation note:  This class is security sensitive, and depends on users correctly identifying their headers
- * as security sensitive or not.  If a header is considered not sensitive, methods names "insensitive" are used which
- * are fast, but don't provide any security guarantees.
+ * <p>
+ * Implementation note: This class is security sensitive, and depends on users
+ * correctly identifying their headers as security sensitive or not. If a header
+ * is considered not sensitive, methods names "insensitive" are used which are
+ * fast, but don't provide any security guarantees.
  */
 final class HpackEncoder {
     static final int HUFF_CODE_THRESHOLD = 512;
     // a linked hash map of header fields
     private final HeaderEntry[] headerFields;
-    private final HeaderEntry head = new HeaderEntry(-1, AsciiString.EMPTY_STRING,
-            AsciiString.EMPTY_STRING, Integer.MAX_VALUE, null);
+    private final HeaderEntry head = new HeaderEntry(-1, AsciiString.EMPTY_STRING, AsciiString.EMPTY_STRING,
+            Integer.MAX_VALUE, null);
     private final HpackHuffmanEncoder hpackHuffmanEncoder = new HpackHuffmanEncoder();
     private final byte hashMask;
     private final boolean ignoreMaxHeaderListSize;
@@ -96,7 +100,8 @@ final class HpackEncoder {
         this.ignoreMaxHeaderListSize = ignoreMaxHeaderListSize;
         maxHeaderTableSize = DEFAULT_HEADER_TABLE_SIZE;
         maxHeaderListSize = MAX_HEADER_LIST_SIZE;
-        // Enforce a bound of [2, 128] because hashMask is a byte. The max possible value of hashMask is one less
+        // Enforce a bound of [2, 128] because hashMask is a byte. The max possible
+        // value of hashMask is one less
         // than the length of this array, and we want the mask to be > 0.
         headerFields = new HeaderEntry[findNextPositivePowerOfTwo(max(2, min(arraySizeHint, 128)))];
         hashMask = (byte) (headerFields.length - 1);
@@ -119,14 +124,15 @@ final class HpackEncoder {
     }
 
     private void encodeHeadersEnforceMaxHeaderListSize(int streamId, ByteBuf out, Http2Headers headers,
-                                                       SensitivityDetector sensitivityDetector)
-            throws Http2Exception {
+            SensitivityDetector sensitivityDetector) throws Http2Exception {
         long headerSize = 0;
-        // To ensure we stay consistent with our peer check the size is valid before we potentially modify HPACK state.
+        // To ensure we stay consistent with our peer check the size is valid before we
+        // potentially modify HPACK state.
         for (Map.Entry<CharSequence, CharSequence> header : headers) {
             CharSequence name = header.getKey();
             CharSequence value = header.getValue();
-            // OK to increment now and check for bounds after because this value is limited to unsigned int and will not
+            // OK to increment now and check for bounds after because this value is limited
+            // to unsigned int and will not
             // overflow.
             headerSize += HpackHeaderField.sizeOf(name, value);
             if (headerSize > maxHeaderListSize) {
@@ -137,12 +143,12 @@ final class HpackEncoder {
     }
 
     private void encodeHeadersIgnoreMaxHeaderListSize(ByteBuf out, Http2Headers headers,
-                                                      SensitivityDetector sensitivityDetector) throws Http2Exception {
+            SensitivityDetector sensitivityDetector) throws Http2Exception {
         for (Map.Entry<CharSequence, CharSequence> header : headers) {
             CharSequence name = header.getKey();
             CharSequence value = header.getValue();
             encodeHeader(out, name, value, sensitivityDetector.isSensitive(name, value),
-                         HpackHeaderField.sizeOf(name, value));
+                    HpackHeaderField.sizeOf(name, value));
         }
     }
 
@@ -171,7 +177,8 @@ final class HpackEncoder {
             return;
         }
 
-        // If the headerSize is greater than the max table size then it must be encoded literally
+        // If the headerSize is greater than the max table size then it must be encoded
+        // literally
         if (headerSize > maxHeaderTableSize) {
             int nameIndex = getNameIndex(name);
             encodeLiteral(out, name, value, IndexType.NONE, nameIndex);
@@ -209,7 +216,8 @@ final class HpackEncoder {
         }
         this.maxHeaderTableSize = maxHeaderTableSize;
         ensureCapacity(0);
-        // Casting to integer is safe as we verified the maxHeaderTableSize is a valid unsigned int.
+        // Casting to integer is safe as we verified the maxHeaderTableSize is a valid
+        // unsigned int.
         encodeInteger(out, 0x20, 5, maxHeaderTableSize);
     }
 
@@ -233,14 +241,16 @@ final class HpackEncoder {
     }
 
     /**
-     * Encode integer according to <a href="https://tools.ietf.org/html/rfc7541#section-5.1">Section 5.1</a>.
+     * Encode integer according to
+     * <a href="https://tools.ietf.org/html/rfc7541#section-5.1">Section 5.1</a>.
      */
     private static void encodeInteger(ByteBuf out, int mask, int n, int i) {
         encodeInteger(out, mask, n, (long) i);
     }
 
     /**
-     * Encode integer according to <a href="https://tools.ietf.org/html/rfc7541#section-5.1">Section 5.1</a>.
+     * Encode integer according to
+     * <a href="https://tools.ietf.org/html/rfc7541#section-5.1">Section 5.1</a>.
      */
     private static void encodeInteger(ByteBuf out, int mask, int n, long i) {
         assert n >= 0 && n <= 8 : "N: " + n;
@@ -283,21 +293,20 @@ final class HpackEncoder {
     /**
      * Encode literal header field according to Section 6.2.
      */
-    private void encodeLiteral(ByteBuf out, CharSequence name, CharSequence value, IndexType indexType,
-                               int nameIndex) {
+    private void encodeLiteral(ByteBuf out, CharSequence name, CharSequence value, IndexType indexType, int nameIndex) {
         boolean nameIndexValid = nameIndex != -1;
         switch (indexType) {
-            case INCREMENTAL:
-                encodeInteger(out, 0x40, 6, nameIndexValid ? nameIndex : 0);
-                break;
-            case NONE:
-                encodeInteger(out, 0x00, 4, nameIndexValid ? nameIndex : 0);
-                break;
-            case NEVER:
-                encodeInteger(out, 0x10, 4, nameIndexValid ? nameIndex : 0);
-                break;
-            default:
-                throw new Error("should not reach here");
+        case INCREMENTAL:
+            encodeInteger(out, 0x40, 6, nameIndexValid ? nameIndex : 0);
+            break;
+        case NONE:
+            encodeInteger(out, 0x00, 4, nameIndexValid ? nameIndex : 0);
+            break;
+        case NEVER:
+            encodeInteger(out, 0x10, 4, nameIndexValid ? nameIndex : 0);
+            break;
+        default:
+            throw new Error("should not reach here");
         }
         if (!nameIndexValid) {
             encodeStringLiteral(out, name);
@@ -317,8 +326,9 @@ final class HpackEncoder {
     }
 
     /**
-     * Ensure that the dynamic table has enough room to hold 'headerSize' more bytes. Removes the
-     * oldest entry from the dynamic table until sufficient space is available.
+     * Ensure that the dynamic table has enough room to hold 'headerSize' more
+     * bytes. Removes the oldest entry from the dynamic table until sufficient space
+     * is available.
      */
     private void ensureCapacity(long headerSize) {
         while (maxHeaderTableSize - size < headerSize) {
@@ -356,8 +366,8 @@ final class HpackEncoder {
     }
 
     /**
-     * Returns the header entry with the lowest index value for the header field. Returns null if
-     * header field is not in the dynamic table.
+     * Returns the header entry with the lowest index value for the header field.
+     * Returns null if header field is not in the dynamic table.
      */
     private HeaderEntry getEntryInsensitive(CharSequence name, CharSequence value) {
         if (length() == 0 || name == null || value == null) {
@@ -366,7 +376,8 @@ final class HpackEncoder {
         int h = AsciiString.hashCode(name);
         int i = index(h);
         for (HeaderEntry e = headerFields[i]; e != null; e = e.next) {
-            // Check the value before then name, as it is more likely the value will be different incase there is no
+            // Check the value before then name, as it is more likely the value will be
+            // different incase there is no
             // match.
             if (e.hash == h && equalsVariableTime(value, e.value) && equalsVariableTime(name, e.name)) {
                 return e;
@@ -376,8 +387,8 @@ final class HpackEncoder {
     }
 
     /**
-     * Returns the lowest index value for the header field name in the dynamic table. Returns -1 if
-     * the header field name is not in the dynamic table.
+     * Returns the lowest index value for the header field name in the dynamic
+     * table. Returns -1 if the header field name is not in the dynamic table.
      */
     private int getIndex(CharSequence name) {
         if (length() == 0 || name == null) {
@@ -401,12 +412,14 @@ final class HpackEncoder {
     }
 
     /**
-     * Add the header field to the dynamic table. Entries are evicted from the dynamic table until
-     * the size of the table and the new header field is less than the table's maxHeaderTableSize. If the size
-     * of the new entry is larger than the table's maxHeaderTableSize, the dynamic table will be cleared.
+     * Add the header field to the dynamic table. Entries are evicted from the
+     * dynamic table until the size of the table and the new header field is less
+     * than the table's maxHeaderTableSize. If the size of the new entry is larger
+     * than the table's maxHeaderTableSize, the dynamic table will be cleared.
      */
     private void add(CharSequence name, CharSequence value, long headerSize) {
-        // Clear the table if the header field size is larger than the maxHeaderTableSize.
+        // Clear the table if the header field size is larger than the
+        // maxHeaderTableSize.
         if (headerSize > maxHeaderTableSize) {
             clear();
             return;

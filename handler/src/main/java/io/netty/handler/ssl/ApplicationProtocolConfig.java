@@ -24,7 +24,8 @@ import static io.netty.handler.ssl.ApplicationProtocolUtil.toList;
 import static io.netty.util.internal.ObjectUtil.checkNotNull;
 
 /**
- * Provides an {@link SSLEngine} agnostic way to configure a {@link ApplicationProtocolNegotiator}.
+ * fc comment: 应用层协议配置，具体暂放 Provides an {@link SSLEngine} agnostic way to
+ * configure a {@link ApplicationProtocolNegotiator}.
  */
 public final class ApplicationProtocolConfig {
 
@@ -40,10 +41,13 @@ public final class ApplicationProtocolConfig {
 
     /**
      * Create a new instance.
-     * @param protocol The application protocol functionality to use.
-     * @param selectorBehavior How the peer selecting the protocol should behave.
-     * @param selectedBehavior How the peer being notified of the selected protocol should behave.
-     * @param supportedProtocols The order of iteration determines the preference of support for protocols.
+     * 
+     * @param protocol           The application protocol functionality to use.
+     * @param selectorBehavior   How the peer selecting the protocol should behave.
+     * @param selectedBehavior   How the peer being notified of the selected
+     *                           protocol should behave.
+     * @param supportedProtocols The order of iteration determines the preference of
+     *                           support for protocols.
      */
     public ApplicationProtocolConfig(Protocol protocol, SelectorFailureBehavior selectorBehavior,
             SelectedListenerFailureBehavior selectedBehavior, Iterable<String> supportedProtocols) {
@@ -52,10 +56,13 @@ public final class ApplicationProtocolConfig {
 
     /**
      * Create a new instance.
-     * @param protocol The application protocol functionality to use.
-     * @param selectorBehavior How the peer selecting the protocol should behave.
-     * @param selectedBehavior How the peer being notified of the selected protocol should behave.
-     * @param supportedProtocols The order of iteration determines the preference of support for protocols.
+     * 
+     * @param protocol           The application protocol functionality to use.
+     * @param selectorBehavior   How the peer selecting the protocol should behave.
+     * @param selectedBehavior   How the peer being notified of the selected
+     *                           protocol should behave.
+     * @param supportedProtocols The order of iteration determines the preference of
+     *                           support for protocols.
      */
     public ApplicationProtocolConfig(Protocol protocol, SelectorFailureBehavior selectorBehavior,
             SelectedListenerFailureBehavior selectedBehavior, String... supportedProtocols) {
@@ -64,13 +71,15 @@ public final class ApplicationProtocolConfig {
 
     /**
      * Create a new instance.
-     * @param protocol The application protocol functionality to use.
-     * @param selectorBehavior How the peer selecting the protocol should behave.
-     * @param selectedBehavior How the peer being notified of the selected protocol should behave.
-     * @param supportedProtocols The order of iteration determines the preference of support for protocols.
+     * 
+     * @param protocol           The application protocol functionality to use.
+     * @param selectorBehavior   How the peer selecting the protocol should behave.
+     * @param selectedBehavior   How the peer being notified of the selected
+     *                           protocol should behave.
+     * @param supportedProtocols The order of iteration determines the preference of
+     *                           support for protocols.
      */
-    private ApplicationProtocolConfig(
-            Protocol protocol, SelectorFailureBehavior selectorBehavior,
+    private ApplicationProtocolConfig(Protocol protocol, SelectorFailureBehavior selectorBehavior,
             SelectedListenerFailureBehavior selectedBehavior, List<String> supportedProtocols) {
         this.supportedProtocols = Collections.unmodifiableList(checkNotNull(supportedProtocols, "supportedProtocols"));
         this.protocol = checkNotNull(protocol, "protocol");
@@ -96,6 +105,9 @@ public final class ApplicationProtocolConfig {
     }
 
     /**
+     * Next Protocol Negotiation（NPN）(老) 应用层协议协商（Application-Layer Protocol
+     * Negotiation，简称ALPN）(新)
+     * 
      * Defines which application level protocol negotiation to use.
      */
     public enum Protocol {
@@ -103,54 +115,65 @@ public final class ApplicationProtocolConfig {
     }
 
     /**
-     * Defines the most common behaviors for the peer that selects the application protocol.
+     * Defines the most common behaviors for the peer that selects the application
+     * protocol.
      */
     public enum SelectorFailureBehavior {
         /**
-         * If the peer who selects the application protocol doesn't find a match this will result in the failing the
-         * handshake with a fatal alert.
+         * If the peer who selects the application protocol doesn't find a match this
+         * will result in the failing the handshake with a fatal alert.
          * <p>
-         * For example in the case of ALPN this will result in a
-         * <a herf="https://tools.ietf.org/html/rfc7301#section-3.2">no_application_protocol(120)</a> alert.
+         * For example in the case of ALPN this will result in a <a herf=
+         * "https://tools.ietf.org/html/rfc7301#section-3.2">no_application_protocol(120)</a>
+         * alert.
          */
         FATAL_ALERT,
         /**
-         * If the peer who selects the application protocol doesn't find a match it will pretend no to support
-         * the TLS extension by not advertising support for the TLS extension in the handshake. This is used in cases
-         * where a "best effort" is desired to talk even if there is no matching protocol.
+         * If the peer who selects the application protocol doesn't find a match it will
+         * pretend no to support the TLS extension by not advertising support for the
+         * TLS extension in the handshake. This is used in cases where a "best effort"
+         * is desired to talk even if there is no matching protocol.
          */
         NO_ADVERTISE,
         /**
-         * If the peer who selects the application protocol doesn't find a match it will just select the last protocol
-         * it advertised support for. This is used in cases where a "best effort" is desired to talk even if there
-         * is no matching protocol, and the assumption is the "most general" fallback protocol is typically listed last.
+         * If the peer who selects the application protocol doesn't find a match it will
+         * just select the last protocol it advertised support for. This is used in
+         * cases where a "best effort" is desired to talk even if there is no matching
+         * protocol, and the assumption is the "most general" fallback protocol is
+         * typically listed last.
          * <p>
-         * This may be <a href="https://tools.ietf.org/html/rfc7301#section-3.2">illegal for some RFCs</a> but was
-         * observed behavior by some SSL implementations, and is supported for flexibility/compatibility.
+         * This may be <a href="https://tools.ietf.org/html/rfc7301#section-3.2">illegal
+         * for some RFCs</a> but was observed behavior by some SSL implementations, and
+         * is supported for flexibility/compatibility.
          */
         CHOOSE_MY_LAST_PROTOCOL
     }
 
     /**
-     * Defines the most common behaviors for the peer which is notified of the selected protocol.
+     * Defines the most common behaviors for the peer which is notified of the
+     * selected protocol.
      */
     public enum SelectedListenerFailureBehavior {
         /**
-         * If the peer who is notified what protocol was selected determines the selection was not matched, or the peer
-         * didn't advertise support for the TLS extension then the handshake will continue and the application protocol
-         * is assumed to be accepted.
+         * If the peer who is notified what protocol was selected determines the
+         * selection was not matched, or the peer didn't advertise support for the TLS
+         * extension then the handshake will continue and the application protocol is
+         * assumed to be accepted.
          */
         ACCEPT,
         /**
-         * If the peer who is notified what protocol was selected determines the selection was not matched, or the peer
-         * didn't advertise support for the TLS extension then the handshake will be failed with a fatal alert.
+         * If the peer who is notified what protocol was selected determines the
+         * selection was not matched, or the peer didn't advertise support for the TLS
+         * extension then the handshake will be failed with a fatal alert.
          */
         FATAL_ALERT,
         /**
-         * If the peer who is notified what protocol was selected determines the selection was not matched, or the peer
-         * didn't advertise support for the TLS extension then the handshake will continue assuming the last protocol
-         * supported by this peer is used. This is used in cases where a "best effort" is desired to talk even if there
-         * is no matching protocol, and the assumption is the "most general" fallback protocol is typically listed last.
+         * If the peer who is notified what protocol was selected determines the
+         * selection was not matched, or the peer didn't advertise support for the TLS
+         * extension then the handshake will continue assuming the last protocol
+         * supported by this peer is used. This is used in cases where a "best effort"
+         * is desired to talk even if there is no matching protocol, and the assumption
+         * is the "most general" fallback protocol is typically listed last.
          */
         CHOOSE_MY_LAST_PROTOCOL
     }
@@ -177,7 +200,8 @@ public final class ApplicationProtocolConfig {
     }
 
     /**
-     * Get the desired behavior for the peer who is notified of the selected protocol.
+     * Get the desired behavior for the peer who is notified of the selected
+     * protocol.
      */
     public SelectedListenerFailureBehavior selectedListenerFailureBehavior() {
         return selectedBehavior;
