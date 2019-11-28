@@ -30,7 +30,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 /**
- * Discards any incoming data.
+ * fc comment: 官方例子： 这个非常有用的起点 Discards any incoming data.
  */
 public final class DiscardServer {
 
@@ -51,19 +51,17 @@ public final class DiscardServer {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class)
-             .handler(new LoggingHandler(LogLevel.INFO))
-             .childHandler(new ChannelInitializer<SocketChannel>() {
-                 @Override
-                 public void initChannel(SocketChannel ch) {
-                     ChannelPipeline p = ch.pipeline();
-                     if (sslCtx != null) {
-                         p.addLast(sslCtx.newHandler(ch.alloc()));
-                     }
-                     p.addLast(new DiscardServerHandler());
-                 }
-             });
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.INFO)).childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch) {
+                            ChannelPipeline p = ch.pipeline();
+                            if (sslCtx != null) {
+                                p.addLast(sslCtx.newHandler(ch.alloc()));
+                            }
+                            p.addLast(new DiscardServerHandler());
+                        }
+                    });
 
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(PORT).sync();

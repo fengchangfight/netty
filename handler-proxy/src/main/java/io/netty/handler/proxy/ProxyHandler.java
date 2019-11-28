@@ -35,6 +35,11 @@ import java.net.SocketAddress;
 import java.nio.channels.ConnectionPendingException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * fc comment: 套路： 抽象类继承类 逻辑上顾名思义就是一个proxy 其具体实现类有HttpProxyHandler，
+ * Socks4ProxyHandler等， 用到再说，不赘述
+ */
+
 public abstract class ProxyHandler extends ChannelDuplexHandler {
 
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(ProxyHandler.class);
@@ -103,31 +108,34 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * Returns {@code true} if and only if the connection to the destination has been established successfully.
+     * Returns {@code true} if and only if the connection to the destination has
+     * been established successfully.
      */
     public final boolean isConnected() {
         return connectPromise.isSuccess();
     }
 
     /**
-     * Returns a {@link Future} that is notified when the connection to the destination has been established
-     * or the connection attempt has failed.
+     * Returns a {@link Future} that is notified when the connection to the
+     * destination has been established or the connection attempt has failed.
      */
     public final Future<Channel> connectFuture() {
         return connectPromise;
     }
 
     /**
-     * Returns the connect timeout in millis.  If the connection attempt to the destination does not finish within
-     * the timeout, the connection attempt will be failed.
+     * Returns the connect timeout in millis. If the connection attempt to the
+     * destination does not finish within the timeout, the connection attempt will
+     * be failed.
      */
     public final long connectTimeoutMillis() {
         return connectTimeoutMillis;
     }
 
     /**
-     * Sets the connect timeout in millis.  If the connection attempt to the destination does not finish within
-     * the timeout, the connection attempt will be failed.
+     * Sets the connect timeout in millis. If the connection attempt to the
+     * destination does not finish within the timeout, the connection attempt will
+     * be failed.
      */
     public final void setConnectTimeoutMillis(long connectTimeoutMillis) {
         if (connectTimeoutMillis <= 0) {
@@ -143,11 +151,13 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
         addCodec(ctx);
 
         if (ctx.channel().isActive()) {
-            // channelActive() event has been fired already, which means this.channelActive() will
+            // channelActive() event has been fired already, which means
+            // this.channelActive() will
             // not be invoked. We have to initialize here instead.
             sendInitialMessage(ctx);
         } else {
-            // channelActive() event has not been fired yet.  this.channelOpen() will be invoked
+            // channelActive() event has not been fired yet. this.channelOpen() will be
+            // invoked
             // and initialization will occur there.
         }
     }
@@ -168,8 +178,7 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
     protected abstract void removeDecoder(ChannelHandlerContext ctx) throws Exception;
 
     @Override
-    public final void connect(
-            ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress,
+    public final void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress,
             ChannelPromise promise) throws Exception {
 
         if (destinationAddress != null) {
@@ -188,8 +197,9 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * Sends the initial message to be sent to the proxy server. This method also starts a timeout task which marks
-     * the {@link #connectPromise} as failure if the connection attempt does not success within the timeout.
+     * Sends the initial message to be sent to the proxy server. This method also
+     * starts a timeout task which marks the {@link #connectPromise} as failure if
+     * the connection attempt does not success within the timeout.
      */
     private void sendInitialMessage(final ChannelHandlerContext ctx) throws Exception {
         final long connectTimeoutMillis = this.connectTimeoutMillis;
@@ -213,14 +223,17 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * Returns a new message that is sent at first time when the connection to the proxy server has been established.
+     * Returns a new message that is sent at first time when the connection to the
+     * proxy server has been established.
      *
-     * @return the initial message, or {@code null} if the proxy server is expected to send the first message instead
+     * @return the initial message, or {@code null} if the proxy server is expected
+     *         to send the first message instead
      */
     protected abstract Object newInitialMessage(ChannelHandlerContext ctx) throws Exception;
 
     /**
-     * Sends the specified message to the proxy server.  Use this method to send a response to the proxy server in
+     * Sends the specified message to the proxy server. Use this method to send a
+     * response to the proxy server in
      * {@link #handleResponse(ChannelHandlerContext, Object)}.
      */
     protected final void sendToProxyServer(Object msg) {
@@ -275,9 +288,10 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
     /**
      * Handles the message received from the proxy server.
      *
-     * @return {@code true} if the connection to the destination has been established,
-     *         {@code false} if the connection to the destination has not been established and more messages are
-     *         expected from the proxy server
+     * @return {@code true} if the connection to the destination has been
+     *         established, {@code false} if the connection to the destination has
+     *         not been established and more messages are expected from the proxy
+     *         server
      */
     protected abstract boolean handleResponse(ChannelHandlerContext ctx, Object response) throws Exception;
 
@@ -340,8 +354,7 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
         if (!connectPromise.isDone()) {
 
             if (!(cause instanceof ProxyConnectException)) {
-                cause = new ProxyConnectException(
-                        exceptionMessage(cause.toString()), cause);
+                cause = new ProxyConnectException(exceptionMessage(cause.toString()), cause);
             }
 
             safeRemoveDecoder();
@@ -365,22 +378,17 @@ public abstract class ProxyHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * Decorates the specified exception message with the common information such as the current protocol,
-     * authentication scheme, proxy address, and destination address.
+     * Decorates the specified exception message with the common information such as
+     * the current protocol, authentication scheme, proxy address, and destination
+     * address.
      */
     protected final String exceptionMessage(String msg) {
         if (msg == null) {
             msg = "";
         }
 
-        StringBuilder buf = new StringBuilder(128 + msg.length())
-            .append(protocol())
-            .append(", ")
-            .append(authScheme())
-            .append(", ")
-            .append(proxyAddress)
-            .append(" => ")
-            .append(destinationAddress);
+        StringBuilder buf = new StringBuilder(128 + msg.length()).append(protocol()).append(", ").append(authScheme())
+                .append(", ").append(proxyAddress).append(" => ").append(destinationAddress);
         if (!msg.isEmpty()) {
             buf.append(", ").append(msg);
         }

@@ -39,23 +39,33 @@ import io.netty.util.internal.TypeParameterMatcher;
  * {@link ReferenceCountUtil#release(Object)}. In this case you may need to use
  * {@link ReferenceCountUtil#retain(Object)} if you pass the object to the next handler in the {@link ChannelPipeline}.
  */
+
+/**
+ * fc comment: 套路：抽象类继承具体类 套路2： 保留一个protected方法为抽象方法，以支持具体实现 本类逻辑功能看上面注释： allows
+ * to explicit only handle a specific type of messages
+ * 
+ * @param <I>
+ */
 public abstract class SimpleChannelInboundHandler<I> extends ChannelInboundHandlerAdapter {
 
     private final TypeParameterMatcher matcher;
     private final boolean autoRelease;
 
     /**
-     * see {@link #SimpleChannelInboundHandler(boolean)} with {@code true} as boolean parameter.
+     * see {@link #SimpleChannelInboundHandler(boolean)} with {@code true} as
+     * boolean parameter.
      */
     protected SimpleChannelInboundHandler() {
         this(true);
     }
 
     /**
-     * Create a new instance which will try to detect the types to match out of the type parameter of the class.
+     * Create a new instance which will try to detect the types to match out of the
+     * type parameter of the class.
      *
-     * @param autoRelease   {@code true} if handled messages should be released automatically by passing them to
-     *                      {@link ReferenceCountUtil#release(Object)}.
+     * @param autoRelease {@code true} if handled messages should be released
+     *                    automatically by passing them to
+     *                    {@link ReferenceCountUtil#release(Object)}.
      */
     protected SimpleChannelInboundHandler(boolean autoRelease) {
         matcher = TypeParameterMatcher.find(this, SimpleChannelInboundHandler.class, "I");
@@ -63,7 +73,8 @@ public abstract class SimpleChannelInboundHandler<I> extends ChannelInboundHandl
     }
 
     /**
-     * see {@link #SimpleChannelInboundHandler(Class, boolean)} with {@code true} as boolean value.
+     * see {@link #SimpleChannelInboundHandler(Class, boolean)} with {@code true} as
+     * boolean value.
      */
     protected SimpleChannelInboundHandler(Class<? extends I> inboundMessageType) {
         this(inboundMessageType, true);
@@ -72,9 +83,10 @@ public abstract class SimpleChannelInboundHandler<I> extends ChannelInboundHandl
     /**
      * Create a new instance
      *
-     * @param inboundMessageType    The type of messages to match
-     * @param autoRelease           {@code true} if handled messages should be released automatically by passing them to
-     *                              {@link ReferenceCountUtil#release(Object)}.
+     * @param inboundMessageType The type of messages to match
+     * @param autoRelease        {@code true} if handled messages should be released
+     *                           automatically by passing them to
+     *                           {@link ReferenceCountUtil#release(Object)}.
      */
     protected SimpleChannelInboundHandler(Class<? extends I> inboundMessageType, boolean autoRelease) {
         matcher = TypeParameterMatcher.get(inboundMessageType);
@@ -82,8 +94,9 @@ public abstract class SimpleChannelInboundHandler<I> extends ChannelInboundHandl
     }
 
     /**
-     * Returns {@code true} if the given message should be handled. If {@code false} it will be passed to the next
-     * {@link ChannelInboundHandler} in the {@link ChannelPipeline}.
+     * Returns {@code true} if the given message should be handled. If {@code false}
+     * it will be passed to the next {@link ChannelInboundHandler} in the
+     * {@link ChannelPipeline}.
      */
     public boolean acceptInboundMessage(Object msg) throws Exception {
         return matcher.match(msg);
@@ -111,10 +124,10 @@ public abstract class SimpleChannelInboundHandler<I> extends ChannelInboundHandl
     /**
      * Is called for each message of type {@link I}.
      *
-     * @param ctx           the {@link ChannelHandlerContext} which this {@link SimpleChannelInboundHandler}
-     *                      belongs to
-     * @param msg           the message to handle
-     * @throws Exception    is thrown if an error occurred
+     * @param ctx the {@link ChannelHandlerContext} which this
+     *            {@link SimpleChannelInboundHandler} belongs to
+     * @param msg the message to handle
+     * @throws Exception is thrown if an error occurred
      */
     protected abstract void channelRead0(ChannelHandlerContext ctx, I msg) throws Exception;
 }
