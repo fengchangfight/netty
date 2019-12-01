@@ -2487,7 +2487,7 @@
      795 codec-http2/src/main/java/io/netty/handler/codec/http2/WeightedFairQueueByteDistributor.java
      796 handler/src/test/java/io/netty/handler/stream/ChunkedWriteHandlerTest.java
      800 codec-http2/src/test/java/io/netty/handler/codec/http2/Http2ConnectionHandlerTest.java
-     802 buffer/src/main/java/io/netty/buffer/PoolArena.java
+     ---802 buffer/src/main/java/io/netty/buffer/PoolArena.java
      818 buffer/src/test/java/io/netty/buffer/ByteBufUtilTest.java
      839 common/src/main/java/io/netty/util/HashedWheelTimer.java
      844 codec-http2/src/test/java/io/netty/handler/codec/http2/DefaultHttp2ConnectionDecoderTest.java
@@ -2511,14 +2511,14 @@
      969 handler/src/main/java/io/netty/handler/ssl/ReferenceCountedOpenSslContext.java
      971 buffer/src/main/java/io/netty/buffer/AdvancedLeakAwareByteBuf.java
      971 codec-http2/src/main/java/io/netty/handler/codec/http2/Http2ConnectionHandler.java
-     998 codec/src/main/java/io/netty/handler/codec/Headers.java
+    --- 998 codec/src/main/java/io/netty/handler/codec/Headers.java
    1038 transport-native-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollStreamChannel.java
     1052 buffer/src/main/java/io/netty/buffer/WrappedByteBuf.java
-    1058 buffer/src/main/java/io/netty/buffer/AdvancedLeakAwareCompositeByteBuf.java
-    --1069 buffer/src/main/java/io/netty/buffer/EmptyByteBuf.java
+    ---1058 buffer/src/main/java/io/netty/buffer/AdvancedLeakAwareCompositeByteBuf.java
+    ---1069 buffer/src/main/java/io/netty/buffer/EmptyByteBuf.java
     1070 handler/src/test/java/io/netty/handler/ssl/SslHandlerTest.java
     1073 codec-http2/src/main/java/io/netty/handler/codec/http2/DefaultHttp2Connection.java
-    1075 buffer/src/main/java/io/netty/buffer/SwappedByteBuf.java
+    ---1075 buffer/src/main/java/io/netty/buffer/SwappedByteBuf.java
     1101 codec-http2/src/main/java/io/netty/handler/codec/http2/AbstractHttp2StreamChannel.java
    --- 1101 common/src/main/java/io/netty/util/concurrent/SingleThreadEventExecutor.java
    1101 transport-native-unix-common/src/main/c/netty_unix_socket.c

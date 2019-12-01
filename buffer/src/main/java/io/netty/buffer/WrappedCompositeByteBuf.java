@@ -28,7 +28,9 @@ import java.nio.channels.ScatteringByteChannel;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
-
+/**
+ * fc comment一个包装类（疑似adapter pattern）
+ */
 class WrappedCompositeByteBuf extends CompositeByteBuf {
 
     private final CompositeByteBuf wrapped;
