@@ -31,8 +31,13 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static io.netty.util.internal.ObjectUtil.checkNotNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
+/**
+ * fc comment
+ * 继承链条上第一个具体实现类, 
+ * 实现了Promise接口的一种Future， 具体上层逻辑暂放，看起来还是略抽象
+ */
 public class DefaultPromise<V> extends AbstractFuture<V> implements Promise<V> {
+    // fc question:  为什么要两个logger类??? , fc answer:
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(DefaultPromise.class);
     private static final InternalLogger rejectedExecutionLogger =
             InternalLoggerFactory.getInstance(DefaultPromise.class.getName() + ".rejectedExecution");
