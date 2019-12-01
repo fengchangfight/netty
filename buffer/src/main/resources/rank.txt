@@ -2173,7 +2173,7 @@
     353 microbench/target/generated-sources/annotations/io/netty/microbench/buffer/generated/PooledByteBufAllocatorAlignBenchmark_write_jmhTest.java
     353 microbench/target/generated-sources/annotations/io/netty/microbench/buffer/generated/PooledByteBufAllocatorAlignBenchmark_writeRead_jmhTest.java
     355 testsuite/src/main/java/io/netty/testsuite/transport/socket/SocketFileRegionTest.java
-     356 codec-http2/src/main/java/io/netty/handler/codec/http2/Http2Connection.java
+     ---356 codec-http2/src/main/java/io/netty/handler/codec/http2/Http2Connection.java
      356 microbench/target/generated-sources/annotations/io/netty/buffer/generated/AbstractByteBufGetCharSequenceBenchmark_getCharSequence_jmhTest.java
      356 microbench/target/generated-sources/annotations/io/netty/buffer/generated/AbstractByteBufGetCharSequenceBenchmark_getCharSequenceOld_jmhTest.java
      356 microbench/target/generated-sources/annotations/io/netty/buffer/generated/ByteBufUtilDecodeStringBenchmark_decodeString_jmhTest.java
