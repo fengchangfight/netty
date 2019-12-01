@@ -17,7 +17,7 @@ package io.netty.handler.codec.http2;
 
 import io.netty.util.internal.UnstableApi;
 
-/**
+/**fc comment: 看下面这句话就很好理解
  * A single stream within an HTTP2 connection. Streams are compared to each other by priority.
  */
 @UnstableApi

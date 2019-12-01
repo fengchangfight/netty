@@ -1689,7 +1689,7 @@
     175 transport/src/main/java/io/netty/channel/group/ChannelGroupFuture.java
      176 codec-socks/src/main/java/io/netty/handler/codec/socks/SocksCmdResponse.java
      177 buffer/src/main/java/io/netty/buffer/AbstractUnsafeSwappedByteBuf.java
-     177 codec-http2/src/main/java/io/netty/handler/codec/http2/Http2Stream.java
+     ---177 codec-http2/src/main/java/io/netty/handler/codec/http2/Http2Stream.java
      177 codec-http2/src/test/java/io/netty/handler/codec/http2/HashCollisionTest.java
      177 codec-redis/src/main/java/io/netty/handler/codec/redis/ArrayRedisMessage.java
      177 handler/src/main/java/io/netty/handler/ipfilter/IpSubnetFilterRule.java
@@ -2491,13 +2491,13 @@
      818 buffer/src/test/java/io/netty/buffer/ByteBufUtilTest.java
      839 common/src/main/java/io/netty/util/HashedWheelTimer.java
      844 codec-http2/src/test/java/io/netty/handler/codec/http2/DefaultHttp2ConnectionDecoderTest.java
-     846 common/src/main/java/io/netty/util/concurrent/DefaultPromise.java
+     ---846 common/src/main/java/io/netty/util/concurrent/DefaultPromise.java
      857 codec-http/src/main/java/io/netty/handler/codec/spdy/SpdySessionHandler.java
      864 codec-http/src/main/java/io/netty/handler/codec/http/HttpObjectDecoder.java
     866 microbench/target/generated-sources/annotations/io/netty/microbench/http2/generated/NoPriorityByteDistributionBenchmark_write_jmhTest.java
      867 codec-http2/src/test/java/io/netty/handler/codec/http2/InboundHttp2ToHttpAdapterTest.java
     ---873 transport/src/main/java/io/netty/channel/ChannelOutboundBuffer.java
-     881 common/src/main/java/io/netty/util/internal/PlatformDependent0.java
+     ---881 common/src/main/java/io/netty/util/internal/PlatformDependent0.java
     ---881 transport/src/main/java/io/netty/channel/embedded/EmbeddedChannel.java
      892 codec-http2/src/test/java/io/netty/handler/codec/http2/Http2FrameCodecTest.java
      893 buffer/src/main/java/io/netty/buffer/Unpooled.java
@@ -2513,7 +2513,7 @@
      971 codec-http2/src/main/java/io/netty/handler/codec/http2/Http2ConnectionHandler.java
     --- 998 codec/src/main/java/io/netty/handler/codec/Headers.java
    1038 transport-native-epoll/src/main/java/io/netty/channel/epoll/AbstractEpollStreamChannel.java
-    1052 buffer/src/main/java/io/netty/buffer/WrappedByteBuf.java
+    ---1052 buffer/src/main/java/io/netty/buffer/WrappedByteBuf.java
     ---1058 buffer/src/main/java/io/netty/buffer/AdvancedLeakAwareCompositeByteBuf.java
     ---1069 buffer/src/main/java/io/netty/buffer/EmptyByteBuf.java
     1070 handler/src/test/java/io/netty/handler/ssl/SslHandlerTest.java

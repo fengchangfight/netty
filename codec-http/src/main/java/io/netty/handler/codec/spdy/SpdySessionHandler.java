@@ -28,8 +28,11 @@ import static io.netty.handler.codec.spdy.SpdyCodecUtil.SPDY_SESSION_STREAM_ID;
 import static io.netty.handler.codec.spdy.SpdyCodecUtil.isServerId;
 import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
 
-/**
+/**fc comment
  * Manages streams within a SPDY session.
+ * fc question:什么是SPDY?
+ * fc answer: SPDY（读作“SPeeDY”）是Google开发的基于TCP的会话层 [1]  协议，用以最小化网络延迟，提升网络速度，优化用户的网络使用体验。SPDY并不是一种用于替代HTTP的协议，
+ * 而是对HTTP协议的增强。新协议的功能包括数据流的多路复用、请求优先级以及HTTP报头压缩。谷歌表示，引入SPDY协议后，在实验室测试中页面加载速度比原先快64%
  */
 public class SpdySessionHandler extends ChannelDuplexHandler {
 

@@ -20,8 +20,10 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.Promise;
 import io.netty.util.internal.UnstableApi;
 
-/**
+/**fc comment：上层逻辑看下面这句话即可：
  * Manager for the state of an HTTP/2 connection with the remote end-point.
+ * 套路：接口中定义接口，接口是高度的功能抽象，所以先从高层来看
+ * 本接口名表示这是要给http2connection
  */
 @UnstableApi
 public interface Http2Connection {
