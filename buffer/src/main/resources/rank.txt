@@ -2394,7 +2394,7 @@
     505 transport-native-kqueue/src/main/java/io/netty/channel/kqueue/KQueueDatagramChannel.java
      510 buffer/src/main/java/io/netty/buffer/PoolChunk.java
      510 codec-http/src/main/java/io/netty/handler/codec/http/DefaultHttpHeaders.java
-    512 transport/src/main/java/io/netty/channel/nio/AbstractNioChannel.java
+    ---512 transport/src/main/java/io/netty/channel/nio/AbstractNioChannel.java
      514 codec/src/main/java/io/netty/handler/codec/LengthFieldBasedFrameDecoder.java
     514 transport/src/main/java/io/netty/channel/pool/FixedChannelPool.java
      516 codec-http/src/test/java/io/netty/handler/codec/spdy/SpdyHeaderBlockRawDecoderTest.java

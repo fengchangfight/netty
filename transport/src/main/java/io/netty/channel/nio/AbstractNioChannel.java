@@ -42,7 +42,7 @@ import java.nio.channels.SelectionKey;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-/**
+/**fc comment: 仍是一个抽象类， 比父抽象类更添加了NIO相关的东西,关于什么是NIO,参考我的地图记忆， 暂不赘述
  * Abstract base class for {@link Channel} implementations which use a Selector based approach.
  */
 public abstract class AbstractNioChannel extends AbstractChannel {
