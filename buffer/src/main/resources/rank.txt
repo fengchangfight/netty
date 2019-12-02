@@ -2440,7 +2440,7 @@
     618 transport/src/main/java/io/netty/channel/CombinedChannelDuplexHandler.java
     624 testsuite/src/main/java/io/netty/testsuite/transport/socket/SocketHalfClosedTest.java
     ---626 transport/src/main/java/io/netty/channel/ChannelPipeline.java
-     628 handler/src/main/java/io/netty/handler/traffic/TrafficCounter.java
+     ---628 handler/src/main/java/io/netty/handler/traffic/TrafficCounter.java
      631 buffer/src/main/java/io/netty/buffer/UnsafeByteBufUtil.java
      631 codec-http/src/main/java/io/netty/handler/codec/http/websocketx/WebSocketClientHandshaker.java
      633 codec-http2/src/main/java/io/netty/handler/codec/http2/DefaultHttp2FrameWriter.java

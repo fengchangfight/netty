@@ -23,14 +23,15 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-
 /**
- * Counts the number of read and written bytes for rate-limiting traffic.
+ * fc comment: 看描述：用于ratelimit的一个工具类，不赘述 Counts the number of read and written
+ * bytes for rate-limiting traffic.
  * <p>
- * It computes the statistics for both inbound and outbound traffic periodically at the given
- * {@code checkInterval}, and calls the {@link AbstractTrafficShapingHandler#doAccounting(TrafficCounter)} method back.
- * If the {@code checkInterval} is {@code 0}, no accounting will be done and statistics will only be computed at each
- * receive or write operation.
+ * It computes the statistics for both inbound and outbound traffic periodically
+ * at the given {@code checkInterval}, and calls the
+ * {@link AbstractTrafficShapingHandler#doAccounting(TrafficCounter)} method
+ * back. If the {@code checkInterval} is {@code 0}, no accounting will be done
+ * and statistics will only be computed at each receive or write operation.
  * </p>
  */
 public class TrafficCounter {
@@ -38,7 +39,8 @@ public class TrafficCounter {
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(TrafficCounter.class);
 
     /**
-     * @return the time in ms using nanoTime, so not real EPOCH time but elapsed time in ms.
+     * @return the time in ms using nanoTime, so not real EPOCH time but elapsed
+     *         time in ms.
      */
     public static long milliSecondFromNano() {
         return System.nanoTime() / 1000000;
@@ -75,7 +77,8 @@ public class TrafficCounter {
     private final AtomicLong cumulativeReadBytes = new AtomicLong();
 
     /**
-     * Last Time where cumulative bytes where reset to zero: this time is a real EPOC time (informative only)
+     * Last Time where cumulative bytes where reset to zero: this time is a real
+     * EPOC time (informative only)
      */
     private long lastCumulativeTime;
 
@@ -127,8 +130,7 @@ public class TrafficCounter {
     /**
      * Delay between two captures
      */
-    final AtomicLong checkInterval = new AtomicLong(
-            AbstractTrafficShapingHandler.DEFAULT_CHECK_INTERVAL);
+    final AtomicLong checkInterval = new AtomicLong(AbstractTrafficShapingHandler.DEFAULT_CHECK_INTERVAL);
 
     // default 1 s
 
@@ -186,12 +188,12 @@ public class TrafficCounter {
         }
         lastTime.set(milliSecondFromNano());
         long localCheckInterval = checkInterval.get();
-        // if executor is null, it means it is piloted by a GlobalChannelTrafficCounter, so no executor
+        // if executor is null, it means it is piloted by a GlobalChannelTrafficCounter,
+        // so no executor
         if (localCheckInterval > 0 && executor != null) {
             monitorActive = true;
             monitor = new TrafficMonitoringTask();
-            scheduledFuture =
-                executor.scheduleAtFixedRate(monitor, 0, localCheckInterval, TimeUnit.MILLISECONDS);
+            scheduledFuture = executor.scheduleAtFixedRate(monitor, 0, localCheckInterval, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -215,7 +217,8 @@ public class TrafficCounter {
     /**
      * Reset the accounting on Read and Write.
      *
-     * @param newLastTime the milliseconds unix timestamp that we should be considered up-to-date for.
+     * @param newLastTime the milliseconds unix timestamp that we should be
+     *                    considered up-to-date for.
      */
     synchronized void resetAccounting(long newLastTime) {
         long interval = newLastTime - lastTime.getAndSet(newLastTime);
@@ -238,16 +241,16 @@ public class TrafficCounter {
     }
 
     /**
-     * Constructor with the {@link AbstractTrafficShapingHandler} that hosts it, the {@link ScheduledExecutorService}
-     * to use, its name, the checkInterval between two computations in milliseconds.
+     * Constructor with the {@link AbstractTrafficShapingHandler} that hosts it, the
+     * {@link ScheduledExecutorService} to use, its name, the checkInterval between
+     * two computations in milliseconds.
      *
-     * @param executor
-     *            the underlying executor service for scheduling checks, might be null when used
-     * from {@link GlobalChannelTrafficCounter}.
-     * @param name
-     *            the name given to this monitor.
-     * @param checkInterval
-     *            the checkInterval in millisecond between two computations.
+     * @param executor      the underlying executor service for scheduling checks,
+     *                      might be null when used from
+     *                      {@link GlobalChannelTrafficCounter}.
+     * @param name          the name given to this monitor.
+     * @param checkInterval the checkInterval in millisecond between two
+     *                      computations.
      */
     public TrafficCounter(ScheduledExecutorService executor, String name, long checkInterval) {
         if (name == null) {
@@ -262,21 +265,19 @@ public class TrafficCounter {
     }
 
     /**
-     * Constructor with the {@link AbstractTrafficShapingHandler} that hosts it, the Timer to use, its
-     * name, the checkInterval between two computations in millisecond.
+     * Constructor with the {@link AbstractTrafficShapingHandler} that hosts it, the
+     * Timer to use, its name, the checkInterval between two computations in
+     * millisecond.
      *
-     * @param trafficShapingHandler
-     *            the associated AbstractTrafficShapingHandler.
-     * @param executor
-     *            the underlying executor service for scheduling checks, might be null when used
-     * from {@link GlobalChannelTrafficCounter}.
-     * @param name
-     *            the name given to this monitor.
-     * @param checkInterval
-     *            the checkInterval in millisecond between two computations.
+     * @param trafficShapingHandler the associated AbstractTrafficShapingHandler.
+     * @param executor              the underlying executor service for scheduling
+     *                              checks, might be null when used from
+     *                              {@link GlobalChannelTrafficCounter}.
+     * @param name                  the name given to this monitor.
+     * @param checkInterval         the checkInterval in millisecond between two
+     *                              computations.
      */
-    public TrafficCounter(
-            AbstractTrafficShapingHandler trafficShapingHandler, ScheduledExecutorService executor,
+    public TrafficCounter(AbstractTrafficShapingHandler trafficShapingHandler, ScheduledExecutorService executor,
             String name, long checkInterval) {
 
         if (trafficShapingHandler == null) {
@@ -326,8 +327,7 @@ public class TrafficCounter {
     /**
      * Computes counters for Read.
      *
-     * @param recv
-     *            the size in bytes to read
+     * @param recv the size in bytes to read
      */
     void bytesRecvFlowControl(long recv) {
         currentReadBytes.addAndGet(recv);
@@ -337,8 +337,7 @@ public class TrafficCounter {
     /**
      * Computes counters for Write.
      *
-     * @param write
-     *            the size in bytes to write
+     * @param write the size in bytes to write
      */
     void bytesWriteFlowControl(long write) {
         currentWrittenBytes.addAndGet(write);
@@ -348,8 +347,7 @@ public class TrafficCounter {
     /**
      * Computes counters for Real Write.
      *
-     * @param write
-     *            the size in bytes to write
+     * @param write the size in bytes to write
      */
     void bytesRealWriteFlowControl(long write) {
         realWrittenBytes.addAndGet(write);
@@ -406,7 +404,8 @@ public class TrafficCounter {
     }
 
     /**
-     * @return the Time in millisecond of the last check as of System.currentTimeMillis().
+     * @return the Time in millisecond of the last check as of
+     *         System.currentTimeMillis().
      */
     public long lastTime() {
         return lastTime.get();
@@ -427,8 +426,9 @@ public class TrafficCounter {
     }
 
     /**
-     * @return the lastCumulativeTime in millisecond as of System.currentTimeMillis()
-     * when the cumulative counters were reset to 0.
+     * @return the lastCumulativeTime in millisecond as of
+     *         System.currentTimeMillis() when the cumulative counters were reset to
+     *         0.
      */
     public long lastCumulativeTime() {
         return lastCumulativeTime;
@@ -449,8 +449,8 @@ public class TrafficCounter {
     }
 
     /**
-     * Reset both read and written cumulative bytes counters and the associated absolute time
-     * from System.currentTimeMillis().
+     * Reset both read and written cumulative bytes counters and the associated
+     * absolute time from System.currentTimeMillis().
      */
     public void resetCumulativeTime() {
         lastCumulativeTime = System.currentTimeMillis();
@@ -466,15 +466,12 @@ public class TrafficCounter {
     }
 
     /**
-     * Returns the time to wait (if any) for the given length message, using the given limitTraffic and the max wait
-     * time.
+     * Returns the time to wait (if any) for the given length message, using the
+     * given limitTraffic and the max wait time.
      *
-     * @param size
-     *            the recv size
-     * @param limitTraffic
-     *            the traffic limit in bytes per second.
-     * @param maxTime
-     *            the max time in ms to wait in case of excess of traffic.
+     * @param size         the recv size
+     * @param limitTraffic the traffic limit in bytes per second.
+     * @param maxTime      the max time in ms to wait in case of excess of traffic.
      * @return the current time to wait (in ms) if needed for Read operation.
      */
     @Deprecated
@@ -483,16 +480,13 @@ public class TrafficCounter {
     }
 
     /**
-     * Returns the time to wait (if any) for the given length message, using the given limitTraffic and the max wait
-     * time.
+     * Returns the time to wait (if any) for the given length message, using the
+     * given limitTraffic and the max wait time.
      *
-     * @param size
-     *            the recv size
-     * @param limitTraffic
-     *            the traffic limit in bytes per second
-     * @param maxTime
-     *            the max time in ms to wait in case of excess of traffic.
-     * @param now the current time
+     * @param size         the recv size
+     * @param limitTraffic the traffic limit in bytes per second
+     * @param maxTime      the max time in ms to wait in case of excess of traffic.
+     * @param now          the current time
      * @return the current time to wait (in ms) if needed for Read operation.
      */
     public long readTimeToWait(final long size, final long limitTraffic, final long maxTime, final long now) {
@@ -541,15 +535,12 @@ public class TrafficCounter {
     }
 
     /**
-     * Returns the time to wait (if any) for the given length message, using the given limitTraffic and
-     * the max wait time.
+     * Returns the time to wait (if any) for the given length message, using the
+     * given limitTraffic and the max wait time.
      *
-     * @param size
-     *            the write size
-     * @param limitTraffic
-     *            the traffic limit in bytes per second.
-     * @param maxTime
-     *            the max time in ms to wait in case of excess of traffic.
+     * @param size         the write size
+     * @param limitTraffic the traffic limit in bytes per second.
+     * @param maxTime      the max time in ms to wait in case of excess of traffic.
      * @return the current time to wait (in ms) if needed for Write operation.
      */
     @Deprecated
@@ -558,16 +549,13 @@ public class TrafficCounter {
     }
 
     /**
-     * Returns the time to wait (if any) for the given length message, using the given limitTraffic and
-     * the max wait time.
+     * Returns the time to wait (if any) for the given length message, using the
+     * given limitTraffic and the max wait time.
      *
-     * @param size
-     *            the write size
-     * @param limitTraffic
-     *            the traffic limit in bytes per second.
-     * @param maxTime
-     *            the max time in ms to wait in case of excess of traffic.
-     * @param now the current time
+     * @param size         the write size
+     * @param limitTraffic the traffic limit in bytes per second.
+     * @param maxTime      the max time in ms to wait in case of excess of traffic.
+     * @param now          the current time
      * @return the current time to wait (in ms) if needed for Write operation.
      */
     public long writeTimeToWait(final long size, final long limitTraffic, final long maxTime, final long now) {
@@ -617,12 +605,12 @@ public class TrafficCounter {
 
     @Override
     public String toString() {
-        return new StringBuilder(165).append("Monitor ").append(name)
-                .append(" Current Speed Read: ").append(lastReadThroughput >> 10).append(" KB/s, ")
-                .append("Asked Write: ").append(lastWriteThroughput >> 10).append(" KB/s, ")
-                .append("Real Write: ").append(realWriteThroughput >> 10).append(" KB/s, ")
-                .append("Current Read: ").append(currentReadBytes.get() >> 10).append(" KB, ")
-                .append("Current asked Write: ").append(currentWrittenBytes.get() >> 10).append(" KB, ")
-                .append("Current real Write: ").append(realWrittenBytes.get() >> 10).append(" KB").toString();
+        return new StringBuilder(165).append("Monitor ").append(name).append(" Current Speed Read: ")
+                .append(lastReadThroughput >> 10).append(" KB/s, ").append("Asked Write: ")
+                .append(lastWriteThroughput >> 10).append(" KB/s, ").append("Real Write: ")
+                .append(realWriteThroughput >> 10).append(" KB/s, ").append("Current Read: ")
+                .append(currentReadBytes.get() >> 10).append(" KB, ").append("Current asked Write: ")
+                .append(currentWrittenBytes.get() >> 10).append(" KB, ").append("Current real Write: ")
+                .append(realWrittenBytes.get() >> 10).append(" KB").toString();
     }
 }
