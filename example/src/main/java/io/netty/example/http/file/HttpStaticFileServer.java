@@ -27,18 +27,21 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 
+/**
+ * fc comment 这是一个轻量级的静态文件服务器，很像netty的一个helloworld程序
+ */
 public final class HttpStaticFileServer {
 
     static final boolean SSL = System.getProperty("ssl") != null;
-    static final int PORT = Integer.parseInt(System.getProperty("port", SSL? "8443" : "8080"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", SSL ? "8443" : "8080"));
 
     public static void main(String[] args) throws Exception {
         // Configure SSL.
         final SslContext sslCtx;
         if (SSL) {
             SelfSignedCertificate ssc = new SelfSignedCertificate();
-            sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey())
-                .sslProvider(SslProvider.JDK).build();
+            sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).sslProvider(SslProvider.JDK)
+                    .build();
         } else {
             sslCtx = null;
         }
@@ -47,16 +50,19 @@ public final class HttpStaticFileServer {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class)
-             .handler(new LoggingHandler(LogLevel.INFO))
-             .childHandler(new HttpStaticFileServerInitializer(sslCtx));
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    .childHandler(new HttpStaticFileServerInitializer(sslCtx));
 
+            // fc question: what is childHandler???
             Channel ch = b.bind(PORT).sync().channel();
 
-            System.err.println("Open your web browser and navigate to " +
-                    (SSL? "https" : "http") + "://127.0.0.1:" + PORT + '/');
+            System.err.println(
+                    "Open your web browser and navigate to " + (SSL ? "https" : "http") + "://127.0.0.1:" + PORT + '/');
 
+            // fc question: closeFuture().sync()到底是做啥的？,按照官网文档：Wait until the connection
+            // is,该句会阻塞主线程，直到关闭channel
+            // closed.
             ch.closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();

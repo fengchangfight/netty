@@ -20,6 +20,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderResult;
 
 /**
+ * fc comment: fc question: 为什么这里的方法列表要用@Override?
+ * 
  * The last {@link HttpContent} which has trailing headers.
  */
 public interface LastHttpContent extends HttpContent {

@@ -23,6 +23,10 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
+/**
+ * fc comment:
+ * 一个继承自ChannelInitializer抽象类的一个具体类,看起来很简单，本类在HttpStaticFileServer中被用到
+ */
 public class HttpStaticFileServerInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SslContext sslCtx;

@@ -16,7 +16,7 @@
 package io.netty.handler.codec.http;
 
 /**
- * An HTTP request.
+ * fc comment: 见名知意吧，不赘述 An HTTP request.
  *
  * <h3>Accessing Query Parameters and Cookie</h3>
  * <p>
@@ -24,10 +24,11 @@ package io.netty.handler.codec.http;
  * {@link QueryStringEncoder} and {@link QueryStringDecoder}.
  *
  * {@link io.netty.handler.codec.http.cookie.Cookie} support is also provided
- * separately via {@link io.netty.handler.codec.http.cookie.ServerCookieDecoder},
+ * separately via
+ * {@link io.netty.handler.codec.http.cookie.ServerCookieDecoder},
  * {@link io.netty.handler.codec.http.cookie.ClientCookieDecoder},
- * {@link io.netty.handler.codec.http.cookie.ServerCookieEncoder},
- * and {@link io.netty.handler.codec.http.cookie.ClientCookieEncoder}.
+ * {@link io.netty.handler.codec.http.cookie.ServerCookieEncoder}, and
+ * {@link io.netty.handler.codec.http.cookie.ClientCookieEncoder}.
  *
  * @see HttpResponse
  * @see io.netty.handler.codec.http.cookie.ServerCookieDecoder
@@ -69,7 +70,7 @@ public interface HttpRequest extends HttpMessage {
     String uri();
 
     /**
-     *  Set the requested URI (or alternatively, path)
+     * Set the requested URI (or alternatively, path)
      */
     HttpRequest setUri(String uri);
 

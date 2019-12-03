@@ -59,9 +59,11 @@ import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.*;
 
 /**
- * A simple handler that serves incoming HTTP requests to send their respective
- * HTTP responses.  It also implements {@code 'If-Modified-Since'} header to
- * take advantage of browser cache, as described in
+ * fc comment: 看下面这段描述，另本类只有两个public方法： channelRead0和exceptionCaught,
+ * 具体在用到时再说(在HttpStaticFileServerInitializer中用到)  simple handler that serves
+ * incoming HTTP requests to send their respective HTTP responses. It also
+ * implements {@code 'If-Modified-Since'} header to take advantage of browser
+ * cache, as described in
  * <a href="http://tools.ietf.org/html/rfc2616#section-14.25">RFC 2616</a>.
  *
  * <h3>How Browser Caching Works</h3>
@@ -72,11 +74,11 @@ import static io.netty.handler.codec.http.HttpVersion.*;
  * <li>Request #1 returns the content of {@code /file1.txt}.</li>
  * <li>Contents of {@code /file1.txt} is cached by the browser.</li>
  * <li>Request #2 for {@code /file1.txt} does not return the contents of the
- *     file again. Rather, a 304 Not Modified is returned. This tells the
- *     browser to use the contents stored in its cache.</li>
+ * file again. Rather, a 304 Not Modified is returned. This tells the browser to
+ * use the contents stored in its cache.</li>
  * <li>The server knows the file has not been modified because the
- *     {@code If-Modified-Since} date is the same as the file's last
- *     modified date.</li>
+ * {@code If-Modified-Since} date is the same as the file's last modified
+ * date.</li>
  * </ol>
  *
  * <pre>
@@ -159,7 +161,8 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
             SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT, Locale.US);
             Date ifModifiedSinceDate = dateFormatter.parse(ifModifiedSince);
 
-            // Only compare up to the second because the datetime format we send to the client
+            // Only compare up to the second because the datetime format we send to the
+            // client
             // does not have milliseconds
             long ifModifiedSinceDateSeconds = ifModifiedSinceDate.getTime() / 1000;
             long fileLastModifiedSeconds = file.lastModified() / 1000;
@@ -196,14 +199,13 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         ChannelFuture sendFileFuture;
         ChannelFuture lastContentFuture;
         if (ctx.pipeline().get(SslHandler.class) == null) {
-            sendFileFuture =
-                    ctx.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength), ctx.newProgressivePromise());
+            sendFileFuture = ctx.write(new DefaultFileRegion(raf.getChannel(), 0, fileLength),
+                    ctx.newProgressivePromise());
             // Write the end marker.
             lastContentFuture = ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
         } else {
-            sendFileFuture =
-                    ctx.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)),
-                            ctx.newProgressivePromise());
+            sendFileFuture = ctx.writeAndFlush(new HttpChunkedInput(new ChunkedFile(raf, 0, fileLength, 8192)),
+                    ctx.newProgressivePromise());
             // HttpChunkedInput will write the end marker (LastHttpContent) for us.
             lastContentFuture = sendFileFuture;
         }
@@ -258,10 +260,8 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
 
         // Simplistic dumb security check.
         // You will have to do something serious in the production environment.
-        if (uri.contains(File.separator + '.') ||
-            uri.contains('.' + File.separator) ||
-            uri.charAt(0) == '.' || uri.charAt(uri.length() - 1) == '.' ||
-            INSECURE_URI.matcher(uri).matches()) {
+        if (uri.contains(File.separator + '.') || uri.contains('.' + File.separator) || uri.charAt(0) == '.'
+                || uri.charAt(uri.length() - 1) == '.' || INSECURE_URI.matcher(uri).matches()) {
             return null;
         }
 
@@ -272,21 +272,15 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
     private static final Pattern ALLOWED_FILE_NAME = Pattern.compile("[^-\\._]?[^<>&\\\"]*");
 
     private void sendListing(ChannelHandlerContext ctx, File dir, String dirPath) {
-        StringBuilder buf = new StringBuilder()
-            .append("<!DOCTYPE html>\r\n")
-            .append("<html><head><meta charset='utf-8' /><title>")
-            .append("Listing of: ")
-            .append(dirPath)
-            .append("</title></head><body>\r\n")
+        StringBuilder buf = new StringBuilder().append("<!DOCTYPE html>\r\n")
+                .append("<html><head><meta charset='utf-8' /><title>").append("Listing of: ").append(dirPath)
+                .append("</title></head><body>\r\n")
 
-            .append("<h3>Listing of: ")
-            .append(dirPath)
-            .append("</h3>\r\n")
+                .append("<h3>Listing of: ").append(dirPath).append("</h3>\r\n")
 
-            .append("<ul>")
-            .append("<li><a href=\"../\">..</a></li>\r\n");
+                .append("<ul>").append("<li><a href=\"../\">..</a></li>\r\n");
 
-        for (File f: dir.listFiles()) {
+        for (File f : dir.listFiles()) {
             if (f.isHidden() || !f.canRead()) {
                 continue;
             }
@@ -296,11 +290,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
                 continue;
             }
 
-            buf.append("<li><a href=\"")
-               .append(name)
-               .append("\">")
-               .append(name)
-               .append("</a></li>\r\n");
+            buf.append("<li><a href=\"").append(name).append("\">").append(name).append("</a></li>\r\n");
         }
 
         buf.append("</ul></body></html>\r\n");
@@ -322,18 +312,18 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
     }
 
     private void sendError(ChannelHandlerContext ctx, HttpResponseStatus status) {
-        FullHttpResponse response = new DefaultFullHttpResponse(
-                HTTP_1_1, status, Unpooled.copiedBuffer("Failure: " + status + "\r\n", CharsetUtil.UTF_8));
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status,
+                Unpooled.copiedBuffer("Failure: " + status + "\r\n", CharsetUtil.UTF_8));
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         this.sendAndCleanupConnection(ctx, response);
     }
 
     /**
-     * When file timestamp is the same as what the browser is sending up, send a "304 Not Modified"
+     * When file timestamp is the same as what the browser is sending up, send a
+     * "304 Not Modified"
      *
-     * @param ctx
-     *            Context
+     * @param ctx Context
      */
     private void sendNotModified(ChannelHandlerContext ctx) {
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, NOT_MODIFIED, Unpooled.EMPTY_BUFFER);
@@ -343,8 +333,8 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
     }
 
     /**
-     * If Keep-Alive is disabled, attaches "Connection: close" header to the response
-     * and closes the connection after the response being sent.
+     * If Keep-Alive is disabled, attaches "Connection: close" header to the
+     * response and closes the connection after the response being sent.
      */
     private void sendAndCleanupConnection(ChannelHandlerContext ctx, FullHttpResponse response) {
         final FullHttpRequest request = this.request;
@@ -369,8 +359,7 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
     /**
      * Sets the Date header for the HTTP response
      *
-     * @param response
-     *            HTTP response
+     * @param response HTTP response
      */
     private static void setDateHeader(FullHttpResponse response) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT, Locale.US);
@@ -383,10 +372,8 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
     /**
      * Sets the Date and Cache headers for the HTTP Response
      *
-     * @param response
-     *            HTTP response
-     * @param fileToCache
-     *            file to extract content type
+     * @param response    HTTP response
+     * @param fileToCache file to extract content type
      */
     private static void setDateAndCacheHeaders(HttpResponse response, File fileToCache) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(HTTP_DATE_FORMAT, Locale.US);
@@ -400,17 +387,15 @@ public class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<Ful
         time.add(Calendar.SECOND, HTTP_CACHE_SECONDS);
         response.headers().set(HttpHeaderNames.EXPIRES, dateFormatter.format(time.getTime()));
         response.headers().set(HttpHeaderNames.CACHE_CONTROL, "private, max-age=" + HTTP_CACHE_SECONDS);
-        response.headers().set(
-                HttpHeaderNames.LAST_MODIFIED, dateFormatter.format(new Date(fileToCache.lastModified())));
+        response.headers().set(HttpHeaderNames.LAST_MODIFIED,
+                dateFormatter.format(new Date(fileToCache.lastModified())));
     }
 
     /**
      * Sets the content type header for the HTTP Response
      *
-     * @param response
-     *            HTTP response
-     * @param file
-     *            file to extract content type
+     * @param response HTTP response
+     * @param file     file to extract content type
      */
     private static void setContentTypeHeader(HttpResponse response, File file) {
         MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
