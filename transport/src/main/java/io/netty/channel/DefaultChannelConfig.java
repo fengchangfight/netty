@@ -40,18 +40,17 @@ import static io.netty.util.internal.ObjectUtil.checkPositive;
 import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
 
 /**
- * The default {@link ChannelConfig} implementation.
+ * fc comment 不是核心类，先不看 The default {@link ChannelConfig} implementation.
  */
 public class DefaultChannelConfig implements ChannelConfig {
     private static final MessageSizeEstimator DEFAULT_MSG_SIZE_ESTIMATOR = DefaultMessageSizeEstimator.DEFAULT;
 
     private static final int DEFAULT_CONNECT_TIMEOUT = 30000;
 
-    private static final AtomicIntegerFieldUpdater<DefaultChannelConfig> AUTOREAD_UPDATER =
-            AtomicIntegerFieldUpdater.newUpdater(DefaultChannelConfig.class, "autoRead");
-    private static final AtomicReferenceFieldUpdater<DefaultChannelConfig, WriteBufferWaterMark> WATERMARK_UPDATER =
-            AtomicReferenceFieldUpdater.newUpdater(
-                    DefaultChannelConfig.class, WriteBufferWaterMark.class, "writeBufferWaterMark");
+    private static final AtomicIntegerFieldUpdater<DefaultChannelConfig> AUTOREAD_UPDATER = AtomicIntegerFieldUpdater
+            .newUpdater(DefaultChannelConfig.class, "autoRead");
+    private static final AtomicReferenceFieldUpdater<DefaultChannelConfig, WriteBufferWaterMark> WATERMARK_UPDATER = AtomicReferenceFieldUpdater
+            .newUpdater(DefaultChannelConfig.class, WriteBufferWaterMark.class, "writeBufferWaterMark");
 
     protected final Channel channel;
 
@@ -79,20 +78,17 @@ public class DefaultChannelConfig implements ChannelConfig {
     @Override
     @SuppressWarnings("deprecation")
     public Map<ChannelOption<?>, Object> getOptions() {
-        return getOptions(
-                null,
-                CONNECT_TIMEOUT_MILLIS, MAX_MESSAGES_PER_READ, WRITE_SPIN_COUNT,
-                ALLOCATOR, AUTO_READ, AUTO_CLOSE, RCVBUF_ALLOCATOR, WRITE_BUFFER_HIGH_WATER_MARK,
-                WRITE_BUFFER_LOW_WATER_MARK, WRITE_BUFFER_WATER_MARK, MESSAGE_SIZE_ESTIMATOR,
-                SINGLE_EVENTEXECUTOR_PER_GROUP);
+        return getOptions(null, CONNECT_TIMEOUT_MILLIS, MAX_MESSAGES_PER_READ, WRITE_SPIN_COUNT, ALLOCATOR, AUTO_READ,
+                AUTO_CLOSE, RCVBUF_ALLOCATOR, WRITE_BUFFER_HIGH_WATER_MARK, WRITE_BUFFER_LOW_WATER_MARK,
+                WRITE_BUFFER_WATER_MARK, MESSAGE_SIZE_ESTIMATOR, SINGLE_EVENTEXECUTOR_PER_GROUP);
     }
 
-    protected Map<ChannelOption<?>, Object> getOptions(
-            Map<ChannelOption<?>, Object> result, ChannelOption<?>... options) {
+    protected Map<ChannelOption<?>, Object> getOptions(Map<ChannelOption<?>, Object> result,
+            ChannelOption<?>... options) {
         if (result == null) {
             result = new IdentityHashMap<ChannelOption<?>, Object>();
         }
-        for (ChannelOption<?> o: options) {
+        for (ChannelOption<?> o : options) {
             result.put(o, getOption(o));
         }
         return result;
@@ -106,7 +102,7 @@ public class DefaultChannelConfig implements ChannelConfig {
         }
 
         boolean setAllOptions = true;
-        for (Entry<ChannelOption<?>, ?> e: options.entrySet()) {
+        for (Entry<ChannelOption<?>, ?> e : options.entrySet()) {
             if (!setOption((ChannelOption<Object>) e.getKey(), e.getValue())) {
                 setAllOptions = false;
             }
@@ -219,8 +215,10 @@ public class DefaultChannelConfig implements ChannelConfig {
     /**
      * {@inheritDoc}
      * <p>
-     * @throws IllegalStateException if {@link #getRecvByteBufAllocator()} does not return an object of type
-     * {@link MaxMessagesRecvByteBufAllocator}.
+     * 
+     * @throws IllegalStateException if {@link #getRecvByteBufAllocator()} does not
+     *                               return an object of type
+     *                               {@link MaxMessagesRecvByteBufAllocator}.
      */
     @Override
     @Deprecated
@@ -229,16 +227,18 @@ public class DefaultChannelConfig implements ChannelConfig {
             MaxMessagesRecvByteBufAllocator allocator = getRecvByteBufAllocator();
             return allocator.maxMessagesPerRead();
         } catch (ClassCastException e) {
-            throw new IllegalStateException("getRecvByteBufAllocator() must return an object of type " +
-                    "MaxMessagesRecvByteBufAllocator", e);
+            throw new IllegalStateException(
+                    "getRecvByteBufAllocator() must return an object of type " + "MaxMessagesRecvByteBufAllocator", e);
         }
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * @throws IllegalStateException if {@link #getRecvByteBufAllocator()} does not return an object of type
-     * {@link MaxMessagesRecvByteBufAllocator}.
+     * 
+     * @throws IllegalStateException if {@link #getRecvByteBufAllocator()} does not
+     *                               return an object of type
+     *                               {@link MaxMessagesRecvByteBufAllocator}.
      */
     @Override
     @Deprecated
@@ -248,8 +248,8 @@ public class DefaultChannelConfig implements ChannelConfig {
             allocator.maxMessagesPerRead(maxMessagesPerRead);
             return this;
         } catch (ClassCastException e) {
-            throw new IllegalStateException("getRecvByteBufAllocator() must return an object of type " +
-                    "MaxMessagesRecvByteBufAllocator", e);
+            throw new IllegalStateException(
+                    "getRecvByteBufAllocator() must return an object of type " + "MaxMessagesRecvByteBufAllocator", e);
         }
     }
 
@@ -261,10 +261,14 @@ public class DefaultChannelConfig implements ChannelConfig {
     @Override
     public ChannelConfig setWriteSpinCount(int writeSpinCount) {
         checkPositive(writeSpinCount, "writeSpinCount");
-        // Integer.MAX_VALUE is used as a special value in the channel implementations to indicate the channel cannot
-        // accept any more data, and results in the writeOp being set on the selector (or execute a runnable which tries
-        // to flush later because the writeSpinCount quantum has been exhausted). This strategy prevents additional
-        // conditional logic in the channel implementations, and shouldn't be noticeable in practice.
+        // Integer.MAX_VALUE is used as a special value in the channel implementations
+        // to indicate the channel cannot
+        // accept any more data, and results in the writeOp being set on the selector
+        // (or execute a runnable which tries
+        // to flush later because the writeSpinCount quantum has been exhausted). This
+        // strategy prevents additional
+        // conditional logic in the channel implementations, and shouldn't be noticeable
+        // in practice.
         if (writeSpinCount == Integer.MAX_VALUE) {
             --writeSpinCount;
         }
@@ -299,10 +303,14 @@ public class DefaultChannelConfig implements ChannelConfig {
     }
 
     /**
-     * Set the {@link RecvByteBufAllocator} which is used for the channel to allocate receive buffers.
+     * Set the {@link RecvByteBufAllocator} which is used for the channel to
+     * allocate receive buffers.
+     * 
      * @param allocator the allocator to set.
-     * @param metadata Used to set the {@link ChannelMetadata#defaultMaxMessagesPerRead()} if {@code allocator}
-     * is of type {@link MaxMessagesRecvByteBufAllocator}.
+     * @param metadata  Used to set the
+     *                  {@link ChannelMetadata#defaultMaxMessagesPerRead()} if
+     *                  {@code allocator} is of type
+     *                  {@link MaxMessagesRecvByteBufAllocator}.
      */
     private void setRecvByteBufAllocator(RecvByteBufAllocator allocator, ChannelMetadata metadata) {
         if (allocator instanceof MaxMessagesRecvByteBufAllocator) {
@@ -330,10 +338,11 @@ public class DefaultChannelConfig implements ChannelConfig {
     }
 
     /**
-     * Is called once {@link #setAutoRead(boolean)} is called with {@code false} and {@link #isAutoRead()} was
-     * {@code true} before.
+     * Is called once {@link #setAutoRead(boolean)} is called with {@code false} and
+     * {@link #isAutoRead()} was {@code true} before.
      */
-    protected void autoReadCleared() { }
+    protected void autoReadCleared() {
+    }
 
     @Override
     public boolean isAutoClose() {
@@ -357,10 +366,8 @@ public class DefaultChannelConfig implements ChannelConfig {
         for (;;) {
             WriteBufferWaterMark waterMark = writeBufferWaterMark;
             if (writeBufferHighWaterMark < waterMark.low()) {
-                throw new IllegalArgumentException(
-                        "writeBufferHighWaterMark cannot be less than " +
-                                "writeBufferLowWaterMark (" + waterMark.low() + "): " +
-                                writeBufferHighWaterMark);
+                throw new IllegalArgumentException("writeBufferHighWaterMark cannot be less than "
+                        + "writeBufferLowWaterMark (" + waterMark.low() + "): " + writeBufferHighWaterMark);
             }
             if (WATERMARK_UPDATER.compareAndSet(this, waterMark,
                     new WriteBufferWaterMark(waterMark.low(), writeBufferHighWaterMark, false))) {
@@ -380,10 +387,8 @@ public class DefaultChannelConfig implements ChannelConfig {
         for (;;) {
             WriteBufferWaterMark waterMark = writeBufferWaterMark;
             if (writeBufferLowWaterMark > waterMark.high()) {
-                throw new IllegalArgumentException(
-                        "writeBufferLowWaterMark cannot be greater than " +
-                                "writeBufferHighWaterMark (" + waterMark.high() + "): " +
-                                writeBufferLowWaterMark);
+                throw new IllegalArgumentException("writeBufferLowWaterMark cannot be greater than "
+                        + "writeBufferHighWaterMark (" + waterMark.high() + "): " + writeBufferLowWaterMark);
             }
             if (WATERMARK_UPDATER.compareAndSet(this, waterMark,
                     new WriteBufferWaterMark(writeBufferLowWaterMark, waterMark.high(), false))) {

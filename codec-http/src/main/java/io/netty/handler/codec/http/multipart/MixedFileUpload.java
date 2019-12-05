@@ -23,10 +23,12 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 /**
- * Mixed implementation using both in Memory and in File with a limit of size
+ * fc comment Mixed implementation using both in Memory and in File with a limit
+ * of size
  */
 public class MixedFileUpload implements FileUpload {
 
+    // 套路:类内部使用其实现的接口
     private FileUpload fileUpload;
 
     private final long limitSize;
@@ -34,16 +36,13 @@ public class MixedFileUpload implements FileUpload {
     private final long definedSize;
     private long maxSize = DefaultHttpDataFactory.MAXSIZE;
 
-    public MixedFileUpload(String name, String filename, String contentType,
-            String contentTransferEncoding, Charset charset, long size,
-            long limitSize) {
+    public MixedFileUpload(String name, String filename, String contentType, String contentTransferEncoding,
+            Charset charset, long size, long limitSize) {
         this.limitSize = limitSize;
         if (size > this.limitSize) {
-            fileUpload = new DiskFileUpload(name, filename, contentType,
-                    contentTransferEncoding, charset, size);
+            fileUpload = new DiskFileUpload(name, filename, contentType, contentTransferEncoding, charset, size);
         } else {
-            fileUpload = new MemoryFileUpload(name, filename, contentType,
-                    contentTransferEncoding, charset, size);
+            fileUpload = new MemoryFileUpload(name, filename, contentType, contentTransferEncoding, charset, size);
         }
         definedSize = size;
     }
@@ -67,15 +66,12 @@ public class MixedFileUpload implements FileUpload {
     }
 
     @Override
-    public void addContent(ByteBuf buffer, boolean last)
-            throws IOException {
+    public void addContent(ByteBuf buffer, boolean last) throws IOException {
         if (fileUpload instanceof MemoryFileUpload) {
             checkSize(fileUpload.length() + buffer.readableBytes());
             if (fileUpload.length() + buffer.readableBytes() > limitSize) {
-                DiskFileUpload diskFileUpload = new DiskFileUpload(fileUpload
-                        .getName(), fileUpload.getFilename(), fileUpload
-                        .getContentType(), fileUpload
-                        .getContentTransferEncoding(), fileUpload.getCharset(),
+                DiskFileUpload diskFileUpload = new DiskFileUpload(fileUpload.getName(), fileUpload.getFilename(),
+                        fileUpload.getContentType(), fileUpload.getContentTransferEncoding(), fileUpload.getCharset(),
                         definedSize);
                 diskFileUpload.setMaxSize(maxSize);
                 ByteBuf data = fileUpload.getByteBuf();
@@ -173,11 +169,9 @@ public class MixedFileUpload implements FileUpload {
             if (fileUpload instanceof MemoryFileUpload) {
                 FileUpload memoryUpload = fileUpload;
                 // change to Disk
-                fileUpload = new DiskFileUpload(memoryUpload
-                        .getName(), memoryUpload.getFilename(), memoryUpload
-                        .getContentType(), memoryUpload
-                        .getContentTransferEncoding(), memoryUpload.getCharset(),
-                        definedSize);
+                fileUpload = new DiskFileUpload(memoryUpload.getName(), memoryUpload.getFilename(),
+                        memoryUpload.getContentType(), memoryUpload.getContentTransferEncoding(),
+                        memoryUpload.getCharset(), definedSize);
                 fileUpload.setMaxSize(maxSize);
 
                 // release old upload
@@ -195,11 +189,9 @@ public class MixedFileUpload implements FileUpload {
                 FileUpload memoryUpload = fileUpload;
 
                 // change to Disk
-                fileUpload = new DiskFileUpload(memoryUpload
-                        .getName(), memoryUpload.getFilename(), memoryUpload
-                        .getContentType(), memoryUpload
-                        .getContentTransferEncoding(), memoryUpload.getCharset(),
-                        definedSize);
+                fileUpload = new DiskFileUpload(memoryUpload.getName(), memoryUpload.getFilename(),
+                        memoryUpload.getContentType(), memoryUpload.getContentTransferEncoding(),
+                        memoryUpload.getCharset(), definedSize);
                 fileUpload.setMaxSize(maxSize);
 
                 // release old upload
@@ -215,11 +207,8 @@ public class MixedFileUpload implements FileUpload {
             FileUpload memoryUpload = fileUpload;
 
             // change to Disk
-            fileUpload = new DiskFileUpload(fileUpload
-                    .getName(), fileUpload.getFilename(), fileUpload
-                    .getContentType(), fileUpload
-                    .getContentTransferEncoding(), fileUpload.getCharset(),
-                    definedSize);
+            fileUpload = new DiskFileUpload(fileUpload.getName(), fileUpload.getFilename(), fileUpload.getContentType(),
+                    fileUpload.getContentTransferEncoding(), fileUpload.getCharset(), definedSize);
             fileUpload.setMaxSize(maxSize);
 
             // release old upload
