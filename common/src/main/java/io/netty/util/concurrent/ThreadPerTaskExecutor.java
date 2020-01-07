@@ -18,6 +18,7 @@ package io.netty.util.concurrent;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 
+// fc comment: very easy, an implemetation of Executor, which starts a new thread
 public final class ThreadPerTaskExecutor implements Executor {
     private final ThreadFactory threadFactory;
 

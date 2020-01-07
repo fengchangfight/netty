@@ -188,6 +188,7 @@ public class DnsNameResolverTest {
     }
 
     /**
+     * fc comment: 套路: static块初始化final常量
      * The list of the domain names to exclude from {@link #testQueryMx()}.
      */
     private static final Set<String> EXCLUSIONS_QUERY_MX = new HashSet<String>();
@@ -200,6 +201,9 @@ public class DnsNameResolverTest {
     private static final TestDnsServer dnsServer = new TestDnsServer(DOMAINS_ALL);
     private static final EventLoopGroup group = new NioEventLoopGroup(1);
 
+    /**
+     * 套路: 使用@Rule进行 ExpectedException的设置
+     */
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
